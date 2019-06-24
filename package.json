@@ -8,6 +8,7 @@
     "@types/react": "16.8.22",
     "@types/react-dom": "16.8.4",
     "@types/react-router-dom": "^4.3.4",
+    "apollo-boost": "^0.4.3",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link-http": "^1.5.15",
@@ -41,9 +42,6 @@
     ]
   },
   "devDependencies": {
-    "graphql": "^14.3.1",
-    "graphql-compiler": "^1.7.0",
-    "relay-compiler": "^5.0.0",
-    "relay-compiler-language-typescript": "^4.3.0"
+    "apollo": "2.11.0"
   }
 }

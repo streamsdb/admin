@@ -6,6 +6,7 @@ import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from 'react-apollo';
 import { Query, QueryResult } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { StreamsQuery } from './types/StreamsQuery';
 
 type Props = {
   database: string;
@@ -36,10 +37,11 @@ export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
   <ApolloProvider client={client}>
   <h2>{ database }</h2>
   <Query query={query} variables={{}}>
-    {({ data, error, loading }: QueryResult<any>) => (<div>{JSON.stringify({
+    {({ data, error, loading }: QueryResult<StreamsQuery>) => (<div>{JSON.stringify({
       data,
-    loading,
-    error})}</div>)}
+      loading,
+      error
+    })}</div>)}
   </Query>
   </ApolloProvider>
 </aside>
