@@ -1,0 +1,99 @@
+scalar Bytes 
+type Query {
+  # Returns a slice of the stream.
+  readStream(
+    # The name of the database containing the stream.
+    db: String!,
+    # The name of the stream to read (eq: "order-123").
+    name: String!, 
+    # The earliest message to read (inclusive). Streams starts at position 1. 
+    # From can also be negative to read from the end of the stream. For example, 
+    # if there are 10 messages in a stream, reading from -5 will give a slice 
+    # from 6 up to and including 10: [6,7,8,9,10].
+    from: Int!,
+    # The maximum number of messages to read. The actual slice might be smaller.
+    # It is smaller if the stream doesn't have that number of messages to return, or
+    # if the server decides to return less due configuration.
+    limit: Int!): Slice!
+
+  # Returns the list of database you have access to.
+  databases: [String!]
+
+  database(name: String!): DB
+}
+
+type StreamNamesPage {
+  total: Int!
+  names: [String!]
+}
+
+type DB {
+  id: ID!
+  # The name of the database
+  name: String!
+
+  streams(after: String, limit: Int): StreamNamesPage!
+}
+
+type AppendResult{
+  # The position of the first message appended to the stream.
+  from: Int!
+  # The numer of appended messages. This is equal to the number of messages provided when appending.
+  count: Int!
+  # The new head of the stream. This is equal to the from position plus the count.
+  head: Int!
+}
+
+type Mutation {
+  register(email: String!, password: String!): RegistrationResult
+  createDatabase(name: String!): CreateDatabaseResult
+  appendStream(db: String!, stream: String!, messages: [MessageInput!]!): AppendResult
+  login(email: String!, password: String!): LoginResult
+}
+
+type CreateDatabaseResult{
+  Name: String!
+}
+
+type RegistrationResult{
+  email: String!
+  token: String!
+}
+
+type LoginResult {
+  email: String!
+  token: String!
+}
+
+type Streams {
+  db: String!
+  names: [String!]
+}
+
+type Slice {
+  # The stream id.
+  stream: String!
+  # The position of the first message in this slice.
+  from: Int!
+  # The position of the next message after this slice.
+  next: Int!
+  # Indication whether there is a next message available at the time of the creation of this slice.
+  hasNext: Boolean!
+  # The number of the last message in the stream.
+  head: Int!
+  # The messages in this slice.
+  messages: [Message!]
+}
+
+input MessageInput{
+  type: String!
+  value: Bytes!
+}
+
+type Message{
+  stream: String!
+  position: Int!
+  type: String!
+  value: Bytes!
+}
+
