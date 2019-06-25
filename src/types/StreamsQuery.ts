@@ -7,7 +7,7 @@
 // ====================================================
 
 export interface StreamsQuery_database_streams {
-  __typename: "StreamNamesPage";
+  __typename: "StreamsPage";
   total: number;
   names: string[] | null;
 }
