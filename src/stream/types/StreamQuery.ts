@@ -8,7 +8,9 @@
 
 export interface StreamQuery_readStream_messages {
   __typename: "Message";
+  position: number;
   type: string;
+  timestamp: string;
   value: any;
 }
 

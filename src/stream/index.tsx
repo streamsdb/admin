@@ -19,7 +19,9 @@ query StreamQuery{
     hasNext
     head
     messages {
+      position
       type
+      timestamp
       value
     }
   }
@@ -48,12 +50,12 @@ export const Stream: FunctionComponent<Props> = ({database, stream}) =>
           </Alert>
         }
 
-        var rows = data.readStream.messages.map((m, i) =>
+        var rows = data.readStream.messages.map((m) =>
             <tr>
-            <th scope="row">{i}</th>
+            <th scope="row">{m.position}</th>
             <td>{m.type}</td>
             <td>{m.value}</td>
-            <td>time</td>
+            <td>{m.timestamp}</td>
             </tr>
         );
 
