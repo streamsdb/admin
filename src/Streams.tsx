@@ -1,11 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
-import { ChildDataProps, graphql } from "react-apollo";
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloProvider } from 'react-apollo';
 import { Query, QueryResult } from 'react-apollo';
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { StreamsQuery } from './types/StreamsQuery';
 import { ListGroup, ListGroupItem, Alert } from 'reactstrap';
 import { Spinner } from 'reactstrap';
@@ -38,7 +33,7 @@ export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
       if(error) {
         return <div>
           <Alert color="primary">
-            This is a primary alert — check it out!
+            failed to query streams: {error}
           </Alert>
         </div>
       }
@@ -49,7 +44,7 @@ export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
       }
 
       return <ListGroup>
-        {names.map((name) => (<ListGroupItem>{name}</ListGroupItem>))}
+        {names.map((name) => (<ListGroupItem tag="a" href={`/db/${database}/streams/${name}`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
   </Query>

@@ -82,7 +82,7 @@ type Slice {
   # The number of the last message in the stream.
   head: Int!
   # The messages in this slice.
-  messages: [Message!]
+  messages: [Message!]!
 }
 
 input MessageInput{
