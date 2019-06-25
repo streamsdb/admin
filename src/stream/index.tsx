@@ -1,10 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
-import { ListGroup, ListGroupItem, Alert } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import { Spinner } from 'reactstrap';
 import { StreamQuery} from './types/StreamQuery';
 import { Table } from 'reactstrap';
+import TimeAgo from 'react-timeago';
 
 type Props = {
   database: string;
@@ -55,7 +56,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream}) =>
             <th scope="row">{m.position}</th>
             <td>{m.type}</td>
             <td>{m.value}</td>
-            <td>{m.timestamp}</td>
+            <td><TimeAgo date={m.timestamp} /></td>
             </tr>
         );
 
