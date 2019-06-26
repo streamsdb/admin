@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
 import { StreamsQuery } from './types/StreamsQuery';
 import { ListGroup, ListGroupItem, Alert } from 'reactstrap';
+import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
 
 type Props = {
@@ -44,7 +45,7 @@ export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
       }
 
       return <ListGroup>
-        {names.map((name) => (<ListGroupItem tag="a" href={`/db/${database}/streams/${name}`}>{name}</ListGroupItem>))}
+        {names.map((name) => (<ListGroupItem tag={Link} to={`/db/${database}/streams/${name}`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
   </Query>

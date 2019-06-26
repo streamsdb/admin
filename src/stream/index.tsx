@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
 import { Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
-import { Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Collapse, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { StreamQuery} from './types/StreamQuery';
 import { Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
@@ -14,6 +14,7 @@ type Props = {
   stream: string;
   from?: number;
   limit: number;
+  open?: number;
 }
 
 const query = gql`
@@ -33,7 +34,7 @@ query StreamQuery($database: String!, $stream: String!, $from: Int!, $limit: Int
   }
 }`;
 
-export const Stream: FunctionComponent<Props> = ({database, stream, from, limit}) => {
+export const Stream: FunctionComponent<Props> = ({database, stream, from, limit, open}) => {
   if (!from) {
     from = 1
   }
@@ -60,8 +61,8 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit}
           </Alert>
         }
 
-        var { head, from, messages } = data.readStream;
-        var last = head-limit;
+        var { head, from, next, messages } = data.readStream;
+        var last = head-limit+1;
         var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) =>
             <tr>
             <th scope="row">{m.position}</th>
@@ -78,10 +79,10 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit}
               <PaginationLink first tag={Link} to={`/db/${database}/streams/${stream}/1`} />
             </PaginationItem>
             <PaginationItem disabled={from === 1}>
-              <PaginationLink previous tag={Link} to={`/db/${database}/streams/${stream}/${data.readStream.from-limit}`} />
+              <PaginationLink previous tag={Link} to={`/db/${database}/streams/${stream}/${from-limit}`} />
             </PaginationItem>
             <PaginationItem disabled={from >= last}>
-              <PaginationLink next tag={Link} to={`/db/${database}/streams/${stream}/${data.readStream.next}`}/>
+              <PaginationLink next tag={Link} to={`/db/${database}/streams/${stream}/${Math.min(next, last)}`}/>
             </PaginationItem>
             <PaginationItem disabled={from >= last}>
               <PaginationLink last tag={Link} to={`/db/${database}/streams/${stream}/${last}`} />
