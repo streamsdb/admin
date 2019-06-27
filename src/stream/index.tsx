@@ -5,7 +5,7 @@ import { Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { ButtonGroup, Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { StreamQuery} from './types/StreamQuery';
-import { Table } from 'reactstrap';
+import { Container, Row, Col, Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
 import prettyBytes from 'pretty-bytes';
 
@@ -73,36 +73,45 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
             </tr>
         );
 
-        return <div>
-          <Pagination>
-            <PaginationItem disabled={from === 1}>
-              <PaginationLink first tag={Link} to={`/db/${database}/streams/${stream}/1`} />
-            </PaginationItem>
-            <PaginationItem disabled={from === 1}>
-              <PaginationLink previous tag={Link} to={`/db/${database}/streams/${stream}/${from-limit}`} />
-            </PaginationItem>
-            <PaginationItem disabled={from >= last}>
-              <PaginationLink next tag={Link} to={`/db/${database}/streams/${stream}/${Math.min(next, last)}`}/>
-            </PaginationItem>
-            <PaginationItem disabled={from >= last}>
-              <PaginationLink last tag={Link} to={`/db/${database}/streams/${stream}/${last}`} />
-            </PaginationItem>
-          </Pagination>
-          <Table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>name</th>
-            <th>type</th>
-            <th>size</th>
-            <th>timestamp</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </Table>
-          </div>
+        return <Container>
+          <Row>
+            <Col>
+              <Pagination>
+                <PaginationItem disabled={from === 1}>
+                  <PaginationLink first tag={Link} to={`/db/${database}/streams/${stream}/1`} />
+                </PaginationItem>
+                <PaginationItem disabled={from === 1}>
+                  <PaginationLink previous tag={Link} to={`/db/${database}/streams/${stream}/${from-limit}`} />
+                </PaginationItem>
+                <PaginationItem disabled={from >= last}>
+                  <PaginationLink next tag={Link} to={`/db/${database}/streams/${stream}/${Math.min(next, last)}`}/>
+                </PaginationItem>
+                <PaginationItem disabled={from >= last}>
+                  <PaginationLink last tag={Link} to={`/db/${database}/streams/${stream}/${last}`} />
+                </PaginationItem>
+              </Pagination>
+            </Col>
+            <Col><Button tag={Link} to={`/db/${database}/streams/${stream}/new`} className="float-right">New event</Button></Col>
+          </Row>
+          <Row>
+            <Col>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>name</th>
+                    <th>type</th>
+                    <th>size</th>
+                    <th>timestamp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Container>
       }}
     </Query>
   </>
