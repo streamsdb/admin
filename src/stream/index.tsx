@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
 import { Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
-import { Collapse, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { ButtonGroup, Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { StreamQuery} from './types/StreamQuery';
 import { Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
