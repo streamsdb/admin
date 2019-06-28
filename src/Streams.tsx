@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
-import { StreamsQuery } from './types/StreamsQuery';
 import { ListGroup, ListGroupItem, Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
+import { StreamsQueryComponent } from './data/types'
 
 type Props = {
   database: string;
@@ -24,8 +24,8 @@ query StreamsQuery{
 
 export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
   <h2>{ database }</h2>
-  <Query query={query} variables={{}}>
-    {({ data, error, loading }: QueryResult<StreamsQuery>) => {
+  <StreamsQueryComponent variables={{}}>
+    {({ data, error, loading }) => {
       if(loading) {
         return <div>
           <Spinner color="primary" />
@@ -48,5 +48,5 @@ export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
         {names.map((name) => (<ListGroupItem tag={Link} to={`/db/${database}/streams/${name}`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
-  </Query>
+  </StreamsQueryComponent>
 </aside>

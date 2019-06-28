@@ -4,10 +4,10 @@ import { Query, QueryResult } from 'react-apollo';
 import { Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { ButtonGroup, Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { StreamQuery} from './types/StreamQuery';
 import { Container, Row, Col, Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
 import prettyBytes from 'pretty-bytes';
+import { StreamQueryComponent } from '../data/types'
 
 type Props = {
   database: string;
@@ -40,8 +40,8 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
   }
 
   return <>
-    <Query query={query} variables={{database, stream, from, limit}}>
-      {({ data, error, loading }: QueryResult<StreamQuery>) => {
+    <StreamQueryComponent variables={{database, stream, from, limit}}>
+      {({ data, error, loading }) => {
         if(loading) {
           return <div>
             <Spinner color="primary" />
@@ -113,6 +113,6 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           </Row>
         </Container>
       }}
-    </Query>
+    </StreamQueryComponent>
   </>
 }
