@@ -10,7 +10,7 @@ type Props = {
 
 export const SpinnerButton: FunctionComponent<Props> = ({spinning, children, ...rest}) => (
   <Button {...rest}>
-    (running) ? (
+    {(spinning) ? (
       <Spinner
         className={classnames({
           "position-relative": true,
@@ -18,7 +18,7 @@ export const SpinnerButton: FunctionComponent<Props> = ({spinning, children, ...
         })}
         size="sm"
       />
-    ) : ({children})
+    ) : (<span>{children}</span>)}
   </Button>
 );
 
