@@ -3,7 +3,7 @@
 #############################
 FROM node AS builder
 WORKDIR /build
-COPY ./ ./
+COPY ./web-admin ./
 
 RUN yarn install
 RUN yarn build
