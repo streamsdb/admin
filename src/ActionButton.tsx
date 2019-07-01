@@ -9,7 +9,7 @@ type Props = {
 
 
 export const SpinnerButton: FunctionComponent<Props> = ({spinning, children, ...rest}) => (
-  <Button {...rest}>
+  <Button disabled={spinning} {...rest}>
     {(spinning) ? (
       <Spinner
         className={classnames({

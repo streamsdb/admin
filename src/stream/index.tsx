@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { useState , FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
 import { Alert } from 'reactstrap';
@@ -17,27 +17,11 @@ type Props = {
   open?: number;
 }
 
-const query = gql`
-query StreamQuery($database: String!, $stream: String!, $from: Int!, $limit: Int!){
-   readStream(db: $database, name:$stream, from: $from, limit: $limit) {
-   	stream
-    from
-    next
-    hasNext
-    head
-    messages {
-      position
-      type
-      timestamp
-      value
-    }
-  }
-}`;
-
 export const Stream: FunctionComponent<Props> = ({database, stream, from, limit, open}) => {
   if (!from) {
     from = 1
   }
+  const [likeThisButtonRowNumber, setLikeThisButtonRowNumber] = useState(-1);
 
   return <>
     <StreamQueryComponent variables={{database, stream, from, limit}}>
@@ -63,15 +47,18 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
 
         var { head, from, next, messages } = data.readStream;
         var last = head-limit+1;
-        var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) =>
-            <tr>
+        var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) => {
+          const likeThisButton = <Button size="sm" visable={likeThisButtonRowNumber === m.position}>Add like this</Button>;
+
+          return (<tr>
             <th scope="row">{m.position}</th>
             <td>{m.value}</td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
             <td><TimeAgo date={m.timestamp} /></td>
-            </tr>
-        );
+            <td>{likeThisButton}</td>
+          </tr>)
+        });
 
         return <Container>
           <Row>
@@ -103,6 +90,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
                     <th>type</th>
                     <th>size</th>
                     <th>timestamp</th>
+                    <th>action</th>
                   </tr>
                 </thead>
                 <tbody>

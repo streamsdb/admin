@@ -24,7 +24,7 @@ query StreamsQuery{
 
 export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
   <h2>{ database }</h2>
-  <StreamsQueryComponent variables={{}}>
+  <StreamsQueryComponent variables={{database}}>
     {({ data, error, loading }) => {
       if(loading) {
         return <div>
