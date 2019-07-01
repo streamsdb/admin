@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
-import * as ReactApollo from "react-apollo";
 import * as React from "react";
+import * as ReactApollo from "react-apollo";
 export type Maybe<T> = T | null;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -24,6 +24,12 @@ export type AppendResult = {
 export type CreateDatabaseResult = {
   __typename?: "CreateDatabaseResult";
   Name: Scalars["String"];
+};
+
+export type DatabasesPage = {
+  __typename?: "DatabasesPage";
+  total: Scalars["Int"];
+  names?: Maybe<Array<Scalars["String"]>>;
 };
 
 export type Db = {
@@ -88,7 +94,7 @@ export type MutationLoginArgs = {
 export type Query = {
   __typename?: "Query";
   readStream: Slice;
-  databases?: Maybe<Array<Scalars["String"]>>;
+  databases: DatabasesPage;
   database?: Maybe<Db>;
 };
 
@@ -131,6 +137,12 @@ export type StreamsPage = {
   names?: Maybe<Array<Scalars["String"]>>;
 };
 
+export type DatabasesQueryVariables = {};
+
+export type DatabasesQuery = { __typename?: "Query" } & {
+  databases: { __typename?: "DatabasesPage" } & Pick<DatabasesPage, "names">;
+};
+
 export type AppendSingleMutationVariables = {
   db: Scalars["String"];
   stream: Scalars["String"];
@@ -144,14 +156,14 @@ export type AppendSingleMutation = { __typename?: "Mutation" } & {
   >;
 };
 
-export type StreamQueryQueryVariables = {
+export type ReadStreamQueryVariables = {
   database: Scalars["String"];
   stream: Scalars["String"];
   from: Scalars["Int"];
   limit: Scalars["Int"];
 };
 
-export type StreamQueryQuery = { __typename?: "Query" } & {
+export type ReadStreamQuery = { __typename?: "Query" } & {
   readStream: { __typename?: "Slice" } & Pick<
     Slice,
     "stream" | "from" | "next" | "hasNext" | "head"
@@ -160,7 +172,7 @@ export type StreamQueryQuery = { __typename?: "Query" } & {
         Array<
           { __typename?: "Message" } & Pick<
             Message,
-            "position" | "type" | "timestamp" | "value"
+            "position" | "timestamp" | "type" | "value"
           >
         >
       >;
@@ -180,6 +192,47 @@ export type StreamsQueryQuery = { __typename?: "Query" } & {
   >;
 };
 
+export const DatabasesDocument = gql`
+  query Databases {
+    databases {
+      names
+    }
+  }
+`;
+export type DatabasesComponentProps = Omit<
+  ReactApollo.QueryProps<DatabasesQuery, DatabasesQueryVariables>,
+  "query"
+>;
+
+export const DatabasesComponent = (props: DatabasesComponentProps) => (
+  <ReactApollo.Query<DatabasesQuery, DatabasesQueryVariables>
+    query={DatabasesDocument}
+    {...props}
+  />
+);
+
+export type DatabasesProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<DatabasesQuery, DatabasesQueryVariables>
+> &
+  TChildProps;
+export function withDatabases<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    DatabasesQuery,
+    DatabasesQueryVariables,
+    DatabasesProps<TChildProps>
+  >
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    DatabasesQuery,
+    DatabasesQueryVariables,
+    DatabasesProps<TChildProps>
+  >(DatabasesDocument, {
+    alias: "withDatabases",
+    ...operationOptions
+  });
+}
 export const AppendSingleDocument = gql`
   mutation AppendSingle(
     $db: String!
@@ -237,8 +290,8 @@ export function withAppendSingle<TProps, TChildProps = {}>(
     ...operationOptions
   });
 }
-export const StreamQueryDocument = gql`
-  query StreamQuery(
+export const ReadStreamDocument = gql`
+  query ReadStream(
     $database: String!
     $stream: String!
     $from: Int!
@@ -252,45 +305,45 @@ export const StreamQueryDocument = gql`
       head
       messages {
         position
-        type
         timestamp
+        type
         value
       }
     }
   }
 `;
-export type StreamQueryComponentProps = Omit<
-  ReactApollo.QueryProps<StreamQueryQuery, StreamQueryQueryVariables>,
+export type ReadStreamComponentProps = Omit<
+  ReactApollo.QueryProps<ReadStreamQuery, ReadStreamQueryVariables>,
   "query"
 > &
-  ({ variables: StreamQueryQueryVariables; skip?: false } | { skip: true });
+  ({ variables: ReadStreamQueryVariables; skip?: false } | { skip: true });
 
-export const StreamQueryComponent = (props: StreamQueryComponentProps) => (
-  <ReactApollo.Query<StreamQueryQuery, StreamQueryQueryVariables>
-    query={StreamQueryDocument}
+export const ReadStreamComponent = (props: ReadStreamComponentProps) => (
+  <ReactApollo.Query<ReadStreamQuery, ReadStreamQueryVariables>
+    query={ReadStreamDocument}
     {...props}
   />
 );
 
-export type StreamQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<StreamQueryQuery, StreamQueryQueryVariables>
+export type ReadStreamProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ReadStreamQuery, ReadStreamQueryVariables>
 > &
   TChildProps;
-export function withStreamQuery<TProps, TChildProps = {}>(
+export function withReadStream<TProps, TChildProps = {}>(
   operationOptions?: ReactApollo.OperationOption<
     TProps,
-    StreamQueryQuery,
-    StreamQueryQueryVariables,
-    StreamQueryProps<TChildProps>
+    ReadStreamQuery,
+    ReadStreamQueryVariables,
+    ReadStreamProps<TChildProps>
   >
 ) {
   return ReactApollo.withQuery<
     TProps,
-    StreamQueryQuery,
-    StreamQueryQueryVariables,
-    StreamQueryProps<TChildProps>
-  >(StreamQueryDocument, {
-    alias: "withStreamQuery",
+    ReadStreamQuery,
+    ReadStreamQueryVariables,
+    ReadStreamProps<TChildProps>
+  >(ReadStreamDocument, {
+    alias: "withReadStream",
     ...operationOptions
   });
 }

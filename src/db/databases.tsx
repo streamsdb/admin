@@ -4,27 +4,21 @@ import { Query, QueryResult } from 'react-apollo';
 import { ListGroup, ListGroupItem, Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
-import { StreamsQueryComponent } from './data/types'
+import { DatabasesComponent } from '../data/types';
 
 type Props = {
-  database: string;
 }
 
 const query = gql`
-query StreamsQuery{
-  database(name: "default") {
-    id,
-    name,
-    streams {
-      total
-      names
-    }
+query Databases{
+  databases {
+    names
   },
 }`;
 
-export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
-  <h2>Streams</h2>
-  <StreamsQueryComponent variables={{database}}>
+export const Databases: FunctionComponent<Props> = ({ }) => <aside>
+  <h1>Databases</h1>
+  <DatabasesComponent>
     {({ data, error, loading }) => {
       if(loading) {
         return <div>
@@ -38,15 +32,18 @@ export const Streams: FunctionComponent<Props> = ({ database}) => <aside>
           </Alert>
         </div>
       }
+
+      debugger;
       
       var names: string[] = [];
-      if(data && data.database && data.database.streams && data.database.streams.names) {
-        names = data.database.streams.names
+      if(data && data.databases && data.databases.names) {
+        names = data.databases.names
       }
 
       return <ListGroup>
-        {names.map((name) => (<ListGroupItem tag={Link} to={`/${database}/streams/${name}`}>{name}</ListGroupItem>))}
+        {names.map((name) => (<ListGroupItem tag={Link} to={`/${name}/streams`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
-  </StreamsQueryComponent>
+  </DatabasesComponent>
 </aside>
+

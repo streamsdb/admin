@@ -1,13 +1,32 @@
-import React, { useState , FunctionComponent } from 'react';
-import gql from "graphql-tag";
-import { Query, QueryResult } from 'react-apollo';
+import React, { FunctionComponent } from 'react';
 import { Alert } from 'reactstrap';
 import { Link } from "react-router-dom";
-import { ButtonGroup, Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Container, Row, Col, Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
 import prettyBytes from 'pretty-bytes';
-import { StreamQueryComponent } from '../data/types'
+import { Query, QueryResult } from 'react-apollo';
+import gql from "graphql-tag";
+import { ReadStreamComponent } from '../data/types';
+
+const query = gql`
+query ReadStream($database: String!, $stream: String!, $from: Int!, $limit: Int!)
+{
+  readStream(db:$database, name:$stream, from:$from, limit: $limit) {
+    stream
+    from
+    next
+    hasNext
+    head
+    messages {
+      position
+      timestamp
+      type
+      value
+    }
+  }
+}
+`;
 
 type Props = {
   database: string;
@@ -21,10 +40,9 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
   if (!from) {
     from = 1
   }
-  const [likeThisButtonRowNumber, setLikeThisButtonRowNumber] = useState(-1);
 
   return <>
-    <StreamQueryComponent variables={{database, stream, from, limit}}>
+    <ReadStreamComponent variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
         if(loading) {
           return <div>
@@ -48,15 +66,12 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
         var { head, from, next, messages } = data.readStream;
         var last = head-limit+1;
         var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) => {
-          const likeThisButton = <Button size="sm" visable={likeThisButtonRowNumber === m.position}>Add like this</Button>;
-
           return (<tr>
             <th scope="row">{m.position}</th>
             <td>{m.value}</td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
             <td><TimeAgo date={m.timestamp} /></td>
-            <td>{likeThisButton}</td>
           </tr>)
         });
 
@@ -65,20 +80,20 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
             <Col>
               <Pagination>
                 <PaginationItem disabled={from === 1}>
-                  <PaginationLink first tag={Link} to={`/db/${database}/streams/${stream}/1`} />
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/1`} />
                 </PaginationItem>
                 <PaginationItem disabled={from === 1}>
-                  <PaginationLink previous tag={Link} to={`/db/${database}/streams/${stream}/${from-limit}`} />
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${from-limit}`} />
                 </PaginationItem>
                 <PaginationItem disabled={from >= last}>
-                  <PaginationLink next tag={Link} to={`/db/${database}/streams/${stream}/${Math.min(next, last)}`}/>
+                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}/>
                 </PaginationItem>
                 <PaginationItem disabled={from >= last}>
-                  <PaginationLink last tag={Link} to={`/db/${database}/streams/${stream}/${last}`} />
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/${last}`} />
                 </PaginationItem>
               </Pagination>
             </Col>
-            <Col><Button tag={Link} to={`/db/${database}/streams/${stream}/new`} className="float-right">New event</Button></Col>
+            <Col><Button tag={Link} to={`/${database}/streams/${stream}/new`} className="float-right">New event</Button></Col>
           </Row>
           <Row>
             <Col>
@@ -90,7 +105,6 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
                     <th>type</th>
                     <th>size</th>
                     <th>timestamp</th>
-                    <th>action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -101,6 +115,6 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           </Row>
         </Container>
       }}
-    </StreamQueryComponent>
+    </ReadStreamComponent>
   </>
 }
