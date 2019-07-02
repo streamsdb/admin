@@ -8,6 +8,7 @@ import prettyBytes from 'pretty-bytes';
 import { Query, QueryResult } from 'react-apollo';
 import gql from "graphql-tag";
 import { ReadStreamComponent } from '../data/types';
+import { FaFile } from 'react-icons/fa';
 
 const query = gql`
 query ReadStream($database: String!, $stream: String!, $from: Int!, $limit: Int!)
@@ -67,11 +68,12 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
         var last = head-limit+1;
         var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) => {
           return (<tr>
-            <th scope="row"><Link to={`/${database}/streams/${stream}/message/${m.position}`}>{m.position}</Link></th>
+            <th scope="row">{m.position}</th>
             <td>{m.value}</td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
             <td><TimeAgo date={m.timestamp} /></td>
+            <td><Link to={`/${database}/streams/${stream}/message/${m.position}`}><FaFile /></Link></td>
           </tr>)
         });
 
@@ -105,6 +107,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
                     <th>type</th>
                     <th>size</th>
                     <th>timestamp</th>
+                    <th>actions</th>
                   </tr>
                 </thead>
                 <tbody>
