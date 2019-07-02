@@ -46,11 +46,11 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
       }}>
         <FormGroup>
           <Label for="streamname">stream name</Label>
-          <Input placeholder="" value={streamName} onChange={e => setStreamName(e.target.value)} />
+          <Input placeholder="order-123" value={streamName} onChange={e => setStreamName(e.target.value)} />
         </FormGroup>
         <FormGroup>
           <Label for="eventtype">event type</Label>
-          <Input placeholder="eventtype" value={eventtype} onChange={e => setEventtype(e.target.value)} />
+          <Input placeholder="order.created" value={eventtype} onChange={e => setEventtype(e.target.value)} />
         </FormGroup>
         <FormGroup>
           <Label for="value">value</Label>

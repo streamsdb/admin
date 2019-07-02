@@ -22,9 +22,8 @@ query StreamsQuery($database: String!){
   },
 }`;
 
-const NoStreams: FunctionComponent<Props> = ({ database }) => <Alert color="primary">
-  It looks like you have no streams yet! <br />
-  You can create a new stream by appending an event to it.
+const NoStreams: FunctionComponent<Props> = ({ database }) => <Alert color="info">
+  No streams in database, create a new stream by creating an new event for it.
 </Alert>
 
 export const Streams: FunctionComponent<Props> = ({ database }) => <aside>
