@@ -179,6 +179,28 @@ export type ReadStreamQuery = { __typename?: "Query" } & {
     };
 };
 
+export type ReadMessageQueryVariables = {
+  database: Scalars["String"];
+  stream: Scalars["String"];
+  from: Scalars["Int"];
+};
+
+export type ReadMessageQuery = { __typename?: "Query" } & {
+  readStream: { __typename?: "Slice" } & Pick<
+    Slice,
+    "stream" | "from" | "next" | "hasNext" | "head"
+  > & {
+      messages: Maybe<
+        Array<
+          { __typename?: "Message" } & Pick<
+            Message,
+            "position" | "timestamp" | "type" | "value"
+          >
+        >
+      >;
+    };
+};
+
 export type StreamsQueryQueryVariables = {
   database: Scalars["String"];
 };
@@ -346,6 +368,58 @@ export function withReadStream<TProps, TChildProps = {}>(
     ReadStreamProps<TChildProps>
   >(ReadStreamDocument, {
     alias: "withReadStream",
+    ...operationOptions
+  });
+}
+export const ReadMessageDocument = gql`
+  query ReadMessage($database: String!, $stream: String!, $from: Int!) {
+    readStream(db: $database, name: $stream, from: $from, limit: 1) {
+      stream
+      from
+      next
+      hasNext
+      head
+      messages {
+        position
+        timestamp
+        type
+        value
+      }
+    }
+  }
+`;
+export type ReadMessageComponentProps = Omit<
+  ReactApollo.QueryProps<ReadMessageQuery, ReadMessageQueryVariables>,
+  "query"
+> &
+  ({ variables: ReadMessageQueryVariables; skip?: false } | { skip: true });
+
+export const ReadMessageComponent = (props: ReadMessageComponentProps) => (
+  <ReactApollo.Query<ReadMessageQuery, ReadMessageQueryVariables>
+    query={ReadMessageDocument}
+    {...props}
+  />
+);
+
+export type ReadMessageProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ReadMessageQuery, ReadMessageQueryVariables>
+> &
+  TChildProps;
+export function withReadMessage<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    ReadMessageQuery,
+    ReadMessageQueryVariables,
+    ReadMessageProps<TChildProps>
+  >
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    ReadMessageQuery,
+    ReadMessageQueryVariables,
+    ReadMessageProps<TChildProps>
+  >(ReadMessageDocument, {
+    alias: "withReadMessage",
     ...operationOptions
   });
 }

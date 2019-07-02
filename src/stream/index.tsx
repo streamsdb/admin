@@ -67,7 +67,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
         var last = head-limit+1;
         var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) => {
           return (<tr>
-            <th scope="row">{m.position}</th>
+            <th scope="row"><Link to={`/${database}/streams/${stream}/message/${m.position}`}>{m.position}</Link></th>
             <td>{m.value}</td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
