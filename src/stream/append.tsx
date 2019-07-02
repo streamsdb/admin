@@ -30,8 +30,7 @@ const mutation = gql`
 export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
   const [streamName, setStreamName] = useState(stream);
   const [eventtype, setEventtype] = useState("");
-  const [value, setValue] = useState("{ }");
-  const [meta, setMeta] = useState("{ }");
+  const [value, setValue] = useState("");
 
   return <AppendSingleComponent>
     {(mutate, { loading, error, data }) => {
@@ -53,7 +52,7 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
           <Input placeholder="order.created" value={eventtype} onChange={e => setEventtype(e.target.value)} />
         </FormGroup>
         <FormGroup>
-          <Label for="value">value</Label>
+          <Label for="value">event value</Label>
           <AceEditor
             className="form-control"
             mode="json"
@@ -61,21 +60,16 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
             onChange={newValue => setValue(newValue)}
             value={value}
             name="value"
+            placeholder={JSON.stringify({
+    orderId: "order-123",
+    userId: "user-123",
+    products: [
+        "product-123",
+    ],
+    shipmentType: "priority",
+    amount: 42
+}, null, 2)}
             editorProps={{$blockScrolling: true}}
-            width="100%"
-          />   
-        </FormGroup>
-        <FormGroup>
-          <Label for="meta">metadata</Label>
-          <AceEditor
-            className="form-control"
-            mode="json"
-            theme="tomorrow"
-            onChange={newValue => setMeta(newValue)}
-            value={meta}
-            name="value"
-            editorProps={{$blockScrolling: true}}
-            height="200px"
             width="100%"
           />   
         </FormGroup>

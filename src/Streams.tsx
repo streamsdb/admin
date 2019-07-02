@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
-import { ListGroup, ListGroupItem, Alert, Button } from 'reactstrap';
+import { ListGroup, ListGroupItem, Alert, Button, Container, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
 import { StreamsQueryComponent } from './data/types'
@@ -26,8 +26,13 @@ const NoStreams: FunctionComponent<Props> = ({ database }) => <Alert color="info
   No streams in database, create a new stream by creating an new event for it.
 </Alert>
 
-export const Streams: FunctionComponent<Props> = ({ database }) => <aside>
-  <h2>Streams</h2>
+export const Streams: FunctionComponent<Props> = ({ database }) =>
+  <Container>
+    <Row>
+            <Col><Button tag={Link} to={`/${database}/new`} className="float-right mb-2">New event</Button></Col>
+    </Row>
+          <Row>
+    <Col>
   <StreamsQueryComponent variables={{database}}>
     {({ data, error, loading }) => {
       if(loading) {
@@ -52,10 +57,11 @@ export const Streams: FunctionComponent<Props> = ({ database }) => <aside>
         return <NoStreams database={database} />
       }
 
-      return <ListGroup>
+      return <ListGroup className="mt-2">
         {names.map((name) => (<ListGroupItem tag={Link} to={`/${database}/streams/${name}`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
   </StreamsQueryComponent>
-  <Button tag={Link} to={`/${database}/new`}>New Event</Button>
-</aside>
+    </Col>
+    </Row>
+  </Container>

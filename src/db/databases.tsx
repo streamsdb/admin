@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Query, QueryResult } from 'react-apollo';
-import { ListGroup, ListGroupItem, Alert } from 'reactstrap';
+import { ListGroup, ListGroupItem, Alert, Button } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
 import { DatabasesComponent } from '../data/types';
@@ -19,7 +19,7 @@ query Databases{
 export const Databases: FunctionComponent<Props> = ({ }) => <aside>
   <h1>Databases</h1>
   <DatabasesComponent>
-    {({ data, error, loading }) => {
+    {({ data, error, loading, refetch }) => {
       if(loading) {
         return <div>
           <Spinner color="primary" />
@@ -27,9 +27,10 @@ export const Databases: FunctionComponent<Props> = ({ }) => <aside>
       } 
       if(error) {
         return <div>
-          <Alert color="primary">
-            failed to query streams: {error}
+          <Alert color="danger">
+            failed to query streams: {error.message}
           </Alert>
+          <Button onClick={() => refetch()}>Try again</Button>
         </div>
       }
 
