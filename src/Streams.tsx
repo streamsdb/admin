@@ -11,8 +11,8 @@ type Props = {
 }
 
 const query = gql`
-query StreamsQuery{
-  database(name: "default") {
+query StreamsQuery($database: String!){
+  database(name: $database) {
     id,
     name,
     streams {

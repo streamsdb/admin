@@ -179,7 +179,9 @@ export type ReadStreamQuery = { __typename?: "Query" } & {
     };
 };
 
-export type StreamsQueryQueryVariables = {};
+export type StreamsQueryQueryVariables = {
+  database: Scalars["String"];
+};
 
 export type StreamsQueryQuery = { __typename?: "Query" } & {
   database: Maybe<
@@ -348,8 +350,8 @@ export function withReadStream<TProps, TChildProps = {}>(
   });
 }
 export const StreamsQueryDocument = gql`
-  query StreamsQuery {
-    database(name: "default") {
+  query StreamsQuery($database: String!) {
+    database(name: $database) {
       id
       name
       streams {
@@ -362,7 +364,8 @@ export const StreamsQueryDocument = gql`
 export type StreamsQueryComponentProps = Omit<
   ReactApollo.QueryProps<StreamsQueryQuery, StreamsQueryQueryVariables>,
   "query"
->;
+> &
+  ({ variables: StreamsQueryQueryVariables; skip?: false } | { skip: true });
 
 export const StreamsQueryComponent = (props: StreamsQueryComponentProps) => (
   <ReactApollo.Query<StreamsQueryQuery, StreamsQueryQueryVariables>
