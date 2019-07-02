@@ -2,6 +2,8 @@
 ## STEP 1 build executable binary
 #############################
 FROM node AS builder
+ARG GRAPHQL_ENDPOINT
+
 WORKDIR /build
 COPY ./web-admin ./
 
