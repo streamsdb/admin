@@ -15,6 +15,7 @@ function BasicExample() {
       <Route exact path="/" render={( {match}: any) => <Databases />} />
       <Route exact path="/:database/" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
       <Route exact path="/:database/streams" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
+      <Route exact path="/:database/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream="" /> )} />
       <Route exact path="/:database/streams/:stream/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream={match.params.stream}/> )} />
       <Route exact path="/:database/streams/:stream/:from?" render={( {match}: any) => {
         return (<Stream database={match.params.database} stream={match.params.stream} from={match.params.from === "last" ? -10 : match.params.from } limit={10} open={2} /> )}

@@ -36,7 +36,7 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
   return <AppendSingleComponent>
     {(mutate, { loading, error, data }) => {
       if(data && data.appendStream && data.appendStream.from) {
-        return <Redirect to={`/${database}/streams/${stream}/last`} />
+        return <Redirect to={`/${database}/streams/${streamName}/last`} />
       }
 
       return (

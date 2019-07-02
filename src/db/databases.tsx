@@ -33,15 +33,13 @@ export const Databases: FunctionComponent<Props> = ({ }) => <aside>
         </div>
       }
 
-      debugger;
-      
       var names: string[] = [];
       if(data && data.databases && data.databases.names) {
         names = data.databases.names
       }
 
       return <ListGroup>
-        {names.map((name) => (<ListGroupItem tag={Link} to={`/${name}/streams`}>{name}</ListGroupItem>))}
+        {names.map((name) => (<ListGroupItem  key={name} tag={Link} to={`/${name}/streams`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
   </DatabasesComponent>

@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://graphql.streamsdb.io',
+    uri: 'http://localhost:8080/',
   }),
   cache: new InMemoryCache(),
 });
