@@ -80,11 +80,11 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           <Row>
             <Col>
               <Pagination>
-                <PaginationItem disabled={from === 1}>
-                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/1`} />
+                <PaginationItem disabled={from <= 0}>
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/0`} />
                 </PaginationItem>
-                <PaginationItem disabled={from === 1}>
-                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${from-limit}`} />
+                <PaginationItem disabled={from <= 0}>
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`} />
                 </PaginationItem>
                 <PaginationItem disabled={from >= last}>
                   <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}/>
