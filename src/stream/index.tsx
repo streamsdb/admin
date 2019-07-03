@@ -69,11 +69,10 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
         var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) => {
           return (<tr>
             <th scope="row">{m.position}</th>
-            <td>{m.value}</td>
+            <td><Link to={`/${database}/streams/${stream}/message/${m.position}`}>{stream}/{m.position}</Link></td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
             <td><TimeAgo date={m.timestamp} /></td>
-            <td><Link to={`/${database}/streams/${stream}/message/${m.position}`}><FaFile /></Link></td>
           </tr>)
         });
 
@@ -107,7 +106,6 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
                     <th>type</th>
                     <th>size</th>
                     <th>timestamp</th>
-                    <th>actions</th>
                   </tr>
                 </thead>
                 <tbody>

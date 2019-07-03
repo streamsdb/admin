@@ -61,9 +61,15 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           </Alert>
         }
 
-        var { head, from, next, messages } = data.readStream;
+        var { head, from, messages } = data.readStream;
         var message = messages[0];
-        var last = head;
+
+        var value;
+        try {
+          value = JSON.stringify(JSON.parse(message.value), null, 4);
+        } catch (e) {
+          value = message.value;
+        }
 
         return <Form readOnly={true}>
         <FormGroup>
@@ -81,10 +87,11 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
             className="form-control"
             mode="json"
             theme="tomorrow"
-            value={message.value}
+            value={value}
             name="value"
             editorProps={{$blockScrolling: true}}
             width="100%"
+        fontSize={16}
           />   
         </FormGroup>
       </Form>
