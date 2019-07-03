@@ -66,7 +66,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
 
         var { head, from, next, messages } = data.readStream;
         var last = head-limit+1;
-        var rows = messages.sort((a,b) => a.timestamp > b.timestamp ? -1: 1).map((m) => {
+        var rows = messages.sort((a,b) => a.position > b.position ? -1: 1).map((m) => {
           return (<tr>
             <th scope="row">{m.position}</th>
             <td><Link to={`/${database}/streams/${stream}/message/${m.position}`}>{stream}/{m.position}</Link></td>
@@ -80,18 +80,21 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           <Row>
             <Col>
               <Pagination>
+              <PaginationItem disabled={from >= last}>
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/${last}`} />
+                </PaginationItem>
+
+               <PaginationItem disabled={from >= last}>
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}/>
+                </PaginationItem>
+                         <PaginationItem disabled={from <= 0}>
+                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`} />
+                </PaginationItem>
+ 
                 <PaginationItem disabled={from <= 0}>
-                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/0`} />
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/0`} />
                 </PaginationItem>
-                <PaginationItem disabled={from <= 0}>
-                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`} />
-                </PaginationItem>
-                <PaginationItem disabled={from >= last}>
-                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}/>
-                </PaginationItem>
-                <PaginationItem disabled={from >= last}>
-                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/${last}`} />
-                </PaginationItem>
+ 
               </Pagination>
             </Col>
             <Col><Button tag={Link} to={`/${database}/streams/${stream}/new`} className="float-right">New event</Button></Col>
