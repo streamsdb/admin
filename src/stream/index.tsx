@@ -5,10 +5,8 @@ import { Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'rea
 import { Container, Row, Col, Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
 import prettyBytes from 'pretty-bytes';
-import { Query, QueryResult } from 'react-apollo';
 import gql from "graphql-tag";
 import { ReadStreamComponent } from '../data/types';
-import { FaFile } from 'react-icons/fa';
 
 const query = gql`
 query ReadStream($database: String!, $stream: String!, $from: Int!, $limit: Int!)
@@ -81,18 +79,18 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
             <Col>
               <Pagination>
               <PaginationItem disabled={from >= last}>
-                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/${last}`} />
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/${last}`}>newest</PaginationLink>
                 </PaginationItem>
 
                <PaginationItem disabled={from >= last}>
-                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}/>
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}></PaginationLink>
                 </PaginationItem>
                          <PaginationItem disabled={from <= 0}>
-                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`} />
+                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`}></PaginationLink>
                 </PaginationItem>
  
                 <PaginationItem disabled={from <= 0}>
-                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/0`} />
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/0`}>oldest</PaginationLink>
                 </PaginationItem>
  
               </Pagination>

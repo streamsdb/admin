@@ -9,7 +9,6 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { Link } from "react-router-dom";
 import { config } from "./Config";
 
 const client = new ApolloClient({

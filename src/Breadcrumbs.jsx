@@ -7,7 +7,7 @@ const Breadcrumbs = ({ breadcrumbs }) => (
   <Breadcrumb>
     {
       breadcrumbs.map(({ breadcrumb, match }) => 
-        <BreadcrumbItem key={match.id}><Link to={match.url}>{breadcrumb}</Link></BreadcrumbItem>
+        <BreadcrumbItem key={match.url}><Link to={match.url}>{breadcrumb}</Link></BreadcrumbItem>
     )}
   </Breadcrumb>
 )

@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
-import { Query, QueryResult } from 'react-apollo';
 import { ListGroup, ListGroupItem, Alert, Button, Container, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
@@ -58,7 +57,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) =>
       }
 
       return <ListGroup className="mt-2">
-        {names.map((name) => (<ListGroupItem tag={Link} to={`/${database}/streams/${name}/last`}>{name}</ListGroupItem>))}
+        {names.map((name) => (<ListGroupItem tag={Link} to={`/${database}/streams/${name}`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
   </StreamsQueryComponent>

@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
-import { Query, QueryResult } from 'react-apollo';
 import { ListGroup, ListGroupItem, Alert, Button } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Spinner } from 'reactstrap';
@@ -16,7 +15,7 @@ query Databases{
   },
 }`;
 
-export const Databases: FunctionComponent<Props> = ({ }) => <aside>
+export const Databases: FunctionComponent<Props> = () => <aside>
   <h1>Databases</h1>
   <DatabasesComponent>
     {({ data, error, loading, refetch }) => {

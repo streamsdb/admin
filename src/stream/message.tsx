@@ -1,10 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Alert } from 'reactstrap';
-import { Link } from "react-router-dom";
-import { Button, Spinner, Pagination, PaginationItem, PaginationLink, Form, FormGroup, Label, Input, Container, Row, Col, Table } from 'reactstrap';
-import TimeAgo from 'react-timeago';
-import prettyBytes from 'pretty-bytes';
-import { Query, QueryResult } from 'react-apollo';
+import { Spinner, Form, FormGroup, Label, Input } from 'reactstrap';
 import gql from "graphql-tag";
 import { ReadMessageComponent } from '../data/types';
 import brace from 'brace';
@@ -14,11 +10,6 @@ const query = gql`
 query ReadMessage($database: String!, $stream: String!, $from: Int!)
 {
   readStream(db:$database, name:$stream, from:$from, limit: 1) {
-    stream
-    from
-    next
-    hasNext
-    head
     messages {
       position
       timestamp
@@ -61,7 +52,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           </Alert>
         }
 
-        var { head, from, messages } = data.readStream;
+        var { messages } = data.readStream;
         var message = messages[0];
 
         var value;
