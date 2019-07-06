@@ -35,6 +35,18 @@ type Props = {
   open?: number;
 }
 
+function LinkForEventMessage(props:any) {
+  var {database ,message } = props;
+
+  if(message.type !== "sdb.pointer") {
+    return (<Link to={`/${database}/streams/${message.stream}/message/${message.position}`}>{message.stream}/{message.position}</Link>)
+  }
+
+  var pointer = JSON.parse(message.value);
+  return (<Link to={`/${database}/streams/${pointer.s}/message/${pointer.p}`}>{pointer.s}/{pointer.p}</Link>)
+}
+
+
 export const Stream: FunctionComponent<Props> = ({database, stream, from, limit, open}) => {
   if (!from) {
     from = 1
@@ -67,7 +79,9 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
         var rows = messages.sort((a,b) => a.position > b.position ? -1: 1).map((m) => {
           return (<tr>
             <th scope="row">{m.position}</th>
-            <td><Link to={`/${database}/streams/${stream}/message/${m.position}`}>{stream}/{m.position}</Link></td>
+            <td>
+              <LinkForEventMessage database={database} message={m} />
+            </td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
             <td><TimeAgo date={m.timestamp} /></td>
