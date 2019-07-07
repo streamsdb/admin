@@ -104,7 +104,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
                 </PaginationItem>
  
                 <PaginationItem disabled={from <= 0}>
-                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/0`}>oldest</PaginationLink>
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/1`}>oldest</PaginationLink>
                 </PaginationItem>
  
               </Pagination>
