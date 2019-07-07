@@ -36,10 +36,10 @@ type Props = {
 }
 
 function LinkForEventMessage(props:any) {
-  var {database ,message } = props;
+  var {database, message, stream } = props;
 
   if(message.type !== "sdb.pointer") {
-    return (<Link to={`/${database}/streams/${message.stream}/message/${message.position}`}>{message.stream}/{message.position}</Link>)
+    return (<Link to={`/${database}/streams/${stream}/message/${message.position}`}>{stream}/{message.position}</Link>)
   }
 
   var pointer = JSON.parse(message.value);
@@ -80,7 +80,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           return (<tr>
             <th scope="row">{m.position}</th>
             <td>
-              <LinkForEventMessage database={database} message={m} />
+              <LinkForEventMessage database={database} message={m} stream={stream} />
             </td>
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>

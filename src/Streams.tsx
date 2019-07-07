@@ -57,7 +57,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) =>
       }
 
       return <ListGroup className="mt-2">
-        {names.map((name) => (<ListGroupItem tag={Link} to={`/${database}/streams/${name}`}>{name}</ListGroupItem>))}
+        {names.map((name) => (<ListGroupItem tag={Link} to={`/${database}/streams/${name}/last`}>{name}</ListGroupItem>))}
       </ListGroup>
     }}
   </StreamsQueryComponent>
