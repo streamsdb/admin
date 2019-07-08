@@ -82,6 +82,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
             name="value"
             editorProps={{$blockScrolling: true}}
             width="100%"
+            wrapEnabled={true}
         fontSize={16}
           />   
         </FormGroup>
