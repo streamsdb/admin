@@ -39,11 +39,11 @@ function LinkForEventMessage(props:any) {
   var {database, message, stream } = props;
 
   if(message.type !== "sdb.pointer") {
-    return (<Link to={`/${database}/streams/${stream}/message/${message.position}`}>{stream}/{message.position}</Link>)
+    return (<Link to={`/${database}/streams/${stream}/${message.position}/message`}>{stream}/{message.position}</Link>)
   }
 
   var pointer = JSON.parse(message.value);
-  return (<Link to={`/${database}/streams/${pointer.s}/message/${pointer.p}`}>{pointer.s}/{pointer.p}</Link>)
+  return (<Link to={`/${database}/streams/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
 }
 
 
