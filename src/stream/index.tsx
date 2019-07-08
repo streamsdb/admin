@@ -92,21 +92,18 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           <Row>
             <Col>
               <Pagination>
-              <PaginationItem disabled={from >= last}>
-                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/`}>newest</PaginationLink>
+                <PaginationItem first disabled={from <= 0}>
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/1`}></PaginationLink>
                 </PaginationItem>
-
-               <PaginationItem disabled={from >= last}>
-                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}></PaginationLink>
-                </PaginationItem>
-                         <PaginationItem disabled={from <= 0}>
+                <PaginationItem disabled={from <= 0}>
                   <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`}></PaginationLink>
                 </PaginationItem>
- 
-                <PaginationItem disabled={from <= 0}>
-                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/1`}>oldest</PaginationLink>
+                <PaginationItem disabled={from >= last}>
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}></PaginationLink>
                 </PaginationItem>
- 
+                <PaginationItem last disabled={from >= last}>
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/`}></PaginationLink>
+                </PaginationItem>
               </Pagination>
             </Col>
             <Col><Button tag={Link} to={`/${database}/streams/${stream}/new`} className="float-right">New event</Button></Col>
