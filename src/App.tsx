@@ -20,7 +20,7 @@ function BasicExample() {
       <Route exact path="/:database/streams/:stream/:from?" render={( {match}: any) => {
         return (<Stream database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} open={2} /> )}
       } />
-      <Route exact path="/:database/streams/:stream/message/:from?" render={( {match}: any) => {
+      <Route exact path="/:database/streams/:stream/:from/message/" render={( {match}: any) => {
         return (<Message database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -1 : match.params.from }  /> )}
       } />
 

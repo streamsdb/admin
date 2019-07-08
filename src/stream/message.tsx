@@ -67,16 +67,16 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
         return <>
               <Pagination>
                 <PaginationItem disabled={from <= 1}>
-                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/message/1`}>1</PaginationLink>
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/1/message`}>1</PaginationLink>
                 </PaginationItem>
                 <PaginationItem disabled={from <= 1}>
-                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/message/${Math.max(from-1, 0)}`}></PaginationLink>
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-1, 0)}/message`}></PaginationLink>
                 </PaginationItem>
                 <PaginationItem disabled={!hasNext}>
-                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/message/${next}`}></PaginationLink>
+                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${next}/message`}></PaginationLink>
                 </PaginationItem>
                <PaginationItem>
-                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/message/last`}>last</PaginationLink>
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/last/message`}>last</PaginationLink>
                 </PaginationItem>
               </Pagination>
           <Form readOnly={true}>
