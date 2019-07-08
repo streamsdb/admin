@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
+import { Link } from "react-router-dom";
 import { Alert } from 'reactstrap';
-import { Spinner, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink, Spinner, Form, FormGroup, Label, Input } from 'reactstrap';
 import gql from "graphql-tag";
 import { ReadMessageComponent } from '../data/types';
 import brace from 'brace';
@@ -52,8 +53,9 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           </Alert>
         }
 
-        var { messages } = data.readStream;
+        var { head, messages, next, hasNext, head } = data.readStream;
         var message = messages[0];
+        from = message.position;
 
         var value;
         try {
@@ -62,7 +64,22 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           value = message.value;
         }
 
-        return <Form readOnly={true}>
+        return <>
+              <Pagination>
+                <PaginationItem disabled={from <= 1}>
+                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/message/1`}>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem disabled={from <= 1}>
+                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/message/${Math.max(from-1, 0)}`}></PaginationLink>
+                </PaginationItem>
+                <PaginationItem disabled={!hasNext}>
+                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/message/${next}`}></PaginationLink>
+                </PaginationItem>
+               <PaginationItem>
+                  <PaginationLink last tag={Link} to={`/${database}/streams/${stream}/message/last`}>last</PaginationLink>
+                </PaginationItem>
+              </Pagination>
+          <Form readOnly={true}>
         <FormGroup>
           <Label for="streamname">stream name</Label>
           <Input placeholder="order-123" value={stream} />
@@ -87,6 +104,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           />   
         </FormGroup>
       </Form>
+      </>
     }}
     </ReadMessageComponent>
 }
