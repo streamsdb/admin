@@ -13,6 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
 
 type Props = {
   database: string;
@@ -50,45 +51,33 @@ const NoStreams: FunctionComponent<Props> = ({ database }) => <p>
 export const Streams: FunctionComponent<Props> = ({ database }) => {
   const classes = useStyles();
 
-  return (
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Button variant="contained" component={Link} to={`/${database}/new`} color="primary">
-            New stream
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <StreamsQueryComponent variables={{database}}>
-            {({ data, error, loading }) => {
-              if(loading) {
-                return <CircularProgress />;
-              } 
-              if(error) {
-                return <Paper className={classes.root}>
-                  <Typography variant="h5" component="h3">
-                    Error
-                  </Typography>
-                  <Typography component="p">
-                    {error}
-                  </Typography>
-                </Paper>
-              }
-              
+  return (<StreamsQueryComponent variables={{database}}>
+    {({ data, error, loading }) => {
               var names: string[] = [];
               if(data && data.database && data.database.streams && data.database.streams.names) {
                 names = data.database.streams.names
               }
-              
-              if(names.length === 0) {
-                return <NoStreams database={database} />
-              }
-
-              return <List component="nav">
-                {names.map((name) => (<ListItem button component={Link} to={`/${database}/streams/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
-              </List>
-            }}
-          </StreamsQueryComponent>
-      </Grid>
-    </Grid>
+      return <>
+        <Toolbar>
+          <Button variant="contained" component={Link} to={`/${database}/new`} color="primary">
+            New stream
+          </Button>
+        </Toolbar>
+        <Paper>
+        {loading && <CircularProgress /> }
+        {error && <Paper>
+          <Typography variant="h5" component="h3">
+            Error
+          </Typography>
+          <Typography component="p">
+            {error}
+          </Typography>
+        </Paper>}
+        <List component="nav">
+          {names.map((name) => (<ListItem button component={Link} to={`/${database}/streams/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
+        </List>
+      </Paper>
+        </>
+    }}</StreamsQueryComponent>
 )
 }

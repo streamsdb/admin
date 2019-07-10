@@ -9,6 +9,20 @@ import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { config } from "./Config";
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#0091ea',
+    },
+    secondary: {
+      main: '#eeeeee',
+    },
+  },
+});
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -21,7 +35,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
   <Router>
+  <ThemeProvider theme={theme}>
   <App />
+  </ThemeProvider>
   </Router>
   </ApolloProvider>, document.getElementById('root'));
 

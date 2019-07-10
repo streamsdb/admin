@@ -92,18 +92,18 @@ export default function Dashboard() {
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar)}>
         <Toolbar className={classes.toolbar}>
+          <Breadcrumbs />
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            StreamsDB
           </Typography>
           <Link color="inherit" href="https://streamsdb.io/docs/">
             go to docs
           </Link>
         </Toolbar>
+        
       </AppBar>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-      <Breadcrumbs />
     <Switch>
       <Route exact path="/" render={( {match}: any) => <Databases />} />
       <Route exact path="/:database/" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
@@ -111,12 +111,11 @@ export default function Dashboard() {
       <Route exact path="/:database/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream="" /> )} />
       <Route exact path="/:database/streams/:stream/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream={match.params.stream}/> )} />
       <Route exact path="/:database/streams/:stream/:from?" render={( {match}: any) => {
-        return (<Stream database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} open={2} /> )}
+        return (<Stream database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} /> )}
       } />
       <Route exact path="/:database/streams/:stream/:from/message/" render={( {match}: any) => {
         return (<Message database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -1 : match.params.from }  /> )}
       } />
-
     </Switch>
         </Container>
         <MadeWithLove />

@@ -45,28 +45,25 @@ export const Databases: FunctionComponent<Props> = () => <aside>
   <h1>Databases</h1>
   <DatabasesComponent>
     {({ data, error, loading, refetch }) => {
-      if(loading) {
-        return <CircularProgress /> 
-      } 
-      if(error) {
-        return <Paper>
+      var names: string[] = [];
+      if(data && data.databases && data.databases.names) {
+        names = data.databases.names
+      }
+
+      return <Paper>
+        {loading && <CircularProgress /> }
+        {error && <Paper>
           <Typography variant="h5" component="h3">
             Error
           </Typography>
           <Typography component="p">
             {error}
           </Typography>
-        </Paper>
-      }
-
-      var names: string[] = [];
-      if(data && data.databases && data.databases.names) {
-        names = data.databases.names
-      }
-
-      return <List component="nav">
-        {names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}/streams`}><ListItemText>{name}</ListItemText></ListItem>))}
-      </List>
+        </Paper>}
+        <List component="nav">
+          {names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}/streams`}><ListItemText>{name}</ListItemText></ListItem>))}
+        </List>
+      </Paper>
     }}
   </DatabasesComponent>
 </aside>

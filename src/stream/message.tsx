@@ -20,6 +20,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import CardHeader from '@material-ui/core/CardHeader';
+import TimeAgo from 'react-timeago';
 
 const query = gql`
 query ReadMessage($database: String!, $stream: String!, $from: Int!)
@@ -35,17 +42,6 @@ query ReadMessage($database: String!, $stream: String!, $from: Int!)
 }
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-  }),
-);
 
 const useStylesReddit = makeStyles((theme: Theme) =>
   createStyles({
@@ -123,7 +119,11 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
         }
 
 
-        return (
+        return (<Card>
+<CardHeader title="Message details"
+        subheader={`${stream} at ${message.position}`} />
+
+          <CardContent>
           <form>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -156,7 +156,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
                 />   
               </Grid>
             </Grid>
-          </form>)
+          </form></CardContent></Card>)
     }}
     </ReadMessageComponent>
 }
