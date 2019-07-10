@@ -1,9 +1,35 @@
 import React, { FunctionComponent } from 'react';
-import gql from "graphql-tag";
-import { ListGroup, ListGroupItem, Alert, Button } from 'reactstrap';
-import { Link } from "react-router-dom";
-import { Spinner } from 'reactstrap';
 import { DatabasesComponent } from '../data/types';
+import {
+  createStyles,
+  fade,
+  Theme,
+  withStyles,
+  makeStyles,
+  createMuiTheme,
+} from '@material-ui/core/styles';
+import { OutlinedInputProps } from '@material-ui/core/OutlinedInput';
+import { Link } from "react-router-dom";
+import { Alert } from 'reactstrap';
+import gql from "graphql-tag";
+import brace from 'brace';
+import AceEditor from 'react-ace';
+import TextField, {TextFieldProps } from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import List from '@material-ui/core/List';
+import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+
 
 type Props = {
 }
@@ -20,17 +46,17 @@ export const Databases: FunctionComponent<Props> = () => <aside>
   <DatabasesComponent>
     {({ data, error, loading, refetch }) => {
       if(loading) {
-        return <div>
-          <Spinner color="primary" />
-        </div>;
+        return <CircularProgress /> 
       } 
       if(error) {
-        return <div>
-          <Alert color="danger">
-            failed to query streams: {error.message}
-          </Alert>
-          <Button onClick={() => refetch()}>Try again</Button>
-        </div>
+        return <Paper>
+          <Typography variant="h5" component="h3">
+            Error
+          </Typography>
+          <Typography component="p">
+            {error}
+          </Typography>
+        </Paper>
       }
 
       var names: string[] = [];
@@ -38,9 +64,9 @@ export const Databases: FunctionComponent<Props> = () => <aside>
         names = data.databases.names
       }
 
-      return <ListGroup>
-        {names.map((name) => (<ListGroupItem  key={name} tag={Link} to={`/${name}/streams`}>{name}</ListGroupItem>))}
-      </ListGroup>
+      return <List component="nav">
+        {names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}/streams`}><ListItemText>{name}</ListItemText></ListItem>))}
+      </List>
     }}
   </DatabasesComponent>
 </aside>

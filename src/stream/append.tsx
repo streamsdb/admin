@@ -6,6 +6,7 @@ import brace from 'brace';
 import AceEditor from 'react-ace';
 import { SpinnerButton} from '../ActionButton';
 import { AppendSingleComponent } from '../data/types'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import 'brace/mode/json';
 import 'brace/theme/tomorrow'
