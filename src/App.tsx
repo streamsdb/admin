@@ -28,7 +28,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 function MadeWithLove() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Made with ❤ in Holland'}
+      Made with <span style={{color:"red"}}>❤</span> in Holland
     </Typography>
   );
 }
@@ -93,7 +93,7 @@ export default function Dashboard() {
       <AppBar position="absolute" className={clsx(classes.appBar)}>
         <Toolbar className={classes.toolbar}>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            StreamsDB
           </Typography>
           <Link color="inherit" href="https://streamsdb.io/docs/">
             go to docs

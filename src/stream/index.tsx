@@ -1,12 +1,25 @@
 import React, { useState, FunctionComponent } from 'react';
-import { Alert,Badge } from 'reactstrap';
 import { Link } from "react-router-dom";
-import { Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { Container, Row, Col, Table } from 'reactstrap';
 import TimeAgo from 'react-timeago';
 import prettyBytes from 'pretty-bytes';
 import gql from "graphql-tag";
 import { ReadStreamComponent } from '../data/types';
+import Grid from '@material-ui/core/Grid';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
 
 const query = gql`
 query ReadStream($database: String!, $stream: String!, $from: Int!, $limit: Int!)
@@ -56,80 +69,65 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
   return <>
     <ReadStreamComponent variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
-        if(loading) {
-          return <div>
-            <Spinner color="primary" />
-          </div>;
-        } 
+        if(loading){
+          return <CircularProgress />
+        }
+
         if(error) {
-          return <div>
-            <Alert color="primary">
-              failed to query stream {stream}: {error.message}
-            </Alert>
-          </div>
+          return <Paper>
+            <Typography variant="h5" component="h3">
+              Error
+            </Typography>
+            <Typography component="p">
+              {error}
+            </Typography>
+          </Paper>
         }
 
         if(!data || !data.readStream || !data.readStream.messages) {
-          return <Alert color="primary">
-            not found
-          </Alert>
+          return <p>no data found</p>
         }
 
         var { head, from, next, hasNext, messages } = data.readStream;
         var last = head-limit;
         var rows = messages.sort((a,b) => a.position > b.position ? -1: 1).map((m) => {
-          return (<tr onMouseEnter={() => { setHoverIndex(m.position) }} onMouseLeave={() => { setHoverIndex(-1) }}>
-            <th scope="row">{m.position}</th>
-            <td>
+          return (<TableRow key={m.position}>
+            <TableCell component="th" scope="row">{m.position}</TableCell>
+            <TableCell>
               <LinkForEventMessage database={database} message={m} stream={stream} />
-            </td>
-            <td>{m.type}</td>
-            <td>{prettyBytes(m.value.length)}</td>
-            <td><TimeAgo date={m.timestamp} /></td>
-            <td>{(hoverIndex === m.position ? <Badge color="danger">danger</Badge> : "")}</td>
-          </tr>)
+            </TableCell>
+            <TableCell>{m.type}</TableCell>
+            <TableCell>{prettyBytes(m.value.length)}</TableCell>
+            <TableCell><TimeAgo date={m.timestamp} /></TableCell>
+          </TableRow>)
         });
 
-        return <Container>
-          <Row>
-            <Col>
-              <Pagination>
-                <PaginationItem>
-                  <PaginationLink tag={Link} to={`/${database}/streams/${stream}/last`}>last</PaginationLink>
-                </PaginationItem>
-                <PaginationItem disabled={hasNext}>
-                  <PaginationLink previous tag={Link} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}></PaginationLink>
-                </PaginationItem>
-                <PaginationItem  disabled={from <= 0}>
-                  <PaginationLink next tag={Link} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`}></PaginationLink>
-                </PaginationItem>
-                <PaginationItem disabled={from <= 0}>
-                  <PaginationLink first tag={Link} to={`/${database}/streams/${stream}/1`}>1</PaginationLink>
-                </PaginationItem>
-              </Pagination>
-            </Col>
-            <Col><Button tag={Link} to={`/${database}/streams/${stream}/new`} className="float-right">New event</Button></Col>
-          </Row>
-          <Row>
-            <Col>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>name</th>
-                    <th>type</th>
-                    <th>size</th>
-                    <th>timestamp</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
+        return <Grid container>
+          <Grid item xs={12}>
+            <ButtonGroup>
+              <Button component={Link} to={`/${database}/streams/${stream}/last`}>last</Button>
+              <Button component={Link} disabled={!hasNext} to={`/${database}/streams/${stream}/${Math.min(next, last)}`}>{"<"}</Button>
+              <Button component={Link} disabled={from===1} to={`/${database}/streams/${stream}/${Math.max(from-limit, 0)}`}>{">"}</Button>
+              <Button component={Link} disabled={from===1} to={`/${database}/streams/${stream}/1`}>{"first"}</Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={12}>
+          <Table>
+                    <TableHead>
+                  <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>name</TableCell>
+                    <TableCell>type</TableCell>
+                    <TableCell>size</TableCell>
+                    <TableCell>timestamp</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {rows}
-                </tbody>
+                </TableBody>
               </Table>
-            </Col>
-          </Row>
-        </Container>
+          </Grid>
+          </Grid>
       }}
     </ReadStreamComponent>
   </>
