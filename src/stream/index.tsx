@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { Alert } from 'reactstrap';
+import React, { useState, FunctionComponent } from 'react';
+import { Alert,Badge } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { Button, Spinner, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Container, Row, Col, Table } from 'reactstrap';
@@ -48,6 +48,7 @@ function LinkForEventMessage(props:any) {
 
 
 export const Stream: FunctionComponent<Props> = ({database, stream, from, limit, open}) => {
+  const [hoverIndex, setHoverIndex] = useState(1);
   if (!from) {
     from = 1
   }
@@ -74,10 +75,10 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
           </Alert>
         }
 
-        var { head, from, next, messages } = data.readStream;
-        var last = head-limit+1;
+        var { head, from, next, hasNext, messages } = data.readStream;
+        var last = head-limit;
         var rows = messages.sort((a,b) => a.position > b.position ? -1: 1).map((m) => {
-          return (<tr>
+          return (<tr onMouseEnter={() => { setHoverIndex(m.position) }} onMouseLeave={() => { setHoverIndex(-1) }}>
             <th scope="row">{m.position}</th>
             <td>
               <LinkForEventMessage database={database} message={m} stream={stream} />
@@ -85,6 +86,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
             <td>{m.type}</td>
             <td>{prettyBytes(m.value.length)}</td>
             <td><TimeAgo date={m.timestamp} /></td>
+            <td>{(hoverIndex === m.position ? <Badge color="danger">danger</Badge> : "")}</td>
           </tr>)
         });
 
@@ -118,6 +120,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit,
                     <th>type</th>
                     <th>size</th>
                     <th>timestamp</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
