@@ -102,7 +102,7 @@ export const Stream: FunctionComponent<Props> = ({database, stream, from, limit}
               </IconButton>
             </Tooltip>
             <Tooltip title="Newer">
-            <IconButton component={RouterLink} to={`/${database}/streams/${stream}/${Math.max(from+limit, last)}`} aria-label="Previous Page">
+            <IconButton component={RouterLink} to={`/${database}/streams/${stream}/${Math.min(from+limit, last)}`} aria-label="Previous Page">
               <KeyboardArrowLeft />
             </IconButton>
             </Tooltip>
