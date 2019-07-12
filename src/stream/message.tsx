@@ -7,6 +7,16 @@ import {
   makeStyles,
   createMuiTheme,
 } from '@material-ui/core/styles';
+ import FileCopyIcon from '@material-ui/icons/FileCopy';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import { Link as RouterLink } from "react-router-dom";
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
 import { OutlinedInputProps } from '@material-ui/core/OutlinedInput';
 import { Link } from "react-router-dom";
 import { Alert } from 'reactstrap';
@@ -27,6 +37,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import TimeAgo from 'react-timeago';
+import Container from '@material-ui/core/Container';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 
 const query = gql`
 query ReadMessage($database: String!, $stream: String!, $from: Int!)
@@ -81,6 +94,33 @@ type Props = {
   from?: number;
 }
 
+type PagingProps = {database: string, stream:string, from: number, limit: number, last: number}
+
+const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
+  return <div>
+    <Tooltip title="Newest">
+      <IconButton component={RouterLink} to={`/${database}/streams/${stream}/last/message`} aria-label="Newest">
+        <FirstPageIcon />
+      </IconButton>
+    </Tooltip>
+    <Tooltip title="Newer">
+    <IconButton component={RouterLink} to={`/${database}/streams/${stream}/${Math.min(from+limit, last)}/message`} aria-label="Previous Page">
+      <KeyboardArrowLeft />
+    </IconButton>
+    </Tooltip>
+    <Tooltip title="Older">
+    <IconButton component={RouterLink} to={`/${database}/streams/${stream}/${Math.max(from-limit, 1)}/message`} aria-label="Previous Page">
+      <KeyboardArrowRight />
+    </IconButton>
+    </Tooltip>
+    <Tooltip title="Oldest">
+    <IconButton component={RouterLink} to={`/${database}/streams/${stream}/1/message`} aria-label="Previous Page">
+      <LastPageIcon />
+    </IconButton>
+    </Tooltip>
+  </div>
+}
+
 export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
   const classes = useStylesReddit();
 
@@ -118,11 +158,16 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           value = message.value;
         }
 
-
-        return (<Card>
-<CardHeader title="Message details"
-        subheader={`${stream} at ${message.position}`} />
-
+        return (<Container>
+          <Toolbar variant="dense" disableGutters={true}>
+            <Paging database={database} stream={stream} from={from} last={head} limit={1} />
+            <div style={{flex: 1}}></div>
+            <IconButton><FileCopyIcon /></IconButton><IconButton><DeleteIcon /></IconButton>
+          </Toolbar>
+          <Card>
+          <CardHeader title="Message details"
+            subheader={`${stream} at ${message.position}`}
+          />
           <CardContent>
           <form>
             <Grid container spacing={3}>
@@ -156,7 +201,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
                 />   
               </Grid>
             </Grid>
-          </form></CardContent></Card>)
+          </form></CardContent></Card></Container>)
     }}
     </ReadMessageComponent>
 }
