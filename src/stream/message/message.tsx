@@ -41,7 +41,7 @@ import TimeAgo from 'react-timeago';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import { DeleteMessageButton } from './components/deleteMessageButton'
+import DeleteButton from './components/delete'
 
 const query = gql`
 query ReadMessage($database: String!, $stream: String!, $from: Int!)
@@ -167,8 +167,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           <Toolbar variant="dense" disableGutters={true}>
             <Paging database={database} stream={stream} from={from} last={head} limit={1} />
             <div style={{flex: 1}}></div>
-            <IconButton><FileCopyIcon /></IconButton>
-            <DeleteMessageButton database={database} stream={stream} position={from} />
+            <DeleteButton database={database} stream={stream} position={from} />
           </Toolbar>
           <Card>
           <CardHeader title="Message details"

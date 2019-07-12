@@ -11,7 +11,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { config } from "./Config";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-
+import { SnackbarProvider } from 'notistack';
 
 const theme = createMuiTheme({
   palette: {
@@ -46,7 +46,9 @@ ReactDOM.render(
   <ApolloProvider client={client}>
   <Router>
   <ThemeProvider theme={theme}>
+  <SnackbarProvider maxSnack={10}>
   <App />
+  </SnackbarProvider>
   </ThemeProvider>
   </Router>
   </ApolloProvider>, document.getElementById('root'));
