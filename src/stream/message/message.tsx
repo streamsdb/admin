@@ -7,7 +7,8 @@ import {
   makeStyles,
   createMuiTheme,
 } from '@material-ui/core/styles';
- import FileCopyIcon from '@material-ui/icons/FileCopy';
+
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -21,7 +22,7 @@ import { OutlinedInputProps } from '@material-ui/core/OutlinedInput';
 import { Link } from "react-router-dom";
 import { Alert } from 'reactstrap';
 import gql from "graphql-tag";
-import { ReadMessageComponent } from '../data/types';
+import { ReadMessageComponent } from '../../data/types';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 import TextField, {TextFieldProps } from '@material-ui/core/TextField';
@@ -40,11 +41,15 @@ import TimeAgo from 'react-timeago';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import { DeleteMessageButton } from './components/deleteMessageButton'
 
 const query = gql`
 query ReadMessage($database: String!, $stream: String!, $from: Int!)
 {
   readStream(db:$database, name:$stream, from:$from, limit: 1) {
+    head
+    next
+    hasNext
     messages {
       position
       timestamp
@@ -54,7 +59,6 @@ query ReadMessage($database: String!, $stream: String!, $from: Int!)
   }
 }
 `;
-
 
 const useStylesReddit = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,6 +71,7 @@ const useStylesReddit = makeStyles((theme: Theme) =>
       '&:hover': {
         backgroundColor: '#fff',
       },
+      paddingLeft: '5px',
       '&$focused': {
         backgroundColor: '#fff',
         boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
@@ -141,7 +146,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           </div>
         }
 
-        if(!data || !data.readStream || !data.readStream.messages) {
+        if(!data || !data.readStream || !data.readStream || !data.readStream.messages) {
           return <Alert color="primary">
             not found
           </Alert>
@@ -162,7 +167,8 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           <Toolbar variant="dense" disableGutters={true}>
             <Paging database={database} stream={stream} from={from} last={head} limit={1} />
             <div style={{flex: 1}}></div>
-            <IconButton><FileCopyIcon /></IconButton><IconButton><DeleteIcon /></IconButton>
+            <IconButton><FileCopyIcon /></IconButton>
+            <DeleteMessageButton database={database} stream={stream} position={from} />
           </Toolbar>
           <Card>
           <CardHeader title="Message details"

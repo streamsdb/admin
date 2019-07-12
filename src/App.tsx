@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { Stream } from "./stream";
-import { Message } from "./stream/message";
+import { Message } from "./stream/message/message";
 import { AppendStream } from "./stream/append";
 import Breadcrumbs from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';

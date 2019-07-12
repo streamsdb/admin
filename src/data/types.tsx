@@ -44,6 +44,11 @@ export type DbStreamsArgs = {
   limit?: Maybe<Scalars["Int"]>;
 };
 
+export type DeleteMessageResult = {
+  __typename?: "DeleteMessageResult";
+  deleted: Scalars["Boolean"];
+};
+
 export type LoginResult = {
   __typename?: "LoginResult";
   email: Scalars["String"];
@@ -69,6 +74,7 @@ export type Mutation = {
   createDatabase?: Maybe<CreateDatabaseResult>;
   appendStream?: Maybe<AppendResult>;
   login?: Maybe<LoginResult>;
+  deleteMessage?: Maybe<DeleteMessageResult>;
 };
 
 export type MutationRegisterArgs = {
@@ -89,6 +95,12 @@ export type MutationAppendStreamArgs = {
 export type MutationLoginArgs = {
   email: Scalars["String"];
   password: Scalars["String"];
+};
+
+export type MutationDeleteMessageArgs = {
+  db: Scalars["String"];
+  stream: Scalars["String"];
+  at: Scalars["Int"];
 };
 
 export type Query = {
@@ -156,6 +168,21 @@ export type AppendSingleMutation = { __typename?: "Mutation" } & {
   >;
 };
 
+export type DeleteMessageMutationVariables = {
+  database: Scalars["String"];
+  stream: Scalars["String"];
+  position: Scalars["Int"];
+};
+
+export type DeleteMessageMutation = { __typename?: "Mutation" } & {
+  deleteMessage: Maybe<
+    { __typename?: "DeleteMessageResult" } & Pick<
+      DeleteMessageResult,
+      "deleted"
+    >
+  >;
+};
+
 export type ReadStreamQueryVariables = {
   database: Scalars["String"];
   stream: Scalars["String"];
@@ -188,7 +215,7 @@ export type ReadMessageQueryVariables = {
 export type ReadMessageQuery = { __typename?: "Query" } & {
   readStream: { __typename?: "Slice" } & Pick<
     Slice,
-    "stream" | "from" | "next" | "hasNext" | "head"
+    "head" | "next" | "hasNext"
   > & {
       messages: Maybe<
         Array<
@@ -314,6 +341,58 @@ export function withAppendSingle<TProps, TChildProps = {}>(
     ...operationOptions
   });
 }
+export const DeleteMessageDocument = gql`
+  mutation DeleteMessage(
+    $database: String!
+    $stream: String!
+    $position: Int!
+  ) {
+    deleteMessage(db: $database, stream: $stream, at: $position) {
+      deleted
+    }
+  }
+`;
+export type DeleteMessageMutationFn = ReactApollo.MutationFn<
+  DeleteMessageMutation,
+  DeleteMessageMutationVariables
+>;
+export type DeleteMessageComponentProps = Omit<
+  ReactApollo.MutationProps<
+    DeleteMessageMutation,
+    DeleteMessageMutationVariables
+  >,
+  "mutation"
+>;
+
+export const DeleteMessageComponent = (props: DeleteMessageComponentProps) => (
+  <ReactApollo.Mutation<DeleteMessageMutation, DeleteMessageMutationVariables>
+    mutation={DeleteMessageDocument}
+    {...props}
+  />
+);
+
+export type DeleteMessageProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<DeleteMessageMutation, DeleteMessageMutationVariables>
+> &
+  TChildProps;
+export function withDeleteMessage<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    DeleteMessageMutation,
+    DeleteMessageMutationVariables,
+    DeleteMessageProps<TChildProps>
+  >
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    DeleteMessageMutation,
+    DeleteMessageMutationVariables,
+    DeleteMessageProps<TChildProps>
+  >(DeleteMessageDocument, {
+    alias: "withDeleteMessage",
+    ...operationOptions
+  });
+}
 export const ReadStreamDocument = gql`
   query ReadStream(
     $database: String!
@@ -374,11 +453,9 @@ export function withReadStream<TProps, TChildProps = {}>(
 export const ReadMessageDocument = gql`
   query ReadMessage($database: String!, $stream: String!, $from: Int!) {
     readStream(db: $database, name: $stream, from: $from, limit: 1) {
-      stream
-      from
+      head
       next
       hasNext
-      head
       messages {
         position
         timestamp

@@ -1,0 +1,6 @@
+mutation DeleteMessage($database: String!, $stream: String!, $position: Int!)
+{
+  deleteMessage(db:$database, stream:$stream, at:$position) {
+    deleted
+  }
+}
