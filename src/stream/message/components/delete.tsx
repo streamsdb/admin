@@ -22,7 +22,6 @@ type Props = {
 
 const DeleteButton: FunctionComponent<Props> = ({database, stream, position}) => {
   const { enqueueSnackbar } = useSnackbar();
-  const [deleting, setDeleting] = useState(false);
   const displayError = (e: ApolloError) => {
     enqueueSnackbar('delete message error: ' + e.message, { variant: 'error'});
   }
@@ -36,22 +35,9 @@ const DeleteButton: FunctionComponent<Props> = ({database, stream, position}) =>
         return <Redirect to={`/${database}/streams/${stream}`} />
       }
 
-      return (
-        <Tooltip 
-          title={`Delete message?`}
-          color={deleting ? "primary" : "inherit"}
-          open={deleting} 
-          disableFocusListener
-          disableHoverListener
-          disableTouchListener>
-          <IconButton onMouseLeave={() => setDeleting(false)} onClick={(event) => {
-            if(!deleting) {
-              setDeleting(true)
-            } else {
-              mutate();
-            }
-          }}>{!deleting ? <DeleteIcon /> : <DeleteIcon />}</IconButton>
-        </Tooltip>)
+      return <IconButton onClick={() => mutate()}>
+          <DeleteIcon />
+        </IconButton>
     }
   }
   </DeleteMessageComponent>
