@@ -155,6 +155,15 @@ export type DatabasesQuery = { __typename?: "Query" } & {
   databases: { __typename?: "DatabasesPage" } & Pick<DatabasesPage, "names">;
 };
 
+export type LoginMutationVariables = {
+  username: Scalars["String"];
+  password: Scalars["String"];
+};
+
+export type LoginMutation = { __typename?: "Mutation" } & {
+  login: Maybe<{ __typename?: "LoginResult" } & Pick<LoginResult, "token">>;
+};
+
 export type AppendSingleMutationVariables = {
   db: Scalars["String"];
   stream: Scalars["String"];
@@ -281,6 +290,51 @@ export function withDatabases<TProps, TChildProps = {}>(
     DatabasesProps<TChildProps>
   >(DatabasesDocument, {
     alias: "withDatabases",
+    ...operationOptions
+  });
+}
+export const LoginDocument = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(email: $username, password: $password) {
+      token
+    }
+  }
+`;
+export type LoginMutationFn = ReactApollo.MutationFn<
+  LoginMutation,
+  LoginMutationVariables
+>;
+export type LoginComponentProps = Omit<
+  ReactApollo.MutationProps<LoginMutation, LoginMutationVariables>,
+  "mutation"
+>;
+
+export const LoginComponent = (props: LoginComponentProps) => (
+  <ReactApollo.Mutation<LoginMutation, LoginMutationVariables>
+    mutation={LoginDocument}
+    {...props}
+  />
+);
+
+export type LoginProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<LoginMutation, LoginMutationVariables>
+> &
+  TChildProps;
+export function withLogin<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    LoginMutation,
+    LoginMutationVariables,
+    LoginProps<TChildProps>
+  >
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    LoginMutation,
+    LoginMutationVariables,
+    LoginProps<TChildProps>
+  >(LoginDocument, {
+    alias: "withLogin",
     ...operationOptions
   });
 }

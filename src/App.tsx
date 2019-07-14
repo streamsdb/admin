@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import { Login } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { Stream } from "./stream";
@@ -105,6 +106,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
     <Switch>
+      <Route exact path="/login" render={( {match}: any) => <Login />} />
       <Route exact path="/" render={( {match}: any) => <Databases />} />
       <Route exact path="/:database/" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
       <Route exact path="/:database/streams" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
