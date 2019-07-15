@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Login } from "./login";
+import { Login, Logout, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { Stream } from "./stream";
@@ -22,9 +22,11 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import Button from '@material-ui/core/Button';
 
 function MadeWithLove() {
   return (
@@ -56,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: theme.spacing(2),
   },
   menuButtonHidden: {
     display: 'none',
@@ -92,13 +94,24 @@ export default function Dashboard() {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar)}>
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.toolbar} >
           <Breadcrumbs />
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           </Typography>
-          <Link color="inherit" href="https://streamsdb.io/docs/">
-            go to docs
-          </Link>
+          <Button color="inherit" component="a" href="https://streamsdb.io/chat/">
+            chat
+          </Button>
+          <Button color="inherit" component="a" href="https://streamsdb.io/docs/">
+            docs
+          </Button>
+          {IsLoggedIn() ?
+            <Button color="inherit" className={classes.menuButton} component={RouterLink} to="/logout">
+              logout
+            </Button>:
+            <Button color="inherit" className={classes.menuButton} component={RouterLink} to="/login">
+              login
+            </Button>
+          }
         </Toolbar>
         
       </AppBar>
@@ -107,6 +120,7 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
     <Switch>
       <Route exact path="/login" render={( {match}: any) => <Login />} />
+      <Route exact path="/logout" component={Logout} />
       <Route exact path="/" render={( {match}: any) => <Databases />} />
       <Route exact path="/:database/" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
       <Route exact path="/:database/streams" render={( {match}: any) => (<Streams database={match.params.database} /> )} />

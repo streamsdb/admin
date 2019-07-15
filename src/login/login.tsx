@@ -36,11 +36,8 @@ export const Login: FunctionComponent<Props> = () => {
   };
 
   const displayError = (e: ApolloError) => {
-    debugger;
     enqueueSnackbar('login error: ' + e.message, { variant: 'error'});
   }
-
-  debugger;
 
   return <LoginMutationComponent onError={displayError}>
     {(mutate, { loading, data }) => {

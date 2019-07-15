@@ -29,8 +29,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-
-
 type Props = {
 }
 
@@ -61,7 +59,8 @@ export const Databases: FunctionComponent<Props> = () => <aside>
           </Typography>
         </Paper>}
         <List component="nav">
-          {names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}/streams`}><ListItemText>{name}</ListItemText></ListItem>))}
+          {names.length === 0 ? <ListItem key="empty">There are no databases you have access to</ListItem> :
+          names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}/streams`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>
       </Paper>
     }}
