@@ -31,7 +31,6 @@ const theme = createMuiTheme({
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  debugger;
   if (graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) => {
       console.log(

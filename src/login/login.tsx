@@ -74,7 +74,7 @@ export const Login: FunctionComponent<Props> = () => {
         />
         </Grid>
         <Grid item xs={12}> 
-        <Button onClick={() => mutate({variables: values})}>Login</Button> 
+        <Button type="submit" onClick={(e) => { e.preventDefault(); mutate({variables: values})}}>Login</Button> 
         </Grid>
       </form>
       </Grid>
