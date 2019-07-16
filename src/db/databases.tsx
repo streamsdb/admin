@@ -44,14 +44,6 @@ export const Databases: FunctionComponent<Props> = () => <aside>
   <h1>Databases</h1>
   <DatabasesComponent>
     {({ data, error, loading, refetch }) => {
-      if(error && error.graphQLErrors) {
-        for(let err of error.graphQLErrors) {
-          if(err.extensions.code === "Unauthenticated") {
-            return <Redirect to={`/login`} />
-          }
-        }
-      }
-
       var names: string[] = [];
       if(data && data.databases && data.databases.names) {
         names = data.databases.names

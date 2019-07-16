@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router as Router } from "react-router-dom";
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
@@ -15,7 +15,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { SnackbarProvider } from 'notistack';
 import { setContext } from 'apollo-link-context'; 
 import { onError } from "apollo-link-error";
-import history from './history';
+import browserHistory from './history';
 
 const theme = createMuiTheme({
   palette: {
@@ -39,7 +39,8 @@ const errorLink = onError(({ response, graphQLErrors, networkError, operation, f
       debugger;
       if (err.extensions.code === "Unauthenticated") {
 			  localStorage.removeItem('token');
-        history.push('/login');
+        browserHistory.push('/login');
+        return;
       }
     }
   }
@@ -73,7 +74,7 @@ const client = new ApolloClient({
     })
   ]),
   cache: new InMemoryCache(),
-  defaultOptions: {
+  /*defaultOptions: {
       watchQuery: {
         fetchPolicy: 'no-cache', 
         errorPolicy: 'ignore',
@@ -82,20 +83,20 @@ const client = new ApolloClient({
         fetchPolicy: 'no-cache',
         errorPolicy: 'all',
       },
-    }
+    }*/
 });
 
 
 ReactDOM.render(
+  <Router history={browserHistory}>
   <ApolloProvider client={client}>
-  <Router>
   <ThemeProvider theme={theme}>
   <SnackbarProvider maxSnack={10}>
   <App />
   </SnackbarProvider>
   </ThemeProvider>
-  </Router>
-  </ApolloProvider>, document.getElementById('root'));
+  </ApolloProvider>
+  </Router>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
