@@ -15,9 +15,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { SnackbarProvider } from 'notistack';
 import { setContext } from 'apollo-link-context'; 
 import { onError } from "apollo-link-error";
-import createHistory from 'history/createBrowserHistory'
-
-const history = createHistory();
+import history from './history';
 
 const theme = createMuiTheme({
   palette: {
@@ -30,19 +28,27 @@ const theme = createMuiTheme({
   },
 });
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) => {
+const errorLink = onError(({ response, graphQLErrors, networkError, operation, forward }) => {
+  if (graphQLErrors) {
+    for(let err of graphQLErrors) {
+      var { message, locations, path } = err
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
 
-      if (message === "Unauthenticated") {
+      debugger;
+      if (err.extensions.code === "Unauthenticated") {
 			  localStorage.removeItem('token');
         history.push('/login');
       }
-    });
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+    }
+  }
+
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+
+  //return forward(operation);
 });
 
 // the auth token is sent to the server on each request due to this middleware
@@ -60,15 +66,16 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   link: ApolloLink.from([
-    authLink,
     errorLink,
+    authLink,
     new HttpLink({
       uri: config.graphqlEndpoint,
-    })]),
+    })
+  ]),
   cache: new InMemoryCache(),
   defaultOptions: {
       watchQuery: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'no-cache', 
         errorPolicy: 'ignore',
       },
       query: {

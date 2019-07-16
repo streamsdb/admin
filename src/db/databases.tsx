@@ -28,6 +28,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Redirect  } from 'react-router';
 
 type Props = {
 }
@@ -43,6 +44,14 @@ export const Databases: FunctionComponent<Props> = () => <aside>
   <h1>Databases</h1>
   <DatabasesComponent>
     {({ data, error, loading, refetch }) => {
+      if(error && error.graphQLErrors) {
+        for(let err of error.graphQLErrors) {
+          if(err.extensions.code === "Unauthenticated") {
+            return <Redirect to={`/login`} />
+          }
+        }
+      }
+
       var names: string[] = [];
       if(data && data.databases && data.databases.names) {
         names = data.databases.names
@@ -55,7 +64,7 @@ export const Databases: FunctionComponent<Props> = () => <aside>
             Error
           </Typography>
           <Typography component="p">
-            {error}
+            {JSON.stringify(error)}
           </Typography>
         </Paper>}
         <List component="nav">
