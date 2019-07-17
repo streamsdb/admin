@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -16,6 +17,11 @@ import { SnackbarProvider } from 'notistack';
 import { setContext } from 'apollo-link-context'; 
 import { onError } from "apollo-link-error";
 import browserHistory from './history';
+
+if(config.gaId) {
+  ReactGA.initialize('UA-143880638-2');
+  browserHistory.listen(location => ReactGA.pageview(location.pathname));
+}
 
 const theme = createMuiTheme({
   palette: {
