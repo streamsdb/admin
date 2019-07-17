@@ -21,6 +21,8 @@ import browserHistory from './history';
 if(config.gaId) {
   ReactGA.initialize('UA-143880638-2');
   browserHistory.listen(location => ReactGA.pageview(location.pathname));
+
+  console.log("initialized GA");
 }
 
 const theme = createMuiTheme({

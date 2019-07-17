@@ -1,4 +1,5 @@
 import React, { useState, FunctionComponent } from 'react';
+import ReactGA from 'react-ga';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import { Redirect  } from 'react-router';
@@ -44,6 +45,7 @@ export const Login: FunctionComponent<Props> = () => {
 
       if(data && data.login && data.login.token) {
         localStorage.setItem("token", data.login.token)
+        ReactGA.set({ username: values.username });
         return <Redirect to="/" />
       }
 
