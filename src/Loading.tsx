@@ -9,9 +9,7 @@ export const Loading = () => {
     in={context.loading}
     style={{
       transitionDelay: context.loading ? '800ms' : '0ms',
-      }}
-          unmountOnExit
-        >
+      }}>
     <LinearProgress />
   </Fade>
 }

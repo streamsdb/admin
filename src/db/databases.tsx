@@ -61,7 +61,7 @@ export const Databases: FunctionComponent<Props> = () => <aside>
         </Paper>}
         <List component="nav">
           {names.length === 0 ? <ListItem key="empty">There are no databases you have access to</ListItem> :
-          names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}/streams`}><ListItemText>{name}</ListItemText></ListItem>))}
+          names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>
       </Paper>
     }}

@@ -1,14 +1,17 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
+
+import { RouteConfig } from "react-router-config";
+import { Route, Switch  } from "react-router-dom";
 import { Loading } from './Loading';
-import { Login, Logout as LogoutComponent, IsLoggedIn } from "./login";
+import { Login, Logout, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { Stream } from "./stream";
 import { List as StreamList } from "./stream/list";
 import { Message } from "./stream/message/message";
 import { AppendStream } from "./stream/append";
-import Breadcrumbs from './Breadcrumbs';
+import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import clsx from 'clsx';
@@ -95,6 +98,76 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
+{
+    path: "/login",
+    component: () => <Login />,
+    breadcrumb: "login"
+  },
+  {
+    path: "/logout",
+    component: () => <Logout returnUrl={undefined} />,
+    breadcrumb: "logout"
+  },
+  {
+    path: "/",
+    component: Databases,
+    breadcrumb: "databases"
+  },
+  {
+    path: "/database/",
+    component: ({match}: any) => (<Streams database={match.params.database} />),
+    breadcrumb: "database"
+  },
+  {
+    path: "/:database/new", 
+    compontent: ({match}: any) => (<AppendStream database={match.params.database} stream="" />),
+    breadcrumb: "new"
+  },
+  {
+    path: "/:database",
+    component: ({match}: any) => (<Streams database={match.params.database} />),
+    breadcrumb: ({match}: any) => match.params.database
+  },
+  {
+    path: "/:database/:stream/new",
+    component: ( {match}: any) => (<AppendStream database={match.params.database} stream={match.params.stream}/>),
+    breadcrumb: ({match}: any) => "new event"
+  },
+  {
+    path: "/feedback/:database/:stream",
+    component: ( {match}: any) => {
+        return (<StreamList database={match.params.database} stream={match.params.stream} from={-10} limit={10} /> )} ,
+    breadcrumb: ({match}: any) => match.params.stream
+  },
+  {
+    path: "/feedback/:database/:stream/:from?",
+    component: ( {match}: any) => {
+        return (<StreamList database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )} ,
+    breadcrumb: ({match}: any) => match.params.from
+  },
+  {
+    path: "/:database/:stream",
+    component: ( {match}: any) => {
+        return (<Stream database={match.params.database} stream={match.params.stream} from={-10} limit={10} /> )},
+    breadcrumb: ({match}: any) => match.params.stream
+  },
+  {
+    path: "/:database/:stream/:from",
+    component: ( {match}: any) => {
+        return (<Stream database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )},
+    breadcrumb: ({match}: any) => match.params.from
+  },  
+  {
+    path: "/:database/:stream/:from/message/",
+    component: ( {match}: any) => {
+        return (<Message database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -1 : match.params.from }  /> )},
+    breadcrumb: () => <></>
+  }
+]
+
+const Breadcrumbs = breadcrumbCreator(routes, ["/feedback"]);
+
 export default function Dashboard() {
   const classes = useStyles();
 
@@ -139,24 +212,9 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Breadcrumbs />
+        <Breadcrumbs />
     <Switch>
-      <Route exact path="/login" render={( {match}: any) => <Login />} />
-      <Route exact path="/logout" component={LogoutComponent} />
-      <Route exact path="/" render={( {match}: any) => <Databases />} />
-      <Route exact path="/:database/" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
-      <Route exact path="/:database/streams" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
-      <Route exact path="/:database/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream="" /> )} />
-      <Route exact path="/:database/streams/:stream/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream={match.params.stream}/> )} />
-      <Route exact path="/feedback/:database/streams/:stream/:from?" render={( {match}: any) => {
-        return (<StreamList database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} /> )}
-      } />
-      <Route exact path="/:database/streams/:stream/:from?" render={( {match}: any) => {
-        return (<Stream database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} /> )}
-      } />
-      <Route exact path="/:database/streams/:stream/:from/message/" render={( {match}: any) => {
-        return (<Message database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -1 : match.params.from }  /> )}
-      } />
+      {routes.filter(i => i.component).map(r => <Route exact path={r.path} component={r.component} />)}
     </Switch>
         </Container>
         <MadeWithLove />

@@ -42,11 +42,11 @@ interface Props  {
 
 function LinkForEventMessage(database: string, stream: string, m: Message) {
   if(m.type !== "sdb.pointer") {
-    return (<Link component={RouterLink} to={`/${database}/streams/${stream}/${m.position}/message`}>{stream}/{m.position}</Link>)
+    return (<Link component={RouterLink} to={`/${database}/${stream}/${m.position}/message`}>{stream}/{m.position}</Link>)
   }
 
   var pointer = JSON.parse(m.value);
-  return (<Link component={RouterLink} to={`/${database}/streams/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
+  return (<Link component={RouterLink} to={`/${database}/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
 }
 
 export const Overview: FunctionComponent<Props> = ({database, stream, from, limit}) => {

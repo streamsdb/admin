@@ -1,5 +1,6 @@
 import React, { useState, FunctionComponent } from 'react';
 import { Redirect  } from 'react-router';
+
 type Props = {
   returnUrl: string | undefined;
 }

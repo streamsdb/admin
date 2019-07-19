@@ -74,7 +74,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
           </Typography>
         </Paper>}
         <List component="nav">
-          {names.map((name) => (<ListItem button component={Link} to={`/${database}/streams/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
+          {names.map((name) => (<ListItem button component={Link} to={`/${database}/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>
       </Paper>
         </>

@@ -62,21 +62,21 @@ interface Props  {
 
 function LinkForEventMessage(database: string, stream: string, m: Message) {
   if(m.type !== "sdb.pointer") {
-    return (<Link component={RouterLink} to={`/${database}/streams/${stream}/${m.position}/message`}>{stream}/{m.position}</Link>)
+    return (<Link component={RouterLink} to={`/${database}/${stream}/${m.position}/message`}>{stream}/{m.position}</Link>)
   }
 
   var pointer = JSON.parse(m.value);
-  return (<Link component={RouterLink} to={`/${database}/streams/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
+  return (<Link component={RouterLink} to={`/${database}/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
 }
 
 type PagingProps = {database: string, stream:string, from: number, limit: number, last: number}
 
 const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
-  const baseUrl = `/feedback/${database}/streams/${stream}`
+  const baseUrl = `/feedback/${database}/${stream}`
 
   return <Grid container alignItems="flex-start" justify="flex-end" direction="row">
     <Tooltip title="Newest">
-      <IconButton component={RouterLink} to={`${baseUrl}/last`} aria-label="Newest">
+      <IconButton component={RouterLink} to={`${baseUrl}`} aria-label="Newest">
         <FirstPageIcon />
       </IconButton>
     </Tooltip>
@@ -140,11 +140,6 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
         const last = Math.max(data.readStream.head-limit, 1);
 
         return <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <h2>
-              {`${stream} (${from+(limit-1)}-${from})`}
-              </h2>
-            </Grid>
             <Grid item xs={12}>
               <Paging database={database} stream={stream} from={from} limit={limit} last={last} />
             </Grid>
