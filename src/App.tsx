@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Login, Logout, IsLoggedIn } from "./login";
+import { Login, Logout as LogoutComponent, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { Stream } from "./stream";
@@ -17,7 +17,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -28,6 +27,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import ContactSupport from '@material-ui/icons/ContactSupportOutlined';
+import Chat from '@material-ui/icons/ChatOutlined';
+import ExitToApp from '@material-ui/icons/ExitToAppOutlined';
 
 function MadeWithLove() {
   return (
@@ -99,16 +103,16 @@ export default function Dashboard() {
           <Breadcrumbs />
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           </Typography>
-          <Button color="inherit" component="a" href="https://streamsdb.io/chat/">
-            chat
-          </Button>
-          <Button color="inherit" component="a" href="https://streamsdb.io/docs/">
-            docs
-          </Button>
+          <IconButton color="inherit" component="a" href="https://streamsdb.io/docs/">
+            <ContactSupport />
+          </IconButton>
+          <IconButton color="inherit" component="a" href="https://streamsdb.io/chat/">
+            <Chat />
+          </IconButton>
           {IsLoggedIn() ?
-            <Button color="inherit" className={classes.menuButton} component={RouterLink} to="/logout">
-              logout
-            </Button>:
+            <IconButton color="inherit" className={classes.menuButton} component={RouterLink} to="/logout">
+              <ExitToApp />
+            </IconButton>:
             <Button color="inherit" className={classes.menuButton} component={RouterLink} to="/login">
               login
             </Button>
@@ -121,7 +125,7 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
     <Switch>
       <Route exact path="/login" render={( {match}: any) => <Login />} />
-      <Route exact path="/logout" component={Logout} />
+      <Route exact path="/logout" component={LogoutComponent} />
       <Route exact path="/" render={( {match}: any) => <Databases />} />
       <Route exact path="/:database/" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
       <Route exact path="/:database/streams" render={( {match}: any) => (<Streams database={match.params.database} /> )} />

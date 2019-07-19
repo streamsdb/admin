@@ -136,7 +136,7 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
         from = data.readStream.from;
         const last = Math.max(data.readStream.head-limit, 1);
 
-        return <Grid container spacing={2}>
+        return <Grid container spacing={1}>
             <Grid item xs={12}>
               <h2>
               {`${stream} (${from+(limit-1)}-${from})`}
@@ -155,10 +155,11 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
             }
 
             return <Grid item xs={12} justify="space-between">
-              <Paper>
-                <ExpansionPanel>
+                <ExpansionPanel TransitionProps={{
+      timeout: 0
+    }}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Grid container xs={12} spacing={2}>
+                <Grid container xs={12} spacing={0}>
                   <Grid className={classes.root} item xs>
                     {m.position}
                   </Grid>
@@ -193,7 +194,6 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
                 />   
         </ExpansionPanelDetails>
                   </ExpansionPanel>
-              </Paper>
             </Grid>})}
         </Grid>
       }}
