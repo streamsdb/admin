@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import { Loading } from './Loading';
 import { Login, Logout as LogoutComponent, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
@@ -32,6 +33,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ContactSupport from '@material-ui/icons/ContactSupportOutlined';
 import Chat from '@material-ui/icons/ChatOutlined';
 import ExitToApp from '@material-ui/icons/ExitToAppOutlined';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import LoadingProvider from "./State";
 
 function MadeWithLove() {
   return (
@@ -96,11 +99,24 @@ export default function Dashboard() {
   const classes = useStyles();
 
   return (
+    <LoadingProvider>
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar)}>
         <Toolbar className={classes.toolbar} >
-          <Breadcrumbs />
+          <IconButton component={RouterLink} to={"/"} edge="end">
+            <svg viewBox="0 0 426 482" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+              <path fill="none" d="M-1-1h428v484H-1z"/>
+              <g>
+                <g stroke="#fff" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="25" fill="#000">
+                  <path d="M207.694 6.224l210.138 121.799"/>
+                  <path fill-opacity="null" stroke-opacity="null" d="M413.956 120.248v239.915M11.335 122.401l405.636 233.391M208.555 473.348l209.277-119.709M216.306 473.348L7.46 353.355M10.474 119.386v240.737M6.168 125.66L215.876 6.136M212.431 382.808l125.307-72.661M6.168 270.091l213.583 112.747M216.737 95.977L89.707 171.06M208.555 96.351L411.373 206.37"/>
+                </g>
+              </g>
+            </svg>
+           </IconButton>
+
+
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           </Typography>
           <IconButton color="inherit" component="a" href="https://streamsdb.io/docs/">
@@ -119,10 +135,12 @@ export default function Dashboard() {
           }
         </Toolbar>
         
+        <Loading />
       </AppBar>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
+          <Breadcrumbs />
     <Switch>
       <Route exact path="/login" render={( {match}: any) => <Login />} />
       <Route exact path="/logout" component={LogoutComponent} />
@@ -145,6 +163,7 @@ export default function Dashboard() {
         <MadeWithLove />
       </main>
     </div>
+    </LoadingProvider>
   );
 }
 

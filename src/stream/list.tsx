@@ -37,6 +37,7 @@ import { Query } from "react-apollo";
 import { Map } from 'immutable';
 import Card from '@material-ui/core/Card'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { loadingContext } from '../State';
 import {
   createStyles,
   fade,
@@ -126,10 +127,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const List: FunctionComponent<Props> = ({database, stream, from, limit}) => {
   const classes = useStyles();
+  const { setLoading} = React.useContext(loadingContext);
 
   return <Query<ReadStreamQuery, ReadStreamQueryVariables> query={ReadStreamDocument} variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
-        if(loading) { return <CircularProgress />} 
+        setLoading(loading);
+
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
         if(!data || !data.readStream || !data.readStream.messages) { return <p>no data</p> }
 
