@@ -13,7 +13,6 @@ import { Message } from "./stream/message/message";
 import { AppendStream } from "./stream/append";
 import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -147,7 +146,6 @@ export default function Dashboard() {
 
   return (
     <LoadingProvider>
-    <CssBaseline />
     <div className={classes.root}>
       <AppBar position="absolute">
         <Toolbar className={classes.toolbar} >

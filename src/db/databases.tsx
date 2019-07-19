@@ -59,7 +59,7 @@ export const Databases: FunctionComponent<Props> = () => <aside>
             {JSON.stringify(error)}
           </Typography>
         </Paper>}
-        <List component="nav">
+        <List>
           {names.length === 0 ? <ListItem key="empty">There are no databases you have access to</ListItem> :
           names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>

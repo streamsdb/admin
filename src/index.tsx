@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import './index.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Router as Router } from "react-router-dom";
@@ -98,6 +99,7 @@ ReactDOM.render(
   <Router history={browserHistory}>
   <ApolloProvider client={client}>
   <ThemeProvider theme={theme}>
+  <CssBaseline />
   <SnackbarProvider maxSnack={10}>
   <App />
   </SnackbarProvider>
