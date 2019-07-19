@@ -60,13 +60,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -83,14 +76,8 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
   },
   container: {
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
   },
   fixedHeight: {
     height: 240,
@@ -160,9 +147,9 @@ export default function Dashboard() {
 
   return (
     <LoadingProvider>
+    <CssBaseline />
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar)}>
+      <AppBar position="absolute">
         <Toolbar className={classes.toolbar} >
           <IconButton component={RouterLink} to={"/"} edge="end">
             <svg viewBox="0 0 426 482" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +181,6 @@ export default function Dashboard() {
             </Button>
           }
         </Toolbar>
-        <Loading />
       </AppBar>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
