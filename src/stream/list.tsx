@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
+import Badge from '@material-ui/core/Badge';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 import Divider from '@material-ui/core/Divider';
@@ -67,6 +68,37 @@ function LinkForEventMessage(database: string, stream: string, m: Message) {
   return (<Link component={RouterLink} to={`/${database}/streams/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
 }
 
+type PagingProps = {database: string, stream:string, from: number, limit: number, last: number}
+
+const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
+  const baseUrl = `/feedback/${database}/streams/${stream}`
+
+  return <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+    <Tooltip title="Newest">
+      <IconButton component={RouterLink} to={`${baseUrl}/last`} aria-label="Newest">
+        <FirstPageIcon />
+      </IconButton>
+    </Tooltip>
+    <Tooltip title="Newer">
+    <IconButton component={RouterLink} to={`${baseUrl}/${Math.min(from+limit, last)}`} aria-label="Previous Page">
+      <KeyboardArrowLeft />
+    </IconButton>
+    </Tooltip>
+    <Tooltip title="Older">
+    <IconButton component={RouterLink} to={`${baseUrl}/${Math.max(from-limit, 1)}`} aria-label="Previous Page">
+      <KeyboardArrowRight />
+    </IconButton>
+    </Tooltip>
+    <Tooltip title="Oldest">
+    <IconButton component={RouterLink} to={`${baseUrl}/1`} aria-label="Previous Page">
+      <LastPageIcon />
+    </IconButton>
+    </Tooltip>
+    <div style={{ flex: 1 }}></div>
+    <Button color="primary" variant="contained" >New event</Button>
+  </Grid>
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -101,9 +133,20 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
         if(!data || !data.readStream || !data.readStream.messages) { return <p>no data</p> }
 
+        from = data.readStream.from;
+        const last = Math.max(data.readStream.head-limit, 1);
 
         return <Grid container spacing={2}>
-          {data.readStream.messages.map(m => {
+            <Grid item xs={12}>
+              <h2>
+              {`${stream} (${from+(limit-1)}-${from})`}
+              </h2>
+            </Grid>
+            <Grid item xs={12}>
+              <Paging database={database} stream={stream} from={from} limit={limit} last={last} />
+            </Grid>
+
+          {data.readStream.messages.sort((a,b) => a.position > b.position ? -1: 1).map(m => {
             var value;
             try {
               value = JSON.stringify(JSON.parse(m.value), null, 4);
