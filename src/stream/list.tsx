@@ -72,7 +72,7 @@ function LinkForEventMessage(database: string, stream: string, m: Message) {
 type PagingProps = {database: string, stream:string, from: number, limit: number, last: number}
 
 const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
-  const baseUrl = `/feedback/${database}/${stream}`
+  const baseUrl = `/${database}/${stream}`
 
   return <Grid container alignItems="flex-start" justify="flex-end" direction="row">
     <Tooltip title="Newest">
@@ -96,7 +96,7 @@ const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, 
     </IconButton>
     </Tooltip>
     <div style={{ flex: 1 }}></div>
-    <Button color="primary" variant="contained" >New event</Button>
+    <Button component={RouterLink} to={`${baseUrl}/new`} color="primary" variant="contained">New event</Button>
   </Grid>
 }
 

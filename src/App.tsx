@@ -20,7 +20,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -33,9 +32,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import ContactSupport from '@material-ui/icons/ContactSupportOutlined';
-import Chat from '@material-ui/icons/ChatOutlined';
-import ExitToApp from '@material-ui/icons/ExitToAppOutlined';
+import ContactSupport from '@material-ui/icons/ContactSupport';
+import Chat from '@material-ui/icons/Chat';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import LoadingProvider from "./State";
 
@@ -135,34 +134,22 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     breadcrumb: ({match}: any) => "new event"
   },
   {
-    path: "/feedback/:database/:stream",
+    path: "/:database/:stream",
     component: ( {match}: any) => {
         return (<StreamList database={match.params.database} stream={match.params.stream} from={-10} limit={10} /> )} ,
     breadcrumb: ({match}: any) => match.params.stream
   },
   {
-    path: "/feedback/:database/:stream/:from?",
+    path: "/:database/:stream/:from?",
     component: ( {match}: any) => {
         return (<StreamList database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )} ,
     breadcrumb: ({match}: any) => match.params.from
   },
   {
-    path: "/:database/:stream",
-    component: ( {match}: any) => {
-        return (<Stream database={match.params.database} stream={match.params.stream} from={-10} limit={10} /> )},
-    breadcrumb: ({match}: any) => match.params.stream
-  },
-  {
-    path: "/:database/:stream/:from",
-    component: ( {match}: any) => {
-        return (<Stream database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )},
-    breadcrumb: ({match}: any) => match.params.from
-  },  
-  {
     path: "/:database/:stream/:from/message/",
     component: ( {match}: any) => {
         return (<Message database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -1 : match.params.from }  /> )},
-    breadcrumb: () => <></>
+    breadcrumb: () => "message"
   }
 ]
 
@@ -181,7 +168,7 @@ export default function Dashboard() {
             <svg viewBox="0 0 426 482" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M-1-1h428v484H-1z"/>
               <g>
-                <g stroke="#fff" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="25" fill="#000">
+                <g stroke="#fff" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="35" fill="#000">
                   <path d="M207.694 6.224l210.138 121.799"/>
                   <path fill-opacity="null" stroke-opacity="null" d="M413.956 120.248v239.915M11.335 122.401l405.636 233.391M208.555 473.348l209.277-119.709M216.306 473.348L7.46 353.355M10.474 119.386v240.737M6.168 125.66L215.876 6.136M212.431 382.808l125.307-72.661M6.168 270.091l213.583 112.747M216.737 95.977L89.707 171.06M208.555 96.351L411.373 206.37"/>
                 </g>

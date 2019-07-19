@@ -13,16 +13,13 @@ import withBreadcrumbs, {
 import Box from '@material-ui/core/Box';
 
 export default (routes: BreadcrumbsRoute[], excludePaths: string[]) => withBreadcrumbs(routes, { excludePaths })(({ breadcrumbs }: InjectedProps<unknown>) => {
-    debugger;
-    const links = breadcrumbs.slice(1).map(({ breadcrumb, match }) => (
-      <Typography>
-        <Box fontWeight="fontWeightBold">
-          <Link color="inherit" component={RouterLink} to={match.url}>{breadcrumb}</Link>
-        </Box>
-      </Typography>
-    ))
+  const withoutHome = breadcrumbs.slice(1);
 
-    return <Breadcrumbs color="inherit" separator="›" aria-label="Breadcrumb">
-      {links}
-    </Breadcrumbs>
-} )
+  const links = breadcrumbs.slice(1).map(({ breadcrumb, match }, index) => (
+    <Link color="inherit"  style={ index !== withoutHome.length -1 ? { fontWeight: 'normal' } : { fontWeight: 'bold' } } component={RouterLink} to={match.url}>{breadcrumb}</Link>
+  ));
+
+  return <Breadcrumbs color="inherit" separator="/" aria-label="Breadcrumb">
+    {links}
+  </Breadcrumbs>
+});
