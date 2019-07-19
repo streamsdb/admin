@@ -134,7 +134,7 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
         setLoading(loading);
 
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
-        if(!data || !data.readStream || !data.readStream.messages) { return <p>no data</p> }
+        if(!data || !data.readStream || !data.readStream.messages) { return null }
 
         from = data.readStream.from;
         const last = Math.max(data.readStream.head-limit, 1);
@@ -163,7 +163,7 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
     }}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid container xs={12} spacing={0}>
-                  <Grid className={classes.root} item xs>
+                  <Grid className={classes.root} item xs={2}>
                     {m.position}
                   </Grid>
                   <Grid className={classes.root} item xs>

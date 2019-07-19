@@ -134,7 +134,6 @@ export default function Dashboard() {
             </Button>
           }
         </Toolbar>
-        
         <Loading />
       </AppBar>
       <main className={classes.content}>

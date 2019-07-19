@@ -1,11 +1,18 @@
 import * as React from "react";
 import { loadingContext } from "./State";
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Fade from '@material-ui/core/Fade';
 
 export const Loading = () => {
   const context = React.useContext(loadingContext);
-
-  if(context.loading) { debugger; return <LinearProgress /> } 
-  else { return <></> }
+  return <Fade
+    in={context.loading}
+    style={{
+      transitionDelay: context.loading ? '800ms' : '0ms',
+      }}
+          unmountOnExit
+        >
+    <LinearProgress />
+  </Fade>
 }
 
