@@ -140,7 +140,7 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
   }
 ]
 
-const Breadcrumbs = breadcrumbCreator(routes, ["/feedback"]);
+const Breadcrumbs = breadcrumbCreator(routes, ["/login", "/logout"]);
 
 export default function Dashboard() {
   const classes = useStyles();
