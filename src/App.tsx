@@ -4,6 +4,7 @@ import { Login, Logout, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { Stream } from "./stream";
+import { List as StreamList } from "./stream/list";
 import { Message } from "./stream/message/message";
 import { AppendStream } from "./stream/append";
 import Breadcrumbs from './Breadcrumbs';
@@ -126,6 +127,9 @@ export default function Dashboard() {
       <Route exact path="/:database/streams" render={( {match}: any) => (<Streams database={match.params.database} /> )} />
       <Route exact path="/:database/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream="" /> )} />
       <Route exact path="/:database/streams/:stream/new" render={( {match}: any) => (<AppendStream database={match.params.database} stream={match.params.stream}/> )} />
+      <Route exact path="/feedback/:database/streams/:stream/:from?" render={( {match}: any) => {
+        return (<StreamList database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} /> )}
+      } />
       <Route exact path="/:database/streams/:stream/:from?" render={( {match}: any) => {
         return (<Stream database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -10 : match.params.from } limit={10} /> )}
       } />

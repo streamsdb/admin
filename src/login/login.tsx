@@ -37,7 +37,7 @@ export const Login: FunctionComponent<Props> = () => {
   };
 
   const displayError = (e: ApolloError) => {
-    enqueueSnackbar('login error: ' + e.message, { variant: 'error'});
+    enqueueSnackbar(e.message, { variant: 'error'});
   }
 
   return <LoginMutationComponent onError={displayError}>

@@ -131,7 +131,7 @@ const TableToolbar = (props: TableToolbarProps) => {
   if(numSelected <= 0) return null;
 
   return <Toolbar className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
+      [classes.highlight]: numSelected > 0,
       })}>
       <div className={classes.title}>
         {numSelected > 0 ? (
