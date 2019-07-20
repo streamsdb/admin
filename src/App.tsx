@@ -73,13 +73,14 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    overflowScrolling: 'touch',
+    WebkitOverflowScrolling: 'touch'
   },
   container: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(4),
-  },
-  fixedHeight: {
-    height: 240,
+    overflowScrolling: 'touch',
+    WebkitOverflowScrolling: 'touch',
   },
 }));
 
