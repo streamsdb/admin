@@ -56,9 +56,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
-  menuButtonHidden: {
-    display: 'none',
-  },
   title: {
     flexGrow: 1,
   },
@@ -169,7 +166,7 @@ export default function Dashboard() {
             <IconButton color="inherit" component={RouterLink} to="/logout">
               <ExitToApp />
             </IconButton>:
-            <Button color="inherit" className={classes.menuButton} component={RouterLink} to="/login">
+            <Button color="inherit" component={RouterLink} to="/login">
               login
             </Button>
           }
