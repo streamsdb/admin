@@ -18,6 +18,7 @@ import { ApolloError } from 'apollo-client';
 import { useSnackbar } from 'notistack';
 
 type Props = {
+  redirectUrl: string | null;
 }
 
 interface State {
@@ -25,7 +26,7 @@ interface State {
   password: string;
 }
 
-export const Login: FunctionComponent<Props> = () => {
+export const Login: FunctionComponent<Props> = ({redirectUrl}) => {
   const { enqueueSnackbar } = useSnackbar();
   const [values, setValues] = React.useState<State>({
     username: '',
@@ -46,7 +47,12 @@ export const Login: FunctionComponent<Props> = () => {
       if(data && data.login && data.login.token) {
         localStorage.setItem("token", data.login.token)
         ReactGA.set({ username: values.username });
-        return <Redirect to="/" />
+
+        if(!redirectUrl) {
+          return <Redirect to="/" />
+        }
+
+        return <Redirect to={redirectUrl} />
       }
 
       return <Container maxWidth="sm">

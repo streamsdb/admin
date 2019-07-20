@@ -5,7 +5,7 @@ import './index.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Router as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
@@ -47,7 +47,7 @@ const errorLink = onError(({ response, graphQLErrors, networkError, operation, f
 
       if (err.extensions.code === "Unauthenticated") {
 			  localStorage.removeItem('token');
-        browserHistory.push('/login?redirectUrl=' + browserHistory.location);
+        browserHistory.push('/login?redirectUrl=' + encodeURI(browserHistory.location.pathname));
         return;
       }
     }

@@ -78,7 +78,11 @@ const useStyles = makeStyles(theme => ({
 const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
 {
     path: "/login",
-    component: () => <Login />,
+    component: ({location}: any) => {
+      const values = new URLSearchParams(location.search);
+      const redirectUrl = values.get("redirectUrl");
+      return <Login redirectUrl={redirectUrl} />
+    },
     breadcrumb: "login"
   },
   {
