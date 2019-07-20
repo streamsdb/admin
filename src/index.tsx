@@ -47,7 +47,7 @@ const errorLink = onError(({ response, graphQLErrors, networkError, operation, f
 
       if (err.extensions.code === "Unauthenticated") {
 			  localStorage.removeItem('token');
-        browserHistory.push('/login');
+        browserHistory.push('/login?redirectUrl=' + browserHistory.location);
         return;
       }
     }
