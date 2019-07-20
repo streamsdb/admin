@@ -49,18 +49,12 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   menuButtonHidden: {
     display: 'none',
@@ -149,7 +143,7 @@ export default function Dashboard() {
     <LoadingProvider>
     <div className={classes.root}>
       <AppBar position="absolute">
-        <Toolbar className={classes.toolbar} >
+        <Toolbar>
           <IconButton component={RouterLink} to={"/"} edge="end">
             <svg viewBox="0 0 426 482" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M-1-1h428v484H-1z"/>
@@ -172,7 +166,7 @@ export default function Dashboard() {
             <Chat />
           </IconButton>
           {IsLoggedIn() ?
-            <IconButton color="inherit" className={classes.menuButton} component={RouterLink} to="/logout">
+            <IconButton color="inherit" component={RouterLink} to="/logout">
               <ExitToApp />
             </IconButton>:
             <Button color="inherit" className={classes.menuButton} component={RouterLink} to="/login">
