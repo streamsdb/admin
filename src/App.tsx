@@ -1,6 +1,6 @@
 import React from "react";
 import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
-
+import queryString from 'query-string'
 import { RouteConfig } from "react-router-config";
 import { Route, Switch  } from "react-router-dom";
 import { Loading } from './Loading';
@@ -175,6 +175,7 @@ export default function Dashboard() {
             </Button>
           }
         </Toolbar>
+        <Loading />
       </AppBar>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

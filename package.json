@@ -26,6 +26,7 @@
     "material-table": "^1.40.1",
     "notistack": "^0.8.8",
     "pretty-bytes": "^5.2.0",
+    "query-string": "^6.8.1",
     "react": "^16.8.6",
     "react-ace": "^7.0.2",
     "react-apollo": "^2.5.8",

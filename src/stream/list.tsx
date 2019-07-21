@@ -121,9 +121,30 @@ const useStyles = makeStyles((theme: Theme) =>
         borderColor: theme.palette.primary.main,
       },
     },
-
   }),
 );
+
+interface NoDataProps {
+  database: string;
+  stream: string;
+}
+
+const NoData: FunctionComponent<NoDataProps> = ({database, stream}) => {
+  const classes = useStyles();
+  return <Grid key="nodata" container spacing={1}>
+            <Grid item xs={12}>
+              <Paging database={database} stream={stream} from={1} limit={10} last={1} />
+            </Grid>
+
+            {Array.from(Array(10).keys()).map(()=> (
+            <Grid item xs={12} justify="space-between">
+              <ExpansionPanel disabled style={{backgroundColor: '#F3F3F3'}}>
+                <ExpansionPanelSummary style={{minHeight: '60px' }}>
+                </ExpansionPanelSummary>
+              </ExpansionPanel>
+            </Grid>))}
+        </Grid>
+}
 
 export const List: FunctionComponent<Props> = ({database, stream, from, limit}) => {
   const classes = useStyles();
@@ -134,7 +155,10 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
         setLoading(loading);
 
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
-        if(!data || !data.readStream || !data.readStream.messages) { return null }
+
+        if(!data || !data.readStream || !data.readStream.messages) { 
+          return <NoData database={database} stream={stream} /> 
+        }
 
         from = data.readStream.from;
         const last = Math.max(data.readStream.head-limit, 1);
@@ -154,8 +178,8 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
 
             return <Grid item xs={12} justify="space-between">
                 <ExpansionPanel TransitionProps={{
-      timeout: 0
-    }}>
+                  timeout: 0
+                }}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid container xs={12} spacing={0}>
                   <Grid className={classes.root} item xs={2}>

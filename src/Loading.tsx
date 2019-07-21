@@ -8,7 +8,7 @@ export const Loading = () => {
   return <Fade
     in={context.loading}
     style={{
-      transitionDelay: context.loading ? '800ms' : '0ms',
+      transitionDelay: context.loading ? '600ms' : '0ms',
       }}>
     <LinearProgress />
   </Fade>
