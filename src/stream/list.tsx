@@ -52,6 +52,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Skeleton from 'react-loading-skeleton';
 
 interface Props  {
   database: string;
@@ -138,8 +139,11 @@ const NoData: FunctionComponent<NoDataProps> = ({database, stream}) => {
 
             {Array.from(Array(10).keys()).map(()=> (
             <Grid item xs={12} justify="space-between">
-              <ExpansionPanel disabled style={{backgroundColor: '#F3F3F3'}}>
+              <ExpansionPanel>
                 <ExpansionPanelSummary style={{minHeight: '60px' }}>
+                  <Grid className={classes.root} item xs={12}>
+                    <Skeleton />
+                  </Grid>
                 </ExpansionPanelSummary>
               </ExpansionPanel>
             </Grid>))}
