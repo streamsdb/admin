@@ -2,12 +2,11 @@ import React, { useState , FunctionComponent } from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 import { Redirect  } from 'react-router';
 import gql from "graphql-tag";
-import brace from 'brace';
 import AceEditor from 'react-ace';
 import { SpinnerButton} from '../ActionButton';
 import { AppendSingleComponent } from '../data/types'
-import CircularProgress from '@material-ui/core/CircularProgress';
 
+import 'brace';
 import 'brace/mode/json';
 import 'brace/theme/tomorrow'
 
@@ -16,7 +15,7 @@ type Props = {
   stream: string;
 }
 
-const mutation = gql`
+gql`
   mutation AppendSingle($db: String!, $stream: String!, $eventtype: String!, $payload: Bytes!) {
     appendStream(db: $db, stream: $stream, messages: [{
       type: $eventtype,

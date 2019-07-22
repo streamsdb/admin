@@ -3,14 +3,9 @@ import {
   createStyles,
   fade,
   Theme,
-  withStyles,
   makeStyles,
-  createMuiTheme,
 } from '@material-ui/core/styles';
 
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import { Link as RouterLink } from "react-router-dom";
@@ -19,31 +14,23 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { OutlinedInputProps } from '@material-ui/core/OutlinedInput';
-import { Link } from "react-router-dom";
 import { Alert } from 'reactstrap';
 import gql from "graphql-tag";
 import { ReadMessageForwardComponent } from '../../data/types';
-import brace from 'brace';
+import 'brace';
 import AceEditor from 'react-ace';
 import TextField, {TextFieldProps } from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
-import TimeAgo from 'react-timeago';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import DeleteButton from './components/delete'
 
-const query = gql`
+gql`
 query ReadMessageForward($database: String!, $stream: String!, $from: Int!)
 {
   readStreamForward(db:$database, name:$stream, from:$from, limit: 1) {
@@ -152,7 +139,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           </Alert>
         }
 
-        var { head, messages, next, hasNext } = data.readStreamForward;
+        var { head, messages } = data.readStreamForward;
         var message = messages[0];
         from = message.position;
 

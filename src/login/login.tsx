@@ -1,19 +1,14 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import ReactGA from 'react-ga';
-import clsx from 'clsx';
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import { Redirect  } from 'react-router';
-import { Link as RouterLink } from "react-router-dom";
 import { LoginComponent as LoginMutationComponent } from "../data/types";
-import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Grid, { GridSpacing } from '@material-ui/core/Grid';
+import Grid  from '@material-ui/core/Grid';
 import { ApolloError } from 'apollo-client';
 import { useSnackbar } from 'notistack';
 

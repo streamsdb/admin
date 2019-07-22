@@ -1,6 +1,5 @@
 import React from "react";
 import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
-import queryString from 'query-string'
 import { RouteConfig } from "react-router-config";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Loading } from './Loading';
@@ -9,31 +8,20 @@ import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { List as StreamList } from "./stream/list";
 import { Message } from "./stream/message/message";
+import SvgIcon from '@material-ui/core/SvgIcon';
 import { AppendStream } from "./stream/append";
 import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from "react-router-dom";
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import ContactSupport from '@material-ui/icons/ContactSupport';
 import Chat from '@material-ui/icons/Chat';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import LoadingProvider from "./State";
 
 function MadeWithLove() {
@@ -158,15 +146,9 @@ export default function Dashboard() {
       <AppBar position="absolute">
         <Toolbar>
           <IconButton component={RouterLink} to={"/"} edge="end">
-            <svg viewBox="0 0 426 482" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-              <path fill="none" d="M-1-1h428v484H-1z"/>
-              <g>
-                <g stroke="#fff" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="35" fill="#000">
-                  <path d="M207.694 6.224l210.138 121.799"/>
-                  <path fill-opacity="null" stroke-opacity="null" d="M413.956 120.248v239.915M11.335 122.401l405.636 233.391M208.555 473.348l209.277-119.709M216.306 473.348L7.46 353.355M10.474 119.386v240.737M6.168 125.66L215.876 6.136M212.431 382.808l125.307-72.661M6.168 270.091l213.583 112.747M216.737 95.977L89.707 171.06M208.555 96.351L411.373 206.37"/>
-                </g>
-              </g>
-            </svg>
+            <SvgIcon>
+              <img src="/img/logo.svg" alt="StreamsDB logo"/>
+            </SvgIcon>
            </IconButton>
 
 
@@ -194,7 +176,7 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
         <Breadcrumbs />
     <Switch>
-      {routes.filter(i => i.component).map(r => <Route exact path={r.path} component={r.component} />)}
+      {routes.filter(i => i.component).map(r => <Route key={r.path} exact path={r.path} component={r.component} />)}
     </Switch>
         </Container>
         <MadeWithLove />

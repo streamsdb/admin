@@ -1,53 +1,29 @@
 import React, { FunctionComponent } from 'react';
 
-import Badge from '@material-ui/core/Badge';
-import brace from 'brace';
 import AceEditor from 'react-ace';
 import Divider from '@material-ui/core/Divider';
 import TimeAgo from 'react-timeago';
-import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
 import prettyBytes from 'pretty-bytes';
 import { Link as RouterLink } from "react-router-dom";
 import { Message } from '../data/types';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow  from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import Toolbar from '@material-ui/core/Toolbar';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableFooter from '@material-ui/core/TableFooter';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import Checkbox from '@material-ui/core/Checkbox';
 import { ListStreamComponent } from '../data/types'
-import { Query } from "react-apollo";
-import { Map } from 'immutable';
-import Card from '@material-ui/core/Card'
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { loadingContext } from '../State';
 import {
   createStyles,
   fade,
   Theme,
-  withStyles,
   makeStyles,
-  createMuiTheme,
 } from '@material-ui/core/styles';
 
-import { spacing } from '@material-ui/system';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -74,7 +50,6 @@ type PagingProps = {database: string, stream:string, from: number, limit: number
 
 const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
   const baseUrl = `/${database}/${stream}`
-  debugger;
 
   return <Grid container alignItems="flex-start" justify="flex-end" direction="row">
     <Tooltip title="Newest">

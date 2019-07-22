@@ -2,13 +2,9 @@ import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
 import { StreamsQueryComponent } from './data/types'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -19,20 +15,7 @@ type Props = {
   database: string;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
-  }),
-);
-
-const query = gql`
+gql`
 query StreamsQuery($database: String!){
   database(name: $database) {
     id,
@@ -44,19 +27,22 @@ query StreamsQuery($database: String!){
   },
 }`;
 
-const NoStreams: FunctionComponent<Props> = ({ database }) => <p>
-  No streams in database, create a new stream by creating an new event for it.
+const NoStreams: FunctionComponent<Props> = () => <p>
+  No streams found in database, create a new stream by creating an new event for it.
 </p>
 
 export const Streams: FunctionComponent<Props> = ({ database }) => {
-  const classes = useStyles();
-
   return (<StreamsQueryComponent variables={{database}}>
     {({ data, error, loading }) => {
-              var names: string[] = [];
-              if(data && data.database && data.database.streams && data.database.streams.names) {
-                names = data.database.streams.names
-              }
+      var names: string[] = [];
+      if(data && data.database && data.database.streams && data.database.streams.names) {
+        names = data.database.streams.names
+      }
+      
+      if(!names) {
+        return <NoStreams database={database} />
+      }
+
       return <>
         <Toolbar>
           <Button variant="contained" component={Link} to={`/${database}/new`} color="primary">
