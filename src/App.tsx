@@ -7,9 +7,7 @@ import { Loading } from './Loading';
 import { Login, Logout, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
-import { Stream } from "./stream";
 import { List as StreamList } from "./stream/list";
-import { Message } from "./stream/message/message";
 import { AppendStream } from "./stream/append";
 import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
@@ -118,7 +116,7 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
   {
     path: "/:database/:stream",
     component: ( {match}: any) => {
-        return (<StreamList database={match.params.database} stream={match.params.stream} from={-10} limit={10} /> )} ,
+        return (<StreamList database={match.params.database} stream={match.params.stream} from={-1} limit={10} /> )} ,
     breadcrumb: ({match}: any) => match.params.stream
   },
   {
@@ -126,12 +124,6 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     component: ( {match}: any) => {
         return (<StreamList database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )} ,
     breadcrumb: ({match}: any) => match.params.from
-  },
-  {
-    path: "/:database/:stream/:from/message/",
-    component: ( {match}: any) => {
-        return (<Message database={match.params.database} stream={match.params.stream} from={(!match.params.from || match.params.from === "last") ? -1 : match.params.from }  /> )},
-    breadcrumb: () => "message"
   }
 ]
 

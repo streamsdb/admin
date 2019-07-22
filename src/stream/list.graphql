@@ -1,0 +1,21 @@
+  query ListStream(
+    $database: String!
+    $stream: String!
+    $from: Int!
+    $limit: Int!
+  ) {
+    readStreamBackward(db: $database, name: $stream, from: $from, limit: $limit) {
+      stream
+      from
+      next
+      hasNext
+      head
+      messages {
+        position
+        timestamp
+        type
+        value
+      }
+    }
+  }
+

@@ -32,7 +32,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Checkbox from '@material-ui/core/Checkbox';
-import { ReadStreamQuery, ReadStreamQueryVariables, ReadStreamDocument } from '../data/types'
+import { ListStreamComponent } from '../data/types'
 import { Query } from "react-apollo";
 import { Map } from 'immutable';
 import Card from '@material-ui/core/Card'
@@ -74,6 +74,7 @@ type PagingProps = {database: string, stream:string, from: number, limit: number
 
 const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
   const baseUrl = `/${database}/${stream}`
+  debugger;
 
   return <Grid container alignItems="flex-start" justify="flex-end" direction="row">
     <Tooltip title="Newest">
@@ -92,7 +93,7 @@ const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, 
     </IconButton>
     </Tooltip>
     <Tooltip title="Oldest">
-    <IconButton component={RouterLink} to={`${baseUrl}/1`} aria-label="Previous Page">
+    <IconButton component={RouterLink} to={`${baseUrl}/{limit}`} aria-label="Previous Page">
       <LastPageIcon />
     </IconButton>
     </Tooltip>
@@ -154,25 +155,25 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
   const classes = useStyles();
   const { setLoading} = React.useContext(loadingContext);
 
-  return <Query<ReadStreamQuery, ReadStreamQueryVariables> query={ReadStreamDocument} variables={{database, stream, from, limit}}>
+  return <ListStreamComponent variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
         setLoading(loading);
 
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
 
-        if(!data || !data.readStream || !data.readStream.messages) { 
+        if(!data || !data.readStreamBackward) { 
           return <NoData database={database} stream={stream} /> 
         }
 
-        from = data.readStream.from;
-        const last = Math.max(data.readStream.head-limit, 1);
+        from = data.readStreamBackward.from;
+        const last = Math.max(data.readStreamBackward.head, 1);
 
         return <Grid container spacing={1}>
             <Grid item xs={12}>
               <Paging database={database} stream={stream} from={from} limit={limit} last={last} />
             </Grid>
 
-          {data.readStream.messages.sort((a,b) => a.position > b.position ? -1: 1).map(m => {
+          {data.readStreamBackward.messages.sort((a,b) => a.position > b.position ? -1: 1).map(m => {
             var value;
             try {
               value = JSON.stringify(JSON.parse(m.value), null, 4);
@@ -223,5 +224,5 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
             </Grid>})}
         </Grid>
       }}
-  </Query>
+  </ListStreamComponent>
 }

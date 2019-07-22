@@ -105,12 +105,27 @@ export type MutationDeleteMessageArgs = {
 
 export type Query = {
   __typename?: "Query";
-  readStream: Slice;
+  readMessage: ReadMessageResult;
+  readStreamForward: Slice;
+  readStreamBackward: Slice;
   databases: DatabasesPage;
   database?: Maybe<Db>;
 };
 
-export type QueryReadStreamArgs = {
+export type QueryReadMessageArgs = {
+  db: Scalars["String"];
+  name: Scalars["String"];
+  at: Scalars["Int"];
+};
+
+export type QueryReadStreamForwardArgs = {
+  db: Scalars["String"];
+  name: Scalars["String"];
+  from: Scalars["Int"];
+  limit: Scalars["Int"];
+};
+
+export type QueryReadStreamBackwardArgs = {
   db: Scalars["String"];
   name: Scalars["String"];
   from: Scalars["Int"];
@@ -119,6 +134,12 @@ export type QueryReadStreamArgs = {
 
 export type QueryDatabaseArgs = {
   name: Scalars["String"];
+};
+
+export type ReadMessageResult = {
+  __typename?: "ReadMessageResult";
+  found: Scalars["Boolean"];
+  message?: Maybe<Message>;
 };
 
 export type RegistrationResult = {
@@ -134,7 +155,8 @@ export type Slice = {
   next: Scalars["Int"];
   hasNext: Scalars["Boolean"];
   head: Scalars["Int"];
-  messages?: Maybe<Array<Message>>;
+  messages: Array<Message>;
+  reverse: Scalars["Boolean"];
 };
 
 export type Streams = {
@@ -192,46 +214,22 @@ export type DeleteMessageMutation = { __typename?: "Mutation" } & {
   >;
 };
 
-export type ReadStreamQueryVariables = {
+export type ListStreamQueryVariables = {
   database: Scalars["String"];
   stream: Scalars["String"];
   from: Scalars["Int"];
   limit: Scalars["Int"];
 };
 
-export type ReadStreamQuery = { __typename?: "Query" } & {
-  readStream: { __typename?: "Slice" } & Pick<
+export type ListStreamQuery = { __typename?: "Query" } & {
+  readStreamBackward: { __typename?: "Slice" } & Pick<
     Slice,
     "stream" | "from" | "next" | "hasNext" | "head"
   > & {
-      messages: Maybe<
-        Array<
-          { __typename?: "Message" } & Pick<
-            Message,
-            "position" | "timestamp" | "type" | "value"
-          >
-        >
-      >;
-    };
-};
-
-export type ReadMessageQueryVariables = {
-  database: Scalars["String"];
-  stream: Scalars["String"];
-  from: Scalars["Int"];
-};
-
-export type ReadMessageQuery = { __typename?: "Query" } & {
-  readStream: { __typename?: "Slice" } & Pick<
-    Slice,
-    "head" | "next" | "hasNext"
-  > & {
-      messages: Maybe<
-        Array<
-          { __typename?: "Message" } & Pick<
-            Message,
-            "position" | "timestamp" | "type" | "value"
-          >
+      messages: Array<
+        { __typename?: "Message" } & Pick<
+          Message,
+          "position" | "timestamp" | "type" | "value"
         >
       >;
     };
@@ -447,14 +445,19 @@ export function withDeleteMessage<TProps, TChildProps = {}>(
     ...operationOptions
   });
 }
-export const ReadStreamDocument = gql`
-  query ReadStream(
+export const ListStreamDocument = gql`
+  query ListStream(
     $database: String!
     $stream: String!
     $from: Int!
     $limit: Int!
   ) {
-    readStream(db: $database, name: $stream, from: $from, limit: $limit) {
+    readStreamBackward(
+      db: $database
+      name: $stream
+      from: $from
+      limit: $limit
+    ) {
       stream
       from
       next
@@ -469,88 +472,38 @@ export const ReadStreamDocument = gql`
     }
   }
 `;
-export type ReadStreamComponentProps = Omit<
-  ReactApollo.QueryProps<ReadStreamQuery, ReadStreamQueryVariables>,
+export type ListStreamComponentProps = Omit<
+  ReactApollo.QueryProps<ListStreamQuery, ListStreamQueryVariables>,
   "query"
 > &
-  ({ variables: ReadStreamQueryVariables; skip?: false } | { skip: true });
+  ({ variables: ListStreamQueryVariables; skip?: false } | { skip: true });
 
-export const ReadStreamComponent = (props: ReadStreamComponentProps) => (
-  <ReactApollo.Query<ReadStreamQuery, ReadStreamQueryVariables>
-    query={ReadStreamDocument}
+export const ListStreamComponent = (props: ListStreamComponentProps) => (
+  <ReactApollo.Query<ListStreamQuery, ListStreamQueryVariables>
+    query={ListStreamDocument}
     {...props}
   />
 );
 
-export type ReadStreamProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<ReadStreamQuery, ReadStreamQueryVariables>
+export type ListStreamProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ListStreamQuery, ListStreamQueryVariables>
 > &
   TChildProps;
-export function withReadStream<TProps, TChildProps = {}>(
+export function withListStream<TProps, TChildProps = {}>(
   operationOptions?: ReactApollo.OperationOption<
     TProps,
-    ReadStreamQuery,
-    ReadStreamQueryVariables,
-    ReadStreamProps<TChildProps>
+    ListStreamQuery,
+    ListStreamQueryVariables,
+    ListStreamProps<TChildProps>
   >
 ) {
   return ReactApollo.withQuery<
     TProps,
-    ReadStreamQuery,
-    ReadStreamQueryVariables,
-    ReadStreamProps<TChildProps>
-  >(ReadStreamDocument, {
-    alias: "withReadStream",
-    ...operationOptions
-  });
-}
-export const ReadMessageDocument = gql`
-  query ReadMessage($database: String!, $stream: String!, $from: Int!) {
-    readStream(db: $database, name: $stream, from: $from, limit: 1) {
-      head
-      next
-      hasNext
-      messages {
-        position
-        timestamp
-        type
-        value
-      }
-    }
-  }
-`;
-export type ReadMessageComponentProps = Omit<
-  ReactApollo.QueryProps<ReadMessageQuery, ReadMessageQueryVariables>,
-  "query"
-> &
-  ({ variables: ReadMessageQueryVariables; skip?: false } | { skip: true });
-
-export const ReadMessageComponent = (props: ReadMessageComponentProps) => (
-  <ReactApollo.Query<ReadMessageQuery, ReadMessageQueryVariables>
-    query={ReadMessageDocument}
-    {...props}
-  />
-);
-
-export type ReadMessageProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<ReadMessageQuery, ReadMessageQueryVariables>
-> &
-  TChildProps;
-export function withReadMessage<TProps, TChildProps = {}>(
-  operationOptions?: ReactApollo.OperationOption<
-    TProps,
-    ReadMessageQuery,
-    ReadMessageQueryVariables,
-    ReadMessageProps<TChildProps>
-  >
-) {
-  return ReactApollo.withQuery<
-    TProps,
-    ReadMessageQuery,
-    ReadMessageQueryVariables,
-    ReadMessageProps<TChildProps>
-  >(ReadMessageDocument, {
-    alias: "withReadMessage",
+    ListStreamQuery,
+    ListStreamQueryVariables,
+    ListStreamProps<TChildProps>
+  >(ListStreamDocument, {
+    alias: "withListStream",
     ...operationOptions
   });
 }
