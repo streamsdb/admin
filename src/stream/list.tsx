@@ -93,7 +93,7 @@ const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, 
     </IconButton>
     </Tooltip>
     <Tooltip title="Oldest">
-    <IconButton component={RouterLink} to={`${baseUrl}/{limit}`} aria-label="Previous Page">
+    <IconButton component={RouterLink} to={`${baseUrl}/${limit}`} aria-label="Previous Page">
       <LastPageIcon />
     </IconButton>
     </Tooltip>

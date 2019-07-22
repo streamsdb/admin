@@ -2,12 +2,13 @@ import React from "react";
 import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
 import queryString from 'query-string'
 import { RouteConfig } from "react-router-config";
-import { Route, Switch  } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Loading } from './Loading';
 import { Login, Logout, IsLoggedIn } from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { List as StreamList } from "./stream/list";
+import { Message } from "./stream/message/message";
 import { AppendStream } from "./stream/append";
 import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
@@ -116,14 +117,33 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
   {
     path: "/:database/:stream",
     component: ( {match}: any) => {
-        return (<StreamList database={match.params.database} stream={match.params.stream} from={-1} limit={10} /> )} ,
+        return (<Redirect to={`/${match.params.database}/${match.params.stream}/last`} />)
+    },
     breadcrumb: ({match}: any) => match.params.stream
   },
   {
-    path: "/:database/:stream/:from?",
+    path: "/:database/:stream/last",
+    component: ( {match}: any) => {
+        return (<StreamList database={match.params.database} stream={match.params.stream} from={-1} limit={10} /> )} ,
+    breadcrumb: ({match}: any) => "last"
+  },
+  {
+    path: "/:database/:stream/:from",
     component: ( {match}: any) => {
         return (<StreamList database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )} ,
     breadcrumb: ({match}: any) => match.params.from
+  },
+  {
+    path: "/:database/:stream/last/message/",
+    component: ( {match}: any) => {
+        return (<Message database={match.params.database} stream={match.params.stream} from={-1}  /> )},
+    breadcrumb: () => "message"
+  },
+  {
+    path: "/:database/:stream/:from/message/",
+    component: ( {match}: any) => {
+        return (<Message database={match.params.database} stream={match.params.stream} from={match.params.from}  /> )},
+    breadcrumb: () => "message"
   }
 ]
 

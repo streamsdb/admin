@@ -235,6 +235,26 @@ export type ListStreamQuery = { __typename?: "Query" } & {
     };
 };
 
+export type ReadMessageForwardQueryVariables = {
+  database: Scalars["String"];
+  stream: Scalars["String"];
+  from: Scalars["Int"];
+};
+
+export type ReadMessageForwardQuery = { __typename?: "Query" } & {
+  readStreamForward: { __typename?: "Slice" } & Pick<
+    Slice,
+    "head" | "next" | "hasNext"
+  > & {
+      messages: Array<
+        { __typename?: "Message" } & Pick<
+          Message,
+          "position" | "timestamp" | "type" | "value"
+        >
+      >;
+    };
+};
+
 export type StreamsQueryQueryVariables = {
   database: Scalars["String"];
 };
@@ -504,6 +524,66 @@ export function withListStream<TProps, TChildProps = {}>(
     ListStreamProps<TChildProps>
   >(ListStreamDocument, {
     alias: "withListStream",
+    ...operationOptions
+  });
+}
+export const ReadMessageForwardDocument = gql`
+  query ReadMessageForward($database: String!, $stream: String!, $from: Int!) {
+    readStreamForward(db: $database, name: $stream, from: $from, limit: 1) {
+      head
+      next
+      hasNext
+      messages {
+        position
+        timestamp
+        type
+        value
+      }
+    }
+  }
+`;
+export type ReadMessageForwardComponentProps = Omit<
+  ReactApollo.QueryProps<
+    ReadMessageForwardQuery,
+    ReadMessageForwardQueryVariables
+  >,
+  "query"
+> &
+  (
+    | { variables: ReadMessageForwardQueryVariables; skip?: false }
+    | { skip: true });
+
+export const ReadMessageForwardComponent = (
+  props: ReadMessageForwardComponentProps
+) => (
+  <ReactApollo.Query<ReadMessageForwardQuery, ReadMessageForwardQueryVariables>
+    query={ReadMessageForwardDocument}
+    {...props}
+  />
+);
+
+export type ReadMessageForwardProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<
+    ReadMessageForwardQuery,
+    ReadMessageForwardQueryVariables
+  >
+> &
+  TChildProps;
+export function withReadMessageForward<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    ReadMessageForwardQuery,
+    ReadMessageForwardQueryVariables,
+    ReadMessageForwardProps<TChildProps>
+  >
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    ReadMessageForwardQuery,
+    ReadMessageForwardQueryVariables,
+    ReadMessageForwardProps<TChildProps>
+  >(ReadMessageForwardDocument, {
+    alias: "withReadMessageForward",
     ...operationOptions
   });
 }
