@@ -104,22 +104,22 @@ type PagingProps = {database: string, stream:string, from: number, limit: number
 const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, last}) => {
   return <div>
     <Tooltip title="Newest">
-      <IconButton component={RouterLink} to={`/${database}/streams/${stream}/last/message`} aria-label="Newest">
+      <IconButton component={RouterLink} to={`/${database}/${stream}/last/message`} aria-label="Newest">
         <FirstPageIcon />
       </IconButton>
     </Tooltip>
     <Tooltip title="Newer">
-    <IconButton component={RouterLink} to={`/${database}/streams/${stream}/${Math.min(from+limit, last)}/message`} aria-label="Previous Page">
+    <IconButton component={RouterLink} to={`/${database}/${stream}/${Math.min(from+limit, last)}/message`} aria-label="Previous Page">
       <KeyboardArrowLeft />
     </IconButton>
     </Tooltip>
     <Tooltip title="Older">
-    <IconButton component={RouterLink} to={`/${database}/streams/${stream}/${Math.max(from-limit, 1)}/message`} aria-label="Previous Page">
+    <IconButton component={RouterLink} to={`/${database}/${stream}/${Math.max(from-limit, 1)}/message`} aria-label="Previous Page">
       <KeyboardArrowRight />
     </IconButton>
     </Tooltip>
     <Tooltip title="Oldest">
-    <IconButton component={RouterLink} to={`/${database}/streams/${stream}/1/message`} aria-label="Previous Page">
+    <IconButton component={RouterLink} to={`/${database}/${stream}/1/message`} aria-label="Previous Page">
       <LastPageIcon />
     </IconButton>
     </Tooltip>
