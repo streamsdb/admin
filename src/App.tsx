@@ -147,7 +147,7 @@ export default function Dashboard() {
         <Toolbar>
           <IconButton component={RouterLink} to={"/"} edge="end">
             <SvgIcon>
-              <img src="/img/logo.svg" alt="StreamsDB logo"/>
+              <img src="/logo.svg" alt="StreamsDB logo"/>
             </SvgIcon>
            </IconButton>
 
