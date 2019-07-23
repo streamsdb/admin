@@ -113,8 +113,8 @@ const NoData: FunctionComponent<NoDataProps> = ({database, stream}) => {
               <Paging database={database} stream={stream} from={1} limit={10} last={1} />
             </Grid>
 
-            {Array.from(Array(10).keys()).map(()=> (
-            <Grid item xs={12} justify="space-between">
+            {Array.from(Array(10).keys()).map((_, i)=> (
+            <Grid key={`no-item-${i}`} item xs={12}>
               <ExpansionPanel>
                 <ExpansionPanelSummary style={{minHeight: '60px' }}>
                   <Grid className={classes.root} item xs={12}>
@@ -156,12 +156,12 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
               value = m.value;
             }
 
-            return <Grid item xs={12} justify="space-between">
+            return <Grid key={m.position} item xs={12}>
                 <ExpansionPanel TransitionProps={{
                   timeout: 0
                 }}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Grid container xs={12} spacing={0}>
+                <Grid container spacing={0}>
                   <Grid className={classes.root} item xs={2}>
                     {m.position}
                   </Grid>

@@ -1,4 +1,5 @@
 import React from "react";
+import LogoIcon from './LogoIcon';
 import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
 import { RouteConfig } from "react-router-config";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -8,7 +9,6 @@ import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { List as StreamList } from "./stream/list";
 import { Message } from "./stream/message/message";
-import SvgIcon from '@material-ui/core/SvgIcon';
 import { AppendStream } from "./stream/append";
 import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
@@ -146,12 +146,8 @@ export default function Dashboard() {
       <AppBar position="absolute">
         <Toolbar>
           <IconButton component={RouterLink} to={"/"} edge="end">
-            <SvgIcon>
-              <img src="/logo.svg" alt="StreamsDB logo"/>
-            </SvgIcon>
+            <LogoIcon />
            </IconButton>
-
-
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           </Typography>
           <IconButton color="inherit" component="a" href="https://streamsdb.io/docs/">
