@@ -84,53 +84,53 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
   },
   {
     path: "/database/",
-    component: ({match}: any) => (<Streams database={match.params.database} />),
+    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
     breadcrumb: "database"
   },
   {
     path: "/:database/new", 
-    compontent: ({match}: any) => (<AppendStream database={match.params.database} stream="" />),
+    compontent: ({match}: any) => (<AppendStream database={decodeURIComponent(match.params.database)} stream="" />),
     breadcrumb: "new"
   },
   {
     path: "/:database",
-    component: ({match}: any) => (<Streams database={match.params.database} />),
-    breadcrumb: ({match}: any) => match.params.database
+    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
+    breadcrumb: ({match}: any) => decodeURIComponent(match.params.database)
   },
   {
     path: "/:database/:stream/new",
-    component: ( {match}: any) => (<AppendStream database={match.params.database} stream={match.params.stream}/>),
+    component: ( {match}: any) => (<AppendStream database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)}/>),
     breadcrumb: ({match}: any) => "new event"
   },
   {
     path: "/:database/:stream",
     component: ( {match}: any) => {
-        return (<Redirect to={`/${match.params.database}/${match.params.stream}/last`} />)
+        return (<Redirect to={`/${encodeURIComponent(match.params.database)}/${encodeURIComponent(match.params.stream)}/last`} />)
     },
-    breadcrumb: ({match}: any) => match.params.stream
+    breadcrumb: ({match}: any) => decodeURIComponent(match.params.stream)
   },
   {
     path: "/:database/:stream/last",
     component: ( {match}: any) => {
-        return (<StreamList database={match.params.database} stream={match.params.stream} from={-1} limit={10} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={10} /> )} ,
     breadcrumb: ({match}: any) => "last"
   },
   {
     path: "/:database/:stream/:from",
     component: ( {match}: any) => {
-        return (<StreamList database={match.params.database} stream={match.params.stream} from={match.params.from} limit={10} /> )} ,
-    breadcrumb: ({match}: any) => match.params.from
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={10} /> )} ,
+    breadcrumb: ({match}: any) => decodeURIComponent(match.params.from)
   },
   {
     path: "/:database/:stream/last/message/",
     component: ( {match}: any) => {
-        return (<Message database={match.params.database} stream={match.params.stream} from={-1}  /> )},
+        return (<Message database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1}  /> )},
     breadcrumb: () => "message"
   },
   {
     path: "/:database/:stream/:from/message/",
     component: ( {match}: any) => {
-        return (<Message database={match.params.database} stream={match.params.stream} from={match.params.from}  /> )},
+        return (<Message database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from}  /> )},
     breadcrumb: () => "message"
   }
 ]

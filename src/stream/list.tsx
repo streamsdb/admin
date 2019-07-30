@@ -39,11 +39,11 @@ interface Props  {
 
 function LinkForEventMessage(database: string, stream: string, m: Message) {
   if(m.type !== "sdb.pointer") {
-    return (<Link component={RouterLink} to={`/${database}/${stream}/${m.position}/message`}>{stream}/{m.position}</Link>)
+    return (<Link component={RouterLink} to={`/${database}/${encodeURIComponent(stream)}/${m.position}/message`}>{stream}/{m.position}</Link>)
   }
 
   var pointer = JSON.parse(m.value);
-  return (<Link component={RouterLink} to={`/${database}/${pointer.s}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
+  return (<Link component={RouterLink} to={`/${database}/${encodeURIComponent(pointer.s)}/${pointer.p}/message`}>{pointer.s}/{pointer.p}</Link>)
 }
 
 type PagingProps = {database: string, stream:string, from: number, limit: number, last: number}

@@ -45,7 +45,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
 
       return <>
         <Toolbar>
-          <Button variant="contained" component={Link} to={`/${database}/new`} color="primary">
+          <Button variant="contained" component={Link} to={`/${encodeURIComponent(database)}/new`} color="primary">
             New stream
           </Button>
         </Toolbar>
@@ -60,7 +60,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
           </Typography>
         </Paper>}
         <List>
-          {names.map((name) => (<ListItem button component={Link} to={`/${database}/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
+          {names.map((name) => (<ListItem button component={Link} to={`/${encodeURIComponent(database)}/${encodeURIComponent(name)}`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>
       </Paper>
         </>
