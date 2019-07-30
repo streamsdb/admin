@@ -18,6 +18,7 @@ import { SnackbarProvider } from 'notistack';
 import { setContext } from 'apollo-link-context'; 
 import { onError } from "apollo-link-error";
 import browserHistory from './history';
+import AuthProvider from "./login/state";
 
 if(config.gaId) {
   ReactGA.initialize('UA-143880638-2');
@@ -101,7 +102,9 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
   <CssBaseline />
   <SnackbarProvider maxSnack={10}>
+  <AuthProvider>
   <App />
+  </AuthProvider>
   </SnackbarProvider>
   </ThemeProvider>
   </ApolloProvider>

@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Grid  from '@material-ui/core/Grid';
 import { ApolloError } from 'apollo-client';
 import { useSnackbar } from 'notistack';
+import { useAuthContext } from './state';
 
 type Props = {
   redirectUrl: string | null;
@@ -27,6 +28,7 @@ export const Login: FunctionComponent<Props> = ({redirectUrl}) => {
     username: '',
     password: '',
   });
+  const { setAuthenticated } = useAuthContext();
 
   const handleChange = (name: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [name]: event.target.value });
@@ -40,6 +42,7 @@ export const Login: FunctionComponent<Props> = ({redirectUrl}) => {
     {(mutate, { loading, data }) => {
 
       if(data && data.login && data.login.token) {
+        setAuthenticated(data.login.token);
         localStorage.setItem("token", data.login.token)
         ReactGA.set({ username: values.username });
 

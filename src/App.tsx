@@ -4,7 +4,7 @@ import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
 import { RouteConfig } from "react-router-config";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Loading } from './Loading';
-import { Login, Logout, IsLoggedIn } from "./login";
+import { Login, Logout} from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { List as StreamList } from "./stream/list";
@@ -23,6 +23,7 @@ import ContactSupport from '@material-ui/icons/ContactSupport';
 import Chat from '@material-ui/icons/Chat';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import LoadingProvider from "./State";
+import { useAuthContext } from "./login/state";
 
 function MadeWithLove() {
   return (
@@ -139,9 +140,9 @@ const Breadcrumbs = breadcrumbCreator(routes, ["/login", "/logout"]);
 
 export default function Dashboard() {
   const classes = useStyles();
+  const { isAuthenticated } = useAuthContext();
 
   return (
-    <LoadingProvider>
     <div className={classes.root}>
       <AppBar position="absolute">
         <Toolbar>
@@ -156,7 +157,7 @@ export default function Dashboard() {
           <IconButton color="inherit" component="a" href="https://streamsdb.io/chat/">
             <Chat />
           </IconButton>
-          {IsLoggedIn() ?
+          {isAuthenticated ?
             <IconButton color="inherit" component={RouterLink} to="/logout">
               <ExitToApp />
             </IconButton>:
@@ -178,7 +179,6 @@ export default function Dashboard() {
         <MadeWithLove />
       </main>
     </div>
-    </LoadingProvider>
   );
 }
 
