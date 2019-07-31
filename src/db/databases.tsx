@@ -5,9 +5,9 @@ import gql from "graphql-tag";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Skeleton from 'react-loading-skeleton';
 
 type Props = {
 }
@@ -28,17 +28,24 @@ export const Databases: FunctionComponent<Props> = () => <aside>
         names = data.databases.names
       }
 
-      return <Paper>
-        {loading && <CircularProgress /> }
-        {error && <Paper>
-          <Typography variant="h5" component="h3">
+      if(loading) {
+        return <Paper>
+          <List>
+          {Array.from(Array(3).keys()).map((i) => <ListItem key={i} button disabled><ListItemText><Skeleton /></ListItemText></ListItem>)}
+          </List>
+          </Paper>
+      }
+      
+      if(error) {
+        return <Paper><Typography variant="h5" component="h3">
             Error
           </Typography>
           <Typography component="p">
             {JSON.stringify(error)}
-          </Typography>
-        </Paper>}
-        <List>
+          </Typography></Paper>
+      }
+
+      return <Paper><List>
           {names.length === 0 ? <ListItem key="empty">There are no databases you have access to</ListItem> :
           names.map((name) => (<ListItem key={name} button component={Link} to={`/${name}`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>

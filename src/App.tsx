@@ -3,7 +3,6 @@ import LogoIcon from './LogoIcon';
 import { BreadcrumbsRoute} from "react-router-breadcrumbs-hoc";
 import { RouteConfig } from "react-router-config";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { Loading } from './Loading';
 import { Login, Logout} from "./login";
 import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
@@ -22,7 +21,6 @@ import IconButton from '@material-ui/core/IconButton';
 import ContactSupport from '@material-ui/icons/ContactSupport';
 import Chat from '@material-ui/icons/Chat';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import LoadingProvider from "./State";
 import { useAuthContext } from "./login/state";
 
 function MadeWithLove() {
@@ -166,7 +164,6 @@ export default function Dashboard() {
             </Button>
           }
         </Toolbar>
-        <Loading />
       </AppBar>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

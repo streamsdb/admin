@@ -5,11 +5,11 @@ import { StreamsQueryComponent } from './data/types'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
+import Skeleton from 'react-loading-skeleton';
 
 type Props = {
   database: string;
@@ -34,6 +34,25 @@ const NoStreams: FunctionComponent<Props> = () => <p>
 export const Streams: FunctionComponent<Props> = ({ database }) => {
   return (<StreamsQueryComponent variables={{database}}>
     {({ data, error, loading }) => {
+      if(loading) {
+        return <Paper>
+          <List>
+          {Array.from(Array(3).keys()).map((i) => <ListItem key={i} button disabled><ListItemText><Skeleton /></ListItemText></ListItem>)}
+          </List>
+          </Paper>
+      }
+
+      if(error) {
+        return <Paper>
+          <Typography variant="h5" component="h3">
+            Error
+          </Typography>
+          <Typography component="p">
+            {error}
+          </Typography>
+        </Paper>
+      } 
+
       var names: string[] = [];
       if(data && data.database && data.database.streams && data.database.streams.names) {
         names = data.database.streams.names
@@ -50,15 +69,6 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
           </Button>
         </Toolbar>
         <Paper>
-        {loading && <CircularProgress /> }
-        {error && <Paper>
-          <Typography variant="h5" component="h3">
-            Error
-          </Typography>
-          <Typography component="p">
-            {error}
-          </Typography>
-        </Paper>}
         <List>
           {names.map((name) => (<ListItem button component={Link} to={`/${encodeURIComponent(database)}/${encodeURIComponent(name)}`}><ListItemText>{name}</ListItemText></ListItem>))}
         </List>

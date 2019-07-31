@@ -16,7 +16,6 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import Tooltip from '@material-ui/core/Tooltip';
 import { ListStreamComponent } from '../data/types'
-import { loadingContext } from '../State';
 import {
   createStyles,
   fade,
@@ -128,12 +127,9 @@ const NoData: FunctionComponent<NoDataProps> = ({database, stream}) => {
 
 export const List: FunctionComponent<Props> = ({database, stream, from, limit}) => {
   const classes = useStyles();
-  const { setLoading} = React.useContext(loadingContext);
 
   return <ListStreamComponent variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
-        setLoading(loading);
-
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
 
         if(!data || !data.readStreamBackward) { 
