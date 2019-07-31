@@ -5,6 +5,14 @@ import gql from "graphql-tag";
 import AceEditor from 'react-ace';
 import { SpinnerButton} from '../ActionButton';
 import { AppendSingleComponent } from '../data/types'
+import Paper from '@material-ui/core/Paper';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import 'brace';
 import 'brace/mode/json';
@@ -38,20 +46,23 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
       }
 
       return (
+          <Card>
+          <CardHeader title="New message" />
+          <CardContent>
       <Form onSubmit={e => {
         e.preventDefault();
         mutate({variables : {db: database, stream: streamName, eventtype: eventtype, payload: value}})
       }}>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+          <TextField label="stream name" placeholder="order-123" value={streamName} onChange={e => setStreamName(e.target.value)} />
+              </Grid>
+              <Grid item xs={12}>
+          <TextField label="message type" placeholder="order.created" value={eventtype} onChange={e => setEventtype(e.target.value)} />
+              </Grid>
+              <Grid item xs={12}>
         <FormGroup>
-          <Label for="streamname">stream name</Label>
-          <Input placeholder="order-123" value={streamName} onChange={e => setStreamName(e.target.value)} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="eventtype">event type</Label>
-          <Input placeholder="order.created" value={eventtype} onChange={e => setEventtype(e.target.value)} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="value">event value</Label>
+          <InputLabel htmlFor="value">event value</InputLabel>
           <AceEditor
             className="form-control"
             mode="json"
@@ -72,8 +83,14 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
             width="100%"
           />   
         </FormGroup>
+              </Grid>
+              <Grid item xs={12}>
         <SpinnerButton spinning={loading}>Submit</SpinnerButton>
+        </Grid>
+        </Grid>
       </Form>
+        </CardContent>
+        </Card>
     )}}
     </AppendSingleComponent>
 }

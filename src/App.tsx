@@ -62,7 +62,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
-{
+  {
+    exact: true,
+    path: "/:database/new", 
+    component: ({match}: any) => (<AppendStream database={decodeURIComponent(match.params.database)} stream="" />),
+    breadcrumb: "new"
+  },
+  {
+    exact: true,
     path: "/login",
     component: ({location}: any) => {
       const values = new URLSearchParams(location.search);
@@ -72,36 +79,25 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     breadcrumb: "login"
   },
   {
+    exact: true,
     path: "/logout",
     component: () => <Logout returnUrl={undefined} />,
     breadcrumb: "logout"
   },
   {
+    exact: true,
     path: "/",
     component: Databases,
     breadcrumb: "databases"
   },
   {
-    path: "/database/",
-    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
-    breadcrumb: "database"
-  },
-  {
-    path: "/:database/new", 
-    compontent: ({match}: any) => (<AppendStream database={decodeURIComponent(match.params.database)} stream="" />),
-    breadcrumb: "new"
-  },
-  {
-    path: "/:database",
-    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
-    breadcrumb: ({match}: any) => decodeURIComponent(match.params.database)
-  },
-  {
+    exact: true,
     path: "/:database/:stream/new",
     component: ( {match}: any) => (<AppendStream database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)}/>),
     breadcrumb: ({match}: any) => "new event"
   },
   {
+    exact: true,
     path: "/:database/:stream",
     component: ( {match}: any) => {
         return (<Redirect to={`/${encodeURIComponent(match.params.database)}/${encodeURIComponent(match.params.stream)}/last`} />)
@@ -109,24 +105,34 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     breadcrumb: ({match}: any) => decodeURIComponent(match.params.stream)
   },
   {
+    exact: true,
+    path: "/:database",
+    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
+    breadcrumb: ({match}: any) => decodeURIComponent(match.params.database)
+  },
+  {
+    exact: true,
     path: "/:database/:stream/last",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={10} /> )} ,
     breadcrumb: ({match}: any) => "last"
   },
   {
+    exact: true,
     path: "/:database/:stream/:from",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={10} /> )} ,
     breadcrumb: ({match}: any) => decodeURIComponent(match.params.from)
   },
   {
+    exact: true,
     path: "/:database/:stream/last/message/",
     component: ( {match}: any) => {
         return (<Message database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1}  /> )},
     breadcrumb: () => "message"
   },
   {
+    exact: true,
     path: "/:database/:stream/:from/message/",
     component: ( {match}: any) => {
         return (<Message database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from}  /> )},
@@ -170,7 +176,7 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
         <Breadcrumbs />
     <Switch>
-      {routes.filter(i => i.component).map(r => <Route key={r.path} exact path={r.path} component={r.component} />)}
+      {routes.filter(i => i.component).map(r => <Route exact={r.exact} path={r.path} component={r.component} />)}
     </Switch>
         </Container>
         <MadeWithLove />
@@ -178,6 +184,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-
-

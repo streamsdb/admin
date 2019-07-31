@@ -28,7 +28,7 @@ query StreamsQuery($database: String!){
 }`;
 
 const NoStreams: FunctionComponent<Props> = () => <p>
-  No streams found in database, create a new stream by creating an new event for it.
+  No streams found
 </p>
 
 export const Streams: FunctionComponent<Props> = ({ database }) => {
@@ -58,7 +58,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
         names = data.database.streams.names
       }
       
-      if(!names) {
+      if(!names || names.length === 0) {
         return <NoStreams database={database} />
       }
 
