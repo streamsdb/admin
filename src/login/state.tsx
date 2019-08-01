@@ -6,12 +6,12 @@ interface IAuthContext {
   setUnauthenticated: () => void;
 }
 
-export const AuthContext = React.createContext<IAuthContext>({isAuthenticated: localStorage.getItem("token") !== null, setAuthenticated: ()=>{}, setUnauthenticated: ()=>{}});
+export const AuthContext = React.createContext<IAuthContext>({isAuthenticated: false, setAuthenticated: ()=>{}, setUnauthenticated: ()=>{}});
 
 export const useAuthContext = () => React.useContext(AuthContext);
 
 const useAuthStateHandler = () => {
-  const [state, setState] = React.useState(false);
+  const [state, setState] = React.useState(localStorage.getItem("token") !== null);
 
   const setAuthenticated = (token: string) => {
     localStorage.setItem("token", token);
