@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
-import { StreamsQueryComponent } from './data/types'
+import { StreamsQueryComponent, StreamsPage } from './data/types'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -27,9 +27,20 @@ query StreamsQuery($database: String!){
   },
 }`;
 
-const NoStreams: FunctionComponent<Props> = () => <p>
-  No streams found
-</p>
+interface StreamsProps {
+  database: string;
+  page: StreamsPage;
+}
+
+const StreamsContent: FunctionComponent<StreamsProps> = ({database, page}) => {
+  debugger;
+  if(!page.names || page.names.length === 0) {
+    return <List><ListItem><ListItemText>No Streams in database</ListItemText></ListItem></List>
+  }
+  return <List>
+          {page.names.map((name) => (<ListItem button component={Link} to={`/${encodeURIComponent(database)}/${encodeURIComponent(name)}`}><ListItemText>{name}</ListItemText></ListItem>))}
+        </List>
+}
 
 export const Streams: FunctionComponent<Props> = ({ database }) => {
   return (<StreamsQueryComponent variables={{database}}>
@@ -53,15 +64,11 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
         </Paper>
       } 
 
-      var names: string[] = [];
-      if(data && data.database && data.database.streams && data.database.streams.names) {
-        names = data.database.streams.names
+      var page: StreamsPage = {total: 0};
+      if(data && data.database && data.database.streams) {
+        page = data.database.streams
       }
       
-      if(!names || names.length === 0) {
-        return <NoStreams database={database} />
-      }
-
       return <>
         <Toolbar>
           <Button variant="contained" component={Link} to={`/${encodeURIComponent(database)}/new`} color="primary">
@@ -69,9 +76,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
           </Button>
         </Toolbar>
         <Paper>
-        <List>
-          {names.map((name) => (<ListItem button component={Link} to={`/${encodeURIComponent(database)}/${encodeURIComponent(name)}`}><ListItemText>{name}</ListItemText></ListItem>))}
-        </List>
+        <StreamsContent database={database} page={page} />
       </Paper>
         </>
     }}</StreamsQueryComponent>
