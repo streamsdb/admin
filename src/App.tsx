@@ -8,7 +8,7 @@ import {Databases } from "./db/databases";
 import {Streams } from "./Streams";
 import { List as StreamList } from "./stream/list";
 import { Message } from "./stream/message/message";
-import { AppendStream } from "./stream/append";
+import { AppendStream } from "./stream/message/new";
 import breadcrumbCreator from './Breadcrumbs';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';

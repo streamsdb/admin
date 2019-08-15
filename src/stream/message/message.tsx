@@ -28,7 +28,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
-import DeleteButton from './components/delete'
+import DeleteButton from './components/delete';
+import MessageComponent  from './components/message';
 
 gql`
 query ReadMessageForward($database: String!, $stream: String!, $from: Int!)
@@ -129,7 +130,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           return <div>
             <Alert color="primary">
               failed to query stream {stream}: {error.message}
-            </Alert>
+           </Alert>
           </div>
         }
 
@@ -139,7 +140,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           </Alert>
         }
 
-        var { head, messages } = data.readStreamForward;
+        var { head, messages} = data.readStreamForward;
         var message = messages[0];
         from = message.position;
 
@@ -162,37 +163,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           />
           <CardContent>
           <form>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <RedditTextField
-                  id="standard-name"
-                  label="stream name"
-                  value={stream}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <RedditTextField
-                  id="standard-name"
-                  label="event type"
-                  value={message.type}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <InputLabel htmlFor="value">event value</InputLabel>
-                <AceEditor
-                  readOnly={true}
-                  className={classes.root}
-                  mode="json"
-                  theme="tomorrow"
-                  value={value}
-                  name="value"
-                  editorProps={{$blockScrolling: true}}
-                  width="100%"
-                  wrapEnabled={true}
-                  fontSize={16}
-                />   
-              </Grid>
-            </Grid>
+            <MessageComponent message={{stream: stream, type:message.type, value: message.value}} readOnly={true} />
           </form></CardContent></Card></Container>)
     }}
     </ReadMessageForwardComponent>
