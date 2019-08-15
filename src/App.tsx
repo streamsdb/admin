@@ -98,14 +98,6 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
   },
   {
     exact: true,
-    path: "/:database/:stream",
-    component: ( {match}: any) => {
-        return (<Redirect to={`/${encodeURIComponent(match.params.database)}/${encodeURIComponent(match.params.stream)}/last`} />)
-    },
-    breadcrumb: ({match}: any) => decodeURIComponent(match.params.stream)
-  },
-  {
-    exact: true,
     path: "/:database",
     component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
     breadcrumb: ({match}: any) => decodeURIComponent(match.params.database)
@@ -114,8 +106,16 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     exact: true,
     path: "/:database/:stream/last",
     component: ( {match}: any) => {
+        return (<Redirect to={`/${encodeURIComponent(match.params.database)}/${encodeURIComponent(match.params.stream)}`} />)
+    },
+    breadcrumb: ({match}: any) => "last",
+  },
+  {
+    exact: true,
+    path: "/:database/:stream",
+    component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={10} /> )} ,
-    breadcrumb: ({match}: any) => "last"
+    breadcrumb: ({match}: any) => decodeURIComponent(match.params.stream)
   },
   {
     exact: true,
