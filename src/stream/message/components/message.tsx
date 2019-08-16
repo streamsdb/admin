@@ -5,6 +5,7 @@ import {
   Theme,
   makeStyles,
 } from '@material-ui/core/styles';
+import Skeleton from 'react-loading-skeleton';
 import AceEditor from 'react-ace';
 import TextField, {TextFieldProps } from '@material-ui/core/TextField';
 import { OutlinedInputProps } from '@material-ui/core/OutlinedInput';
@@ -18,6 +19,7 @@ export interface StreamMessage {
 }
 
 type Props = {
+  loading: boolean;
   readOnly: boolean;
   message: StreamMessage;
   onChange?: ((message: StreamMessage) => void);
@@ -56,12 +58,12 @@ function RedditTextField(props: TextFieldProps) {
   );
 }
 
-const MessageComponent: FunctionComponent<Props> = ({readOnly, message, onChange}) => {
+const MessageComponent: FunctionComponent<Props> = ({loading, readOnly, message, onChange}) => {
   const classes = useStylesReddit();
 
   return <Grid container spacing={3}>
     <Grid item xs={12}>
-      <RedditTextField
+      {loading ? (<Skeleton />) : (<RedditTextField
         inputProps={{
           readOnly: readOnly,
         }}
@@ -69,10 +71,10 @@ const MessageComponent: FunctionComponent<Props> = ({readOnly, message, onChange
         label="stream name"
         value={message.stream}
         onChange={(e) => onChange && onChange({...message, stream: e.target.value})}
-      />
+      />)}
     </Grid>
     <Grid item xs={12}>
-      <RedditTextField
+      {loading ? (<Skeleton />) : (<RedditTextField
         inputProps={{
           readOnly: readOnly,
         }}
@@ -80,11 +82,11 @@ const MessageComponent: FunctionComponent<Props> = ({readOnly, message, onChange
         label="event type"
         value={message.type}
         onChange={(e) => onChange && onChange({...message, type: e.target.value})}
-      />
+      />)}
     </Grid>
     <Grid item xs={12}>
       <InputLabel htmlFor="value">event value</InputLabel>
-      <AceEditor
+      {loading ? (<Skeleton />) : (<AceEditor
         readOnly={readOnly}
         className={classes.root}
         mode="json"
@@ -96,9 +98,13 @@ const MessageComponent: FunctionComponent<Props> = ({readOnly, message, onChange
         wrapEnabled={true}
         fontSize={16}
         onChange={(newValue) => onChange && onChange({...message, value: newValue})}
-      />   
+      />)}
     </Grid>
   </Grid>
+}
+
+MessageComponent.defaultProps= {
+  loading: false,
 }
 
 export default MessageComponent;

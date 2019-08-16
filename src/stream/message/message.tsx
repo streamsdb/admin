@@ -123,9 +123,6 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
 
   return <ReadMessageForwardComponent variables={{database, stream, from}}>
       {({ data, error, loading }) => {
-        if(loading) {
-          return <CircularProgress />;
-        } 
         if(error) {
           return <div>
             <Alert color="primary">
@@ -163,7 +160,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           />
           <CardContent>
           <form>
-            <MessageComponent message={{stream: stream, type:message.type, value: message.value}} readOnly={true} />
+            <MessageComponent loading={loading} message={{stream: stream, type:message.type, value: message.value}} readOnly={true} />
           </form></CardContent></Card></Container>)
     }}
     </ReadMessageForwardComponent>

@@ -54,7 +54,7 @@ export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
             }}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
-                  <MessageComponent readOnly={false} message={message} onChange={(message) => setMessage(message)} />
+                  <MessageComponent loading={false} readOnly={false} message={message} onChange={(message) => setMessage(message)} />
                 </Grid>
                 <Grid item xs={12}>
                   <SpinnerButton spinning={loading}>Submit</SpinnerButton>
