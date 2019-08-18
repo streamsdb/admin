@@ -26,7 +26,7 @@ const DeleteButton: FunctionComponent<Props> = ({database, stream, position}) =>
       }
 
       if(!error && data !== undefined && data.deleteMessage !== undefined) {
-        return <Redirect to={`/${database}/streams/${stream}`} />
+        return <Redirect to={`/${encodeURIComponent(database)}/${encodeURIComponent(stream)}`} />
       }
 
       return <IconButton onClick={() => mutate()}>
