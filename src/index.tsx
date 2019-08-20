@@ -19,6 +19,7 @@ import { setContext } from 'apollo-link-context';
 import { onError } from "apollo-link-error";
 import browserHistory from './history';
 import AuthProvider from "./login/state";
+import * as Sentry from '@sentry/browser';
 
 if(config.gaId) {
   ReactGA.initialize('UA-143880638-2');
@@ -95,6 +96,12 @@ const client = new ApolloClient({
     }*/
 });
 
+if(config.sentryDsn) {
+  console.log("configured sentry");
+  Sentry.init({dsn: config.sentryDsn});
+} else {
+  console.log("skipped sentry configuration because sentryDsn is not set");
+}
 
 ReactDOM.render(
   <Router history={browserHistory}>
