@@ -4,7 +4,7 @@ import AceEditor from 'react-ace';
 import Divider from '@material-ui/core/Divider';
 import TimeAgo from 'react-timeago';
 import prettyBytes from 'pretty-bytes';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, Redirect } from "react-router-dom";
 import { Message } from '../data/types';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -138,6 +138,10 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
 
         from = data.readStreamBackward.from;
         const last = Math.max(data.readStreamBackward.head, 1);
+
+        if(data.readStreamBackward.messages[0].position != from) {
+          return <Redirect to={`/${database}/${stream}/${data.readStreamBackward.messages[0].position}`} />
+        }
 
         return <Grid container spacing={1}>
             <Grid item xs={12}>
