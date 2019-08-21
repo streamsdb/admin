@@ -84,7 +84,7 @@ const client = new ApolloClient({
     })
   ]),
   cache: new InMemoryCache(),
-  /*defaultOptions: {
+  defaultOptions: {
       watchQuery: {
         fetchPolicy: 'no-cache', 
         errorPolicy: 'ignore',
@@ -93,7 +93,7 @@ const client = new ApolloClient({
         fetchPolicy: 'no-cache',
         errorPolicy: 'all',
       },
-    }*/
+    }
 });
 
 if(config.sentryDsn) {
