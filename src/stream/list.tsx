@@ -15,7 +15,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import Tooltip from '@material-ui/core/Tooltip';
-import { ListStreamComponent } from '../data/types'
+import { ReadStreamBackwardComponent, ReadStreamForwardComponent } from '../data/types'
 import {
   createStyles,
   fade,
@@ -34,6 +34,7 @@ interface Props  {
   stream: string;
   from: number;
   limit: number;
+  reverse: boolean;
 }
 
 function LinkForEventMessage(database: string, stream: string, m: Message) {
@@ -105,7 +106,7 @@ interface NoDataProps {
   stream: string;
 }
 
-const NoData: FunctionComponent<NoDataProps> = ({database, stream}) => {
+const NoData: FunctionComponent<NoDataProps> = ({database, stream }) => {
   const classes = useStyles();
   return <Grid key="nodata" container spacing={1}>
             <Grid item xs={12}>
@@ -128,7 +129,7 @@ const NoData: FunctionComponent<NoDataProps> = ({database, stream}) => {
 export const List: FunctionComponent<Props> = ({database, stream, from, limit}) => {
   const classes = useStyles();
 
-  return <ListStreamComponent variables={{database, stream, from, limit}}>
+  return <ReadStreamBackwardComponent variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
 
@@ -183,7 +184,7 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
             <Divider />
             <AceEditor
                   readOnly={true}
-              className={classes.editor}
+                  className={classes.editor}
                   mode="json"
                   theme="tomorrow"
                   value={value}
@@ -199,5 +200,5 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit}) 
             </Grid>})}
         </Grid>
       }}
-  </ListStreamComponent>
+  </ReadStreamBackwardComponent>
 }

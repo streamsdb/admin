@@ -114,14 +114,14 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     exact: true,
     path: "/:database/:stream",
     component: ( {match}: any) => {
-        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={10} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={10} reverse={true} /> )} ,
     breadcrumb: ({match}: any) => decodeURIComponent(match.params.stream)
   },
   {
     exact: true,
     path: "/:database/:stream/:from",
     component: ( {match}: any) => {
-        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={10} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={10} reverse={true} /> )} ,
     breadcrumb: ({match}: any) => decodeURIComponent(match.params.from)
   },
   {

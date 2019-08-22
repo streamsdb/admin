@@ -47,10 +47,12 @@ const errorLink = onError(({ response, graphQLErrors, networkError, operation, f
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
 
-      if (err.extensions.code === "Unauthenticated") {
-			  localStorage.removeItem('token');
-        browserHistory.push('/login?redirectUrl=' + encodeURI(browserHistory.location.pathname));
-        return;
+      if (err.extensions) {
+        if (err.extensions.code === "Unauthenticated") {
+            localStorage.removeItem('token');
+            browserHistory.push('/login?redirectUrl=' + encodeURI(browserHistory.location.pathname));
+            return;
+          }
       }
     }
   }
