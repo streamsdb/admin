@@ -271,7 +271,7 @@ export type ReadStreamForwardQueryVariables = {
 
 export type ReadStreamForwardQuery = (
   { __typename?: 'Query' }
-  & { readStreamBackward: (
+  & { readStreamForward: (
     { __typename?: 'Slice' }
     & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head'>
     & { messages: Array<(
@@ -462,7 +462,7 @@ export function withReadStreamBackward<TProps, TChildProps = {}>(operationOption
 export type ReadStreamBackwardQueryResult = ApolloReactCommon.QueryResult<ReadStreamBackwardQuery, ReadStreamBackwardQueryVariables>;
 export const ReadStreamForwardDocument = gql`
     query ReadStreamForward($database: String!, $stream: String!, $from: Int!, $limit: Int!) {
-  readStreamBackward(db: $database, name: $stream, from: $from, limit: $limit) {
+  readStreamForward(db: $database, name: $stream, from: $from, limit: $limit) {
     stream
     from
     next

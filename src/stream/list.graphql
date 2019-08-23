@@ -20,12 +20,12 @@
   }
 
   query ReadStreamForward(
-   $database: String!
+    $database: String!
     $stream: String!
     $from: Int!
     $limit: Int!
   ) {
-    readStreamBackward(db: $database, name: $stream, from: $from, limit: $limit) {
+    readStreamForward(db: $database, name: $stream, from: $from, limit: $limit) {
       stream
       from
       next
