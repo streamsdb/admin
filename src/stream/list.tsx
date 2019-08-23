@@ -123,14 +123,14 @@ const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from,
   let lastPosition = slice.from;
 
   if(slice.messages.length > 0) {
-    firstPosition = slice.reverse ? slice.messages[0].position : slice.messages[slice.messages.length-1].position;
-     lastPosition = slice.reverse ? slice.messages[slice.messages.length-1].position : slice.messages[0].position;
+    firstPosition = slice.reverse ? slice.messages[slice.messages.length-1].position : slice.messages[0].position;
+    lastPosition = slice.reverse ? slice.messages[0].position : slice.messages[slice.messages.length-1].position;
   }
 
   return <Grid container spacing={1}>
       <Grid item xs={12}>
         <Typography variant="caption" color="textSecondary" gutterBottom>
-          from {slice.from} {slice.reverse ? "backward" : "forward"}
+          from {slice.from} to {slice.reverse ? "older" : "newer"} messages
         </Typography>
       </Grid>
 
