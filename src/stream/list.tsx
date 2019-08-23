@@ -63,7 +63,7 @@ const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, 
     </IconButton>
     </Tooltip>
     <Tooltip title="Older">
-    <IconButton component={RouterLink} to={`${baseUrl}/${from-1}/backward/${limit}`} aria-label="Previous Page">
+    <IconButton component={RouterLink} to={`${baseUrl}/${Math.max(from-1, limit)}/backward/${limit}`} aria-label="Previous Page">
       <KeyboardArrowRight />
     </IconButton>
     </Tooltip>
@@ -184,6 +184,25 @@ const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from,
   </Grid>
 }
 
+const Loading: FunctionComponent<NoDataProps> = ({database, stream }) => {
+  const classes = useStyles();
+  return <Grid key="nodata" container spacing={1}>
+            <Grid item xs={12}>
+              <Paging database={database} stream={stream} from={1} limit={10} last={1} reverse={true} />
+            </Grid>
+
+            {Array.from(Array(10).keys()).map((_, i)=> (
+            <Grid key={`no-item-${i}`} item xs={12}>
+              <ExpansionPanel>
+                <ExpansionPanelSummary style={{minHeight: '60px' }}>
+                  <Grid className={classes.root} item xs={12}>
+                    <Skeleton />
+                  </Grid>
+                </ExpansionPanelSummary>
+              </ExpansionPanel>
+            </Grid>))}
+        </Grid>
+}
 const NoData: FunctionComponent<NoDataProps> = ({database, stream }) => {
   const classes = useStyles();
   return <Grid key="nodata" container spacing={1}>
@@ -209,6 +228,7 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit, r
     return <ReadStreamBackwardComponent variables={{database, stream, from, limit}}>
       {({ data, error, loading }) => {
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
+        if(loading) { return <Loading database={database} stream={stream} /> }
 
         let slice: Slice | undefined;
         if(data && data.readStreamBackward) {
@@ -223,6 +243,7 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit, r
   return <ReadStreamForwardComponent variables={{database, stream, from, limit}}>
     {({ data, error, loading }) => {
       if(error) { return <pre>{JSON.stringify(error)}</pre> }
+      if(loading) { return <Loading database={database} stream={stream} /> }
 
       let slice: Slice | undefined;
       if(data && data.readStreamForward) {
