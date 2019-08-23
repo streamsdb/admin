@@ -101,11 +101,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface NoDataProps {
-  database: string;
-  stream: string;
-}
-
 interface Selection{
   database: string;
   stream: string;
@@ -115,17 +110,18 @@ interface Selection{
 }
 
 interface SelectionAndData extends Selection {
-  slice: Slice | undefined;
+  slice: Slice;
 }
 
 const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from, limit, slice}) => {
   const classes = useStyles();
-  if(!slice || !slice.messages || slice.messages.length === 0) {
-    return <NoData database={database} stream={stream} />
-  }
+  let firstPosition = slice.from;
+  let lastPosition = slice.from;
 
-  const firstPosition = slice.reverse ? slice.messages[0].position : slice.messages[slice.messages.length-1].position;
-  const lastPosition = slice.reverse ? slice.messages[slice.messages.length-1].position : slice.messages[0].position;
+  if(slice.messages.length > 0) {
+    firstPosition = slice.reverse ? slice.messages[0].position : slice.messages[slice.messages.length-1].position;
+     lastPosition = slice.reverse ? slice.messages[slice.messages.length-1].position : slice.messages[0].position;
+  }
 
   return <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -184,26 +180,12 @@ const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from,
   </Grid>
 }
 
-const Loading: FunctionComponent<NoDataProps> = ({database, stream }) => {
-  const classes = useStyles();
-  return <Grid key="nodata" container spacing={1}>
-            <Grid item xs={12}>
-              <Paging database={database} stream={stream} from={1} limit={10} last={1} reverse={true} />
-            </Grid>
-
-            {Array.from(Array(10).keys()).map((_, i)=> (
-            <Grid key={`no-item-${i}`} item xs={12}>
-              <ExpansionPanel>
-                <ExpansionPanelSummary style={{minHeight: '60px' }}>
-                  <Grid className={classes.root} item xs={12}>
-                    <Skeleton />
-                  </Grid>
-                </ExpansionPanelSummary>
-              </ExpansionPanel>
-            </Grid>))}
-        </Grid>
+interface NoDataProps {
+  database: string;
+  stream: string;
 }
-const NoData: FunctionComponent<NoDataProps> = ({database, stream }) => {
+
+const Loading: FunctionComponent<NoDataProps> = ({database, stream }) => {
   const classes = useStyles();
   return <Grid key="nodata" container spacing={1}>
             <Grid item xs={12}>
@@ -230,11 +212,11 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit, r
         if(error) { return <pre>{JSON.stringify(error)}</pre> }
         if(loading) { return <Loading database={database} stream={stream} /> }
 
-        let slice: Slice | undefined;
-        if(data && data.readStreamBackward) {
-          slice = data.readStreamBackward as Slice | undefined;
+        if(!data || !data.readStreamBackward) {
+          return <pre>missing data in result</pre>
         }
 
+        const slice = data.readStreamBackward as Slice;
         return <SliceView database={database} stream={stream} from={from} limit={limit} reverse={reverse} slice={slice} />
       }}
     </ReadStreamBackwardComponent>
@@ -245,11 +227,11 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit, r
       if(error) { return <pre>{JSON.stringify(error)}</pre> }
       if(loading) { return <Loading database={database} stream={stream} /> }
 
-      let slice: Slice | undefined;
-      if(data && data.readStreamForward) {
-        slice = data.readStreamForward as Slice | undefined;
-      }
+        if(!data || !data.readStreamForward) {
+          return <pre>missing data in result</pre>
+        }
 
+      const slice = data.readStreamForward as Slice;
       return <SliceView database={database} stream={stream} from={from} limit={limit} reverse={reverse} slice={slice} />
     }}
   </ReadStreamForwardComponent>
