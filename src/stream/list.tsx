@@ -119,10 +119,12 @@ interface SelectionAndData extends Selection {
 
 const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from, limit, slice}) => {
   const classes = useStyles();
-  let firstPosition = slice.from;
-  let lastPosition = slice.from;
+  const linkReverseDirection = `/${encodeURIComponent(database)}/${encodeURIComponent(stream)}/${slice.reverse ? from + 1 : from - 1}/${slice.reverse ? "forward" : "backward"}/${limit}`;
 
-  if(slice.messages.length > 0) {
+  let firstPosition = from;
+  let lastPosition = from;
+
+  if(slice.messages.length) {
     firstPosition = slice.reverse ? slice.messages[slice.messages.length-1].position : slice.messages[0].position;
     lastPosition = slice.reverse ? slice.messages[0].position : slice.messages[slice.messages.length-1].position;
   }
@@ -133,11 +135,13 @@ const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from,
           from {slice.from} to {slice.reverse ? <abbr title="reading the stream backward">older</abbr> : <abbr title="reading the stream forward">newer</abbr>} messages
         </Typography>
       </Grid>
-
       <Grid item xs={12}>
         <Paging database={database} stream={stream} from={firstPosition} limit={limit} last={lastPosition} reverse={slice.reverse} />
       </Grid>
-    {slice.messages.sort((a,b) => a.position > b.position ? -1: 1).map(m => {
+    {(slice.messages.length === 0) ? <p>
+      no messages found,
+      try <Link component={RouterLink} to={linkReverseDirection}>reversing the direction</Link>
+    </p> : slice.messages.sort((a,b) => a.position > b.position ? -1: 1).map(m => {
       var value;
       try {
         value = JSON.stringify(JSON.parse(m.value), null, 4);
