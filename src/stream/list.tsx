@@ -72,7 +72,6 @@ const Paging: FunctionComponent<PagingProps> = ({database, stream, from, limit, 
       <LastPageIcon />
     </IconButton>
     </Tooltip>
-    <div>`${stream} from ${from} to ${last}`</div>
     <div style={{ flex: 1 }}></div>
     <Button component={RouterLink} to={`${baseUrl}/new`} color="primary" variant="contained">New event</Button>
   </Grid>
