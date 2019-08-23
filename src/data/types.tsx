@@ -253,7 +253,7 @@ export type ReadStreamBackwardQuery = (
   { __typename?: 'Query' }
   & { readStreamBackward: (
     { __typename?: 'Slice' }
-    & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head'>
+    & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head' | 'reverse'>
     & { messages: Array<(
       { __typename?: 'Message' }
       & Pick<Message, 'position' | 'timestamp' | 'type' | 'value'>
@@ -273,7 +273,7 @@ export type ReadStreamForwardQuery = (
   { __typename?: 'Query' }
   & { readStreamForward: (
     { __typename?: 'Slice' }
-    & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head'>
+    & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head' | 'reverse'>
     & { messages: Array<(
       { __typename?: 'Message' }
       & Pick<Message, 'position' | 'timestamp' | 'type' | 'value'>
@@ -433,6 +433,7 @@ export const ReadStreamBackwardDocument = gql`
     next
     hasNext
     head
+    reverse
     messages {
       position
       timestamp
@@ -468,6 +469,7 @@ export const ReadStreamForwardDocument = gql`
     next
     hasNext
     head
+    reverse
     messages {
       position
       timestamp

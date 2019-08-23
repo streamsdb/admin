@@ -1,5 +1,9 @@
 import React, { FunctionComponent } from 'react';
 
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import AceEditor from 'react-ace';
 import Divider from '@material-ui/core/Divider';
 import TimeAgo from 'react-timeago';
@@ -125,9 +129,14 @@ const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from,
 
   return <Grid container spacing={1}>
       <Grid item xs={12}>
-        <Paging database={database} stream={stream} from={firstPosition} limit={limit} last={lastPosition} reverse={slice.reverse} />
+        <Typography variant="caption" color="textSecondary" gutterBottom>
+          from {slice.from} {slice.reverse ? "backward" : "forward"}
+        </Typography>
       </Grid>
 
+      <Grid item xs={12}>
+        <Paging database={database} stream={stream} from={firstPosition} limit={limit} last={lastPosition} reverse={slice.reverse} />
+      </Grid>
     {slice.messages.sort((a,b) => a.position > b.position ? -1: 1).map(m => {
       var value;
       try {
@@ -213,7 +222,17 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit, r
         if(loading) { return <Loading database={database} stream={stream} /> }
 
         if(!data || !data.readStreamBackward) {
-          return <pre>missing data in result</pre>
+          return <Grid key="nodata" item xs={12}>
+            <ExpansionPanel TransitionProps={{
+              timeout: 0
+            }}>
+              <ExpansionPanelSummary>
+                <Grid container spacing={0}>
+                  no events
+                </Grid>
+              </ExpansionPanelSummary>
+            </ExpansionPanel>
+          </Grid>
         }
 
         const slice = data.readStreamBackward as Slice;
@@ -227,9 +246,19 @@ export const List: FunctionComponent<Props> = ({database, stream, from, limit, r
       if(error) { return <pre>{JSON.stringify(error)}</pre> }
       if(loading) { return <Loading database={database} stream={stream} /> }
 
-        if(!data || !data.readStreamForward) {
-          return <pre>missing data in result</pre>
-        }
+      if(!data || !data.readStreamForward) {
+        return <Grid key="nodata" item xs={12}>
+          <ExpansionPanel TransitionProps={{
+            timeout: 0
+          }}>
+            <ExpansionPanelSummary>
+              <Grid container spacing={0}>
+                no events
+              </Grid>
+            </ExpansionPanelSummary>
+          </ExpansionPanel>
+        </Grid>
+      }
 
       const slice = data.readStreamForward as Slice;
       return <SliceView database={database} stream={stream} from={from} limit={limit} reverse={reverse} slice={slice} />
