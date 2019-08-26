@@ -132,7 +132,7 @@ const SliceView: FunctionComponent<SelectionAndData> = ({database, stream, from,
   return <Grid container spacing={1}>
       <Grid item xs={12}>
         <Typography variant="caption" color="textSecondary" gutterBottom>
-          from {slice.from} to {slice.reverse ? <abbr title="reading the stream backward">older</abbr> : <abbr title="reading the stream forward">newer</abbr>} messages
+          from position {slice.from} and {slice.reverse ? <abbr title="reading the stream backward">older</abbr> : <abbr title="reading the stream forward">newer</abbr>} messages
         </Typography>
       </Grid>
       <Grid item xs={12}>
