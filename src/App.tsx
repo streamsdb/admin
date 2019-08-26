@@ -121,14 +121,14 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     exact: true,
     path: "/:database/:stream/:from",
     component: ( {match}: any) => {
-        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={10} reverse={true} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={10} reverse={true} /> )} ,
     breadcrumb: null,
   },
   {
     exact: true,
     path: "/:database/:stream/:from/forward/:limit?",
     component: ( {match}: any) => {
-        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={match.params.limit || 10} reverse={false} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={match.params.limit || 10} reverse={false} /> )} ,
     breadcrumb: null,
   },
   {
@@ -142,14 +142,14 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     exact: true,
     path: "/:database/:stream/:from/backward/",
     component: ( {match}: any) => {
-        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={match.params.limit || 10} reverse={true} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={match.params.limit || 10} reverse={true} /> )} ,
     breadcrumb: null,
   },
   {
     exact: true,
     path: "/:database/:stream/:from/backward/:limit?",
     component: ( {match}: any) => {
-        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from} limit={match.params.limit || 10} reverse={true} /> )} ,
+        return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={match.params.limit || 10} reverse={true} /> )} ,
     breadcrumb: null,
   },
   {
