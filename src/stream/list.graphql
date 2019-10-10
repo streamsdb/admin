@@ -16,6 +16,7 @@
         timestamp
         type
         value
+        header
       }
     }
   }
@@ -38,6 +39,7 @@
         timestamp
         type
         value
+        header
       }
     }
   }

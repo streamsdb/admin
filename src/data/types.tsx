@@ -65,6 +65,7 @@ export type Message = {
   timestamp: Scalars['Timestamp'],
   type: Scalars['String'],
   value: Scalars['Bytes'],
+  header: Scalars['Bytes'],
 };
 
 export type MessageInput = {
@@ -256,7 +257,7 @@ export type ReadStreamBackwardQuery = (
     & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head' | 'reverse'>
     & { messages: Array<(
       { __typename?: 'Message' }
-      & Pick<Message, 'position' | 'timestamp' | 'type' | 'value'>
+      & Pick<Message, 'position' | 'timestamp' | 'type' | 'value' | 'header'>
     )> }
   ) }
 );
@@ -276,7 +277,7 @@ export type ReadStreamForwardQuery = (
     & Pick<Slice, 'stream' | 'from' | 'next' | 'hasNext' | 'head' | 'reverse'>
     & { messages: Array<(
       { __typename?: 'Message' }
-      & Pick<Message, 'position' | 'timestamp' | 'type' | 'value'>
+      & Pick<Message, 'position' | 'timestamp' | 'type' | 'value' | 'header'>
     )> }
   ) }
 );
@@ -295,7 +296,7 @@ export type ReadMessageForwardQuery = (
     & Pick<Slice, 'head' | 'next' | 'hasNext'>
     & { messages: Array<(
       { __typename?: 'Message' }
-      & Pick<Message, 'position' | 'timestamp' | 'type' | 'value'>
+      & Pick<Message, 'position' | 'timestamp' | 'type' | 'value' | 'header'>
     )> }
   ) }
 );
@@ -439,6 +440,7 @@ export const ReadStreamBackwardDocument = gql`
       timestamp
       type
       value
+      header
     }
   }
 }
@@ -475,6 +477,7 @@ export const ReadStreamForwardDocument = gql`
       timestamp
       type
       value
+      header
     }
   }
 }
@@ -508,6 +511,7 @@ export const ReadMessageForwardDocument = gql`
       timestamp
       type
       value
+      header
     }
   }
 }

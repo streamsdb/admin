@@ -36,7 +36,7 @@ gql`
 `;
 
 export const AppendStream: FunctionComponent<Props> = ({database, stream}) => {
-  const [message, setMessage] = useState<StreamMessage>({stream, type: "", value: ""});
+  const [message, setMessage] = useState<StreamMessage>({stream, type: "", value: "", header: ""});
 
   return <AppendSingleComponent>
     {(mutate, { loading, error, data }) => {

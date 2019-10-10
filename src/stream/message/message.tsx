@@ -43,6 +43,7 @@ query ReadMessageForward($database: String!, $stream: String!, $from: Int!)
       timestamp
       type
       value
+      header
     }
   }
 }
@@ -160,7 +161,7 @@ export const Message: FunctionComponent<Props> = ({database, stream, from}) => {
           />
           <CardContent>
           <form>
-            <MessageComponent loading={loading} message={{stream: stream, type:message.type, value: message.value}} readOnly={true} />
+            <MessageComponent loading={loading} message={{stream: stream, type:message.type, header: message.header, value: message.value}} readOnly={true} />
           </form></CardContent></Card></Container>)
     }}
     </ReadMessageForwardComponent>

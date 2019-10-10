@@ -15,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 export interface StreamMessage {
   stream: string;
   type: string;
+  header: string;
   value: string;
 }
 
@@ -98,6 +99,22 @@ const MessageComponent: FunctionComponent<Props> = ({loading, readOnly, message,
         wrapEnabled={true}
         fontSize={16}
         onChange={(newValue) => onChange && onChange({...message, value: newValue})}
+      />)}
+    </Grid>
+    <Grid item xs={12}>
+      <InputLabel htmlFor="value">event header</InputLabel>
+      {loading ? (<Skeleton />) : (<AceEditor
+        readOnly={readOnly}
+        className={classes.root}
+        mode="json"
+        theme="tomorrow"
+        value={message.header}
+        name="value"
+        editorProps={{$blockScrolling: true}}
+        width="100%"
+        wrapEnabled={true}
+        fontSize={16}
+        onChange={(newValue) => onChange && onChange({...message, header: newValue})}
       />)}
     </Grid>
   </Grid>
