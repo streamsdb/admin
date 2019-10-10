@@ -26,6 +26,15 @@ type Props = {
   onChange?: ((message: StreamMessage) => void);
 }
 
+const tryToPrettyfiJson = (input: string) => {
+  try{
+    return JSON.stringify(JSON.parse(input),null,2); 
+  }
+  catch{
+    return input;
+  }
+}
+
 const useStylesReddit = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -92,7 +101,7 @@ const MessageComponent: FunctionComponent<Props> = ({loading, readOnly, message,
         className={classes.root}
         mode="json"
         theme="tomorrow"
-        value={message.value}
+        value={tryToPrettyfiJson(message.value)}
         name="value"
         editorProps={{$blockScrolling: true}}
         width="100%"
@@ -108,8 +117,8 @@ const MessageComponent: FunctionComponent<Props> = ({loading, readOnly, message,
         className={classes.root}
         mode="json"
         theme="tomorrow"
-        value={message.header}
-        name="value"
+        value={tryToPrettyfiJson(message.header)}
+        name="header"
         editorProps={{$blockScrolling: true}}
         width="100%"
         wrapEnabled={true}
