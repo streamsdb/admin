@@ -1,4 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The running production version of this project is available at: [](https://app.streamsdb.io)
+
+The project was created with the bootstrap project [Create React App](https://github.com/facebook/create-react-app).
+
+## GraphQL endpoint
+
+To configure the StreamsDB graphql endpoint to use set the `REACT_APP_GRAPHQL_ENDPOINT` environment variable, eq:
+
+```
+REACT_APP_GRAPHQL_ENDPOINT="https://graphql.eu.streamsdb.io" yarn start
+```
 
 ## Available Scripts
 
