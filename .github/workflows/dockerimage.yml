@@ -10,6 +10,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: npm install
+      uses: actions/npm@master
+      with:
+        args: install
     - name: Build the Docker image
       run: docker build --tag streamsdb/admin:latest .
     - name: Login to DockerHub Registry
