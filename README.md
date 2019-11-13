@@ -1,3 +1,11 @@
+# Admin
+
+This is the web administration user interface of StreamsDB. It allows you to browse your databases, streams and events from your browser.
+
+The admin is distributed via an Docker Image: [streamsdb/admin](https://hub.docker.com/repository/docker/streamsdb/admin)
+
+## The Project
+
 The running production version of this project is available at: [](https://app.streamsdb.io)
 
 The project was created with the bootstrap project [Create React App](https://github.com/facebook/create-react-app).
