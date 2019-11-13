@@ -11,6 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: 
+      run: |
         docker build --tag streamsdb/sdbcli:latest .
         docker push streamsdb/sdbcli:latest
