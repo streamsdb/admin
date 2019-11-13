@@ -22,7 +22,7 @@ import AuthProvider from "./login/state";
 import * as Sentry from '@sentry/browser';
 
 if(config.gaId) {
-  ReactGA.initialize('UA-143880638-2');
+  ReactGA.initialize(config.gaId);
   browserHistory.listen(location => ReactGA.pageview(location.pathname));
 
   console.log("initialized GA");
