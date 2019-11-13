@@ -5,7 +5,7 @@ FROM node AS builder
 ARG REACT_APP_GRAPHQL_ENDPOINT
 
 WORKDIR /build
-COPY ./web-admin .
+COPY . .
 
 RUN yarn install
 RUN yarn build
