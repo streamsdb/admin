@@ -12,4 +12,8 @@ app.use('/api',
     changeOrigin: true,
   })
 );
-app.listen(process.env.PORT || 9000);
+
+let port = process.env.PORT || 9000;
+
+console.log("listening at :" + port);
+app.listen(port);
