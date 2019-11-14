@@ -9,6 +9,7 @@ app.get('/*', function(req, res) {
 app.use('/api',
   proxy({
     target: process.env.API || 'http://localhost:5000',
+    pathRewrite: {'^/api': ''}
     changeOrigin: true,
   })
 );
