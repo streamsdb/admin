@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/api',
   proxy({
+    ws: true,
     target: api,
     pathRewrite: {'^/api': ''},
     changeOrigin: false,
