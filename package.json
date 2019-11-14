@@ -29,6 +29,7 @@
     "http-proxy-middleware": "^0.20.0",
     "immutable": "^4.0.0-rc.12",
     "material-table": "^1.40.1",
+    "morgan": "^1.9.1",
     "notistack": "^0.8.8",
     "pretty-bytes": "^5.2.0",
     "query-string": "^6.8.1",
