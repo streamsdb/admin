@@ -7,7 +7,7 @@ ARG REACT_APP_GRAPHQL_ENDPOINT=/api
 WORKDIR /build
 COPY . .
 
-RUN yarn install
+RUN yarn install --production
 RUN yarn build
 
 FROM node AS runtime
