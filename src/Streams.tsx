@@ -16,14 +16,9 @@ type Props = {
 }
 
 gql`
-query StreamsQuery($database: String!){
-  database(name: $database) {
-    id,
-    name,
-    streams {
-      total
-      names
-    }
+query StreamsQuery($database: String! $filter: String!, $cursor: String!, $reverse: Boolean!, $limit: Int){
+  streams(db: $database, filter: $filter, cursor: $cursor, reverse: $reverse, limit: $limit) {
+    names
   },
 }`;
 
