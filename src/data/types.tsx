@@ -39,17 +39,15 @@ export type Db = {
   __typename?: 'DB',
   id: Scalars['ID'],
   name: Scalars['String'],
-  streams: StreamsPage,
-};
-
-
-export type DbStreamsArgs = {
-  after?: Maybe<Scalars['String']>,
-  limit?: Maybe<Scalars['Int']>
 };
 
 export type DeleteMessageResult = {
   __typename?: 'DeleteMessageResult',
+  deleted: Scalars['Boolean'],
+};
+
+export type DeleteStreamResult = {
+  __typename?: 'DeleteStreamResult',
   deleted: Scalars['Boolean'],
 };
 
@@ -80,6 +78,7 @@ export type Mutation = {
   appendStream?: Maybe<AppendResult>,
   login?: Maybe<LoginResult>,
   deleteMessage?: Maybe<DeleteMessageResult>,
+  deleteStream?: Maybe<DeleteStreamResult>,
 };
 
 
@@ -113,11 +112,18 @@ export type MutationDeleteMessageArgs = {
   at: Scalars['Int']
 };
 
+
+export type MutationDeleteStreamArgs = {
+  db: Scalars['String'],
+  stream: Scalars['String']
+};
+
 export type Query = {
   __typename?: 'Query',
   readMessage: ReadMessageResult,
   readStreamForward: Slice,
   readStreamBackward: Slice,
+  streams: StreamsPage,
   databases: DatabasesPage,
   database?: Maybe<Db>,
 };
@@ -143,6 +149,15 @@ export type QueryReadStreamBackwardArgs = {
   name: Scalars['String'],
   from: Scalars['Int'],
   limit: Scalars['Int']
+};
+
+
+export type QueryStreamsArgs = {
+  db: Scalars['String'],
+  filter?: Maybe<Scalars['String']>,
+  cursor?: Maybe<Scalars['String']>,
+  reverse?: Maybe<Scalars['Boolean']>,
+  limit?: Maybe<Scalars['Int']>
 };
 
 
@@ -173,33 +188,35 @@ export type Slice = {
   reverse: Scalars['Boolean'],
 };
 
-export type Streams = {
-  __typename?: 'Streams',
-  db: Scalars['String'],
-  names?: Maybe<Array<Scalars['String']>>,
-};
-
 export type StreamsPage = {
   __typename?: 'StreamsPage',
-  total: Scalars['Int'],
+  db: Scalars['String'],
   names?: Maybe<Array<Scalars['String']>>,
+  filter: Scalars['String'],
+  limit: Scalars['Int'],
+  cursor: Scalars['String'],
+  hasNext: Scalars['Boolean'],
+  nextCursor: Scalars['String'],
+  hasPrevious: Scalars['Boolean'],
+  previousCursor: Scalars['String'],
+  reverse: Scalars['Boolean'],
 };
 
 export type StreamsQueryQueryVariables = {
-  database: Scalars['String']
+  database: Scalars['String'],
+  filter: Scalars['String'],
+  cursor: Scalars['String'],
+  reverse: Scalars['Boolean'],
+  limit?: Maybe<Scalars['Int']>
 };
 
 
 export type StreamsQueryQuery = (
   { __typename?: 'Query' }
-  & { database: Maybe<(
-    { __typename?: 'DB' }
-    & Pick<Db, 'id' | 'name'>
-    & { streams: (
-      { __typename?: 'StreamsPage' }
-      & Pick<StreamsPage, 'total' | 'names'>
-    ) }
-  )> }
+  & { streams: (
+    { __typename?: 'StreamsPage' }
+    & Pick<StreamsPage, 'names'>
+  ) }
 );
 
 export type DatabasesQueryVariables = {};
@@ -318,14 +335,9 @@ export type AppendSingleMutation = (
 );
 
 export const StreamsQueryDocument = gql`
-    query StreamsQuery($database: String!) {
-  database(name: $database) {
-    id
-    name
-    streams {
-      total
-      names
-    }
+    query StreamsQuery($database: String!, $filter: String!, $cursor: String!, $reverse: Boolean!, $limit: Int) {
+  streams(db: $database, filter: $filter, cursor: $cursor, reverse: $reverse, limit: $limit) {
+    names
   }
 }
     `;
