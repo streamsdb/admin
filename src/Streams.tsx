@@ -13,6 +13,10 @@ import Skeleton from 'react-loading-skeleton';
 
 type Props = {
   database: string;
+  filter?: string;
+  cursor?: string;
+  limit?: number;
+  reverse?: boolean;
 }
 
 gql`
@@ -24,21 +28,20 @@ query StreamsQuery($database: String! $filter: String!, $cursor: String!, $rever
 
 interface StreamsProps {
   database: string;
-  page: StreamsPage;
+  names: string[];
 }
 
-const StreamsContent: FunctionComponent<StreamsProps> = ({database, page}) => {
-  debugger;
-  if(!page.names || page.names.length === 0) {
+const StreamsContent: FunctionComponent<StreamsProps> = ({database, names}) => {
+  if(!names || names.length === 0) {
     return <List><ListItem><ListItemText>No Streams in database</ListItemText></ListItem></List>
   }
   return <List>
-          {page.names.map((name) => (<ListItem button component={Link} to={`/${encodeURIComponent(database)}/${encodeURIComponent(name)}`}><ListItemText>{name}</ListItemText></ListItem>))}
-        </List>
+    {names.map((name) => (<ListItem button component={Link} to={`/${encodeURIComponent(database)}/${encodeURIComponent(name)}`}><ListItemText>{name}</ListItemText></ListItem>))}
+  </List>
 }
 
-export const Streams: FunctionComponent<Props> = ({ database }) => {
-  return (<StreamsQueryComponent variables={{database}}>
+export const Streams: FunctionComponent<Props> = ({ database, filter = "", cursor = "", limit = 0, reverse = false }) => {
+  return (<StreamsQueryComponent variables={{database, filter, cursor, limit, reverse }}>
     {({ data, error, loading }) => {
       if(loading) {
         return <Paper>
@@ -59,11 +62,12 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
         </Paper>
       } 
 
-      var page: StreamsPage = {total: 0};
-      if(data && data.database && data.database.streams) {
-        page = data.database.streams
+      if(data == undefined || data.streams == undefined) {
+        throw  new Error('unexpected undefined result from query');
       }
-      
+
+      const page = data.streams;
+
       return <>
         <Toolbar>
           <Button variant="contained" component={Link} to={`/${encodeURIComponent(database)}/new`} color="primary">
@@ -71,7 +75,7 @@ export const Streams: FunctionComponent<Props> = ({ database }) => {
           </Button>
         </Toolbar>
         <Paper>
-        <StreamsContent database={database} page={page} />
+        <StreamsContent database={database} names={page.names!} />
       </Paper>
         </>
     }}</StreamsQueryComponent>
