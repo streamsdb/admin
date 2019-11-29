@@ -17,7 +17,6 @@ import { OutlinedInputProps } from '@material-ui/core/OutlinedInput';
 import { Alert } from 'reactstrap';
 import gql from "graphql-tag";
 import { ReadMessageForwardComponent } from '../../data/types';
-import 'brace';
 import AceEditor from 'react-ace';
 import TextField, {TextFieldProps } from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';

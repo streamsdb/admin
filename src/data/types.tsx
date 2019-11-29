@@ -17,7 +17,7 @@ export type Scalars = {
 };
 
 export type AppendResult = {
-  __typename?: 'AppendResult',
+   __typename?: 'AppendResult',
   from: Scalars['Int'],
   count: Scalars['Int'],
   head: Scalars['Int'],
@@ -25,40 +25,40 @@ export type AppendResult = {
 
 
 export type CreateDatabaseResult = {
-  __typename?: 'CreateDatabaseResult',
+   __typename?: 'CreateDatabaseResult',
   Name: Scalars['String'],
 };
 
 export type DatabasesPage = {
-  __typename?: 'DatabasesPage',
+   __typename?: 'DatabasesPage',
   total: Scalars['Int'],
   names?: Maybe<Array<Scalars['String']>>,
 };
 
 export type Db = {
-  __typename?: 'DB',
+   __typename?: 'DB',
   id: Scalars['ID'],
   name: Scalars['String'],
 };
 
 export type DeleteMessageResult = {
-  __typename?: 'DeleteMessageResult',
+   __typename?: 'DeleteMessageResult',
   deleted: Scalars['Boolean'],
 };
 
 export type DeleteStreamResult = {
-  __typename?: 'DeleteStreamResult',
+   __typename?: 'DeleteStreamResult',
   deleted: Scalars['Boolean'],
 };
 
 export type LoginResult = {
-  __typename?: 'LoginResult',
+   __typename?: 'LoginResult',
   email: Scalars['String'],
   token: Scalars['String'],
 };
 
 export type Message = {
-  __typename?: 'Message',
+   __typename?: 'Message',
   position: Scalars['Int'],
   timestamp: Scalars['Timestamp'],
   type: Scalars['String'],
@@ -72,7 +72,7 @@ export type MessageInput = {
 };
 
 export type Mutation = {
-  __typename?: 'Mutation',
+   __typename?: 'Mutation',
   register?: Maybe<RegistrationResult>,
   createDatabase?: Maybe<CreateDatabaseResult>,
   appendStream?: Maybe<AppendResult>,
@@ -119,7 +119,7 @@ export type MutationDeleteStreamArgs = {
 };
 
 export type Query = {
-  __typename?: 'Query',
+   __typename?: 'Query',
   readMessage: ReadMessageResult,
   readStreamForward: Slice,
   readStreamBackward: Slice,
@@ -166,19 +166,19 @@ export type QueryDatabaseArgs = {
 };
 
 export type ReadMessageResult = {
-  __typename?: 'ReadMessageResult',
+   __typename?: 'ReadMessageResult',
   found: Scalars['Boolean'],
   message?: Maybe<Message>,
 };
 
 export type RegistrationResult = {
-  __typename?: 'RegistrationResult',
+   __typename?: 'RegistrationResult',
   email: Scalars['String'],
   token: Scalars['String'],
 };
 
 export type Slice = {
-  __typename?: 'Slice',
+   __typename?: 'Slice',
   stream: Scalars['String'],
   from: Scalars['Int'],
   next: Scalars['Int'],
@@ -189,7 +189,7 @@ export type Slice = {
 };
 
 export type StreamsPage = {
-  __typename?: 'StreamsPage',
+   __typename?: 'StreamsPage',
   db: Scalars['String'],
   names?: Maybe<Array<Scalars['String']>>,
   filter: Scalars['String'],
@@ -201,6 +201,7 @@ export type StreamsPage = {
   previousCursor: Scalars['String'],
   reverse: Scalars['Boolean'],
 };
+
 
 export type StreamsQueryQueryVariables = {
   database: Scalars['String'],
@@ -334,6 +335,7 @@ export type AppendSingleMutation = (
   )> }
 );
 
+
 export const StreamsQueryDocument = gql`
     query StreamsQuery($database: String!, $filter: String!, $cursor: String!, $reverse: Boolean!, $limit: Int) {
   streams(db: $database, filter: $filter, cursor: $cursor, reverse: $reverse, limit: $limit) {
@@ -347,14 +349,14 @@ export type StreamsQueryComponentProps = Omit<ApolloReactComponents.QueryCompone
       <ApolloReactComponents.Query<StreamsQueryQuery, StreamsQueryQueryVariables> query={StreamsQueryDocument} {...props} />
     );
     
-export type StreamsQueryProps<TChildProps = {}> = ApolloReactHoc.DataProps<StreamsQueryQuery, StreamsQueryQueryVariables> & TChildProps;
+export type StreamsQueryProps<TChildProps = {}> = ApolloReactHoc.DataProps<StreamsQueryQuery, StreamsQueryQueryVariables> | TChildProps;
 export function withStreamsQuery<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   StreamsQueryQuery,
   StreamsQueryQueryVariables,
   StreamsQueryProps<TChildProps>>) {
     return ApolloReactHoc.withQuery<TProps, StreamsQueryQuery, StreamsQueryQueryVariables, StreamsQueryProps<TChildProps>>(StreamsQueryDocument, {
-      alias: 'withStreamsQuery',
+      alias: 'streamsQuery',
       ...operationOptions
     });
 };
@@ -372,14 +374,14 @@ export type DatabasesComponentProps = Omit<ApolloReactComponents.QueryComponentO
       <ApolloReactComponents.Query<DatabasesQuery, DatabasesQueryVariables> query={DatabasesDocument} {...props} />
     );
     
-export type DatabasesProps<TChildProps = {}> = ApolloReactHoc.DataProps<DatabasesQuery, DatabasesQueryVariables> & TChildProps;
+export type DatabasesProps<TChildProps = {}> = ApolloReactHoc.DataProps<DatabasesQuery, DatabasesQueryVariables> | TChildProps;
 export function withDatabases<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   DatabasesQuery,
   DatabasesQueryVariables,
   DatabasesProps<TChildProps>>) {
     return ApolloReactHoc.withQuery<TProps, DatabasesQuery, DatabasesQueryVariables, DatabasesProps<TChildProps>>(DatabasesDocument, {
-      alias: 'withDatabases',
+      alias: 'databases',
       ...operationOptions
     });
 };
@@ -398,14 +400,14 @@ export type LoginComponentProps = Omit<ApolloReactComponents.MutationComponentOp
       <ApolloReactComponents.Mutation<LoginMutation, LoginMutationVariables> mutation={LoginDocument} {...props} />
     );
     
-export type LoginProps<TChildProps = {}> = ApolloReactHoc.MutateProps<LoginMutation, LoginMutationVariables> & TChildProps;
+export type LoginProps<TChildProps = {}> = ApolloReactHoc.MutateProps<LoginMutation, LoginMutationVariables> | TChildProps;
 export function withLogin<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   LoginMutation,
   LoginMutationVariables,
   LoginProps<TChildProps>>) {
     return ApolloReactHoc.withMutation<TProps, LoginMutation, LoginMutationVariables, LoginProps<TChildProps>>(LoginDocument, {
-      alias: 'withLogin',
+      alias: 'login',
       ...operationOptions
     });
 };
@@ -425,14 +427,14 @@ export type DeleteMessageComponentProps = Omit<ApolloReactComponents.MutationCom
       <ApolloReactComponents.Mutation<DeleteMessageMutation, DeleteMessageMutationVariables> mutation={DeleteMessageDocument} {...props} />
     );
     
-export type DeleteMessageProps<TChildProps = {}> = ApolloReactHoc.MutateProps<DeleteMessageMutation, DeleteMessageMutationVariables> & TChildProps;
+export type DeleteMessageProps<TChildProps = {}> = ApolloReactHoc.MutateProps<DeleteMessageMutation, DeleteMessageMutationVariables> | TChildProps;
 export function withDeleteMessage<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   DeleteMessageMutation,
   DeleteMessageMutationVariables,
   DeleteMessageProps<TChildProps>>) {
     return ApolloReactHoc.withMutation<TProps, DeleteMessageMutation, DeleteMessageMutationVariables, DeleteMessageProps<TChildProps>>(DeleteMessageDocument, {
-      alias: 'withDeleteMessage',
+      alias: 'deleteMessage',
       ...operationOptions
     });
 };
@@ -463,14 +465,14 @@ export type ReadStreamBackwardComponentProps = Omit<ApolloReactComponents.QueryC
       <ApolloReactComponents.Query<ReadStreamBackwardQuery, ReadStreamBackwardQueryVariables> query={ReadStreamBackwardDocument} {...props} />
     );
     
-export type ReadStreamBackwardProps<TChildProps = {}> = ApolloReactHoc.DataProps<ReadStreamBackwardQuery, ReadStreamBackwardQueryVariables> & TChildProps;
+export type ReadStreamBackwardProps<TChildProps = {}> = ApolloReactHoc.DataProps<ReadStreamBackwardQuery, ReadStreamBackwardQueryVariables> | TChildProps;
 export function withReadStreamBackward<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   ReadStreamBackwardQuery,
   ReadStreamBackwardQueryVariables,
   ReadStreamBackwardProps<TChildProps>>) {
     return ApolloReactHoc.withQuery<TProps, ReadStreamBackwardQuery, ReadStreamBackwardQueryVariables, ReadStreamBackwardProps<TChildProps>>(ReadStreamBackwardDocument, {
-      alias: 'withReadStreamBackward',
+      alias: 'readStreamBackward',
       ...operationOptions
     });
 };
@@ -500,14 +502,14 @@ export type ReadStreamForwardComponentProps = Omit<ApolloReactComponents.QueryCo
       <ApolloReactComponents.Query<ReadStreamForwardQuery, ReadStreamForwardQueryVariables> query={ReadStreamForwardDocument} {...props} />
     );
     
-export type ReadStreamForwardProps<TChildProps = {}> = ApolloReactHoc.DataProps<ReadStreamForwardQuery, ReadStreamForwardQueryVariables> & TChildProps;
+export type ReadStreamForwardProps<TChildProps = {}> = ApolloReactHoc.DataProps<ReadStreamForwardQuery, ReadStreamForwardQueryVariables> | TChildProps;
 export function withReadStreamForward<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   ReadStreamForwardQuery,
   ReadStreamForwardQueryVariables,
   ReadStreamForwardProps<TChildProps>>) {
     return ApolloReactHoc.withQuery<TProps, ReadStreamForwardQuery, ReadStreamForwardQueryVariables, ReadStreamForwardProps<TChildProps>>(ReadStreamForwardDocument, {
-      alias: 'withReadStreamForward',
+      alias: 'readStreamForward',
       ...operationOptions
     });
 };
@@ -534,14 +536,14 @@ export type ReadMessageForwardComponentProps = Omit<ApolloReactComponents.QueryC
       <ApolloReactComponents.Query<ReadMessageForwardQuery, ReadMessageForwardQueryVariables> query={ReadMessageForwardDocument} {...props} />
     );
     
-export type ReadMessageForwardProps<TChildProps = {}> = ApolloReactHoc.DataProps<ReadMessageForwardQuery, ReadMessageForwardQueryVariables> & TChildProps;
+export type ReadMessageForwardProps<TChildProps = {}> = ApolloReactHoc.DataProps<ReadMessageForwardQuery, ReadMessageForwardQueryVariables> | TChildProps;
 export function withReadMessageForward<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   ReadMessageForwardQuery,
   ReadMessageForwardQueryVariables,
   ReadMessageForwardProps<TChildProps>>) {
     return ApolloReactHoc.withQuery<TProps, ReadMessageForwardQuery, ReadMessageForwardQueryVariables, ReadMessageForwardProps<TChildProps>>(ReadMessageForwardDocument, {
-      alias: 'withReadMessageForward',
+      alias: 'readMessageForward',
       ...operationOptions
     });
 };
@@ -560,14 +562,14 @@ export type AppendSingleComponentProps = Omit<ApolloReactComponents.MutationComp
       <ApolloReactComponents.Mutation<AppendSingleMutation, AppendSingleMutationVariables> mutation={AppendSingleDocument} {...props} />
     );
     
-export type AppendSingleProps<TChildProps = {}> = ApolloReactHoc.MutateProps<AppendSingleMutation, AppendSingleMutationVariables> & TChildProps;
+export type AppendSingleProps<TChildProps = {}> = ApolloReactHoc.MutateProps<AppendSingleMutation, AppendSingleMutationVariables> | TChildProps;
 export function withAppendSingle<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   AppendSingleMutation,
   AppendSingleMutationVariables,
   AppendSingleProps<TChildProps>>) {
     return ApolloReactHoc.withMutation<TProps, AppendSingleMutation, AppendSingleMutationVariables, AppendSingleProps<TChildProps>>(AppendSingleDocument, {
-      alias: 'withAppendSingle',
+      alias: 'appendSingle',
       ...operationOptions
     });
 };

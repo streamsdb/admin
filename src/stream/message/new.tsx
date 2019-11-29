@@ -15,10 +15,6 @@ import MessageComponent, {StreamMessage} from './components/message';
 import { SpinnerButton} from '../../ActionButton';
 import { AppendSingleComponent } from '../../data/types'
 
-import 'brace';
-import 'brace/mode/json';
-import 'brace/theme/tomorrow'
-
 type Props = {
   database: string;
   stream: string;

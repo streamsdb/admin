@@ -49,6 +49,7 @@ export const Streams: FunctionComponent<Props> = ({ database, filter = "", curso
     filter = filterFromQuery;
   }
 
+
   return (<StreamsQueryComponent variables={{database, filter, cursor, limit, reverse }}>
     {({ data, error, loading }) => {
       if(loading) {

@@ -98,9 +98,8 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
   },
   {
     exact: true,
-    path: "/:database/:filter?",
-
-    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} filter={match.params.filter !== undefined ? decodeURIComponent(match.params.filter) : undefined} />),
+    path: "/:database/",
+    component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
     breadcrumb: ({match}: any) => decodeURIComponent(match.params.database)
   },
   {
