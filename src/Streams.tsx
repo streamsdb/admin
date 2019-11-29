@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { StreamsQueryComponent, StreamsPage } from './data/types'
 import List from '@material-ui/core/List';
@@ -41,6 +42,13 @@ const StreamsContent: FunctionComponent<StreamsProps> = ({database, names}) => {
 }
 
 export const Streams: FunctionComponent<Props> = ({ database, filter = "", cursor = "", limit = 0, reverse = false }) => {
+  const searchParams = new URLSearchParams(useLocation().search);
+  const filterFromQuery = searchParams.get('filter');
+
+  if(filterFromQuery !== null){
+    filter = filterFromQuery;
+  }
+
   return (<StreamsQueryComponent variables={{database, filter, cursor, limit, reverse }}>
     {({ data, error, loading }) => {
       if(loading) {
