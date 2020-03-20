@@ -94,13 +94,13 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     exact: true,
     path: "/:database/:stream/new",
     component: ( {match}: any) => (<AppendStream database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)}/>),
-    breadcrumb: ({match}: any) => "new event"
+    breadcrumb: ( {match}: any ) => (<span>new event</span>)
   },
   {
     exact: true,
     path: "/:database/",
     component: ({match}: any) => (<Streams database={decodeURIComponent(match.params.database)} />),
-    breadcrumb: ({match}: any) => decodeURIComponent(match.params.database)
+    breadcrumb: ({match}: any) => (<span>decodeURIComponent(match.params.database)</span>)
   },
   {
     exact: true,
@@ -108,63 +108,63 @@ const routes: (RouteConfig & BreadcrumbsRoute)[]  = [
     component: ( {match}: any) => {
         return (<Redirect to={`/${encodeURIComponent(match.params.database)}/${encodeURIComponent(match.params.stream)}/last/backward`} />)
     },
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={10} reverse={true} /> )} ,
-    breadcrumb: ({match}: any) => decodeURIComponent(match.params.stream)
+    breadcrumb: ({match}: any) => (<span>decodeURIComponent(match.params.stream)</span>)
   },
   {
     exact: true,
     path: "/:database/:stream/:from",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={10} reverse={true} /> )} ,
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream/:from/forward/:limit?",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={match.params.limit || 10} reverse={false} /> )} ,
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream/last/backward/:limit?",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1} limit={match.params.limit || 10} reverse={true} /> )} ,
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream/:from/backward/",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={match.params.limit || 10} reverse={true} /> )} ,
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream/:from/backward/:limit?",
     component: ( {match}: any) => {
         return (<StreamList database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={parseInt(match.params.from)} limit={match.params.limit || 10} reverse={true} /> )} ,
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream/last/message/",
     component: ( {match}: any) => {
         return (<Message database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={-1}  /> )},
-    breadcrumb: null,
+    breadcrumb: undefined,
   },
   {
     exact: true,
     path: "/:database/:stream/:from/message/",
     component: ( {match}: any) => {
         return (<Message database={decodeURIComponent(match.params.database)} stream={decodeURIComponent(match.params.stream)} from={match.params.from}  /> )},
-    breadcrumb: () => "message"
+    breadcrumb: () => (<span>message</span>)
   }
 ]
 

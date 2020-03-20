@@ -1,11 +1,12 @@
 overwrite: true
-schema: https://graphql.streamsdb.io
+schema: 'http://localhost:8080/query'
 documents: 
   - "src/**/*.{js,jsx,ts,tsx,graphql}"
-
-
 generates:
   src/data/types.tsx:
-    - typescript
-    - typescript-operations
-    - typescript-react-apollo
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
