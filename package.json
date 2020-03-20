@@ -73,11 +73,11 @@
     ]
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.6.1",
-    "@graphql-codegen/introspection": "1.9.1",
-    "@graphql-codegen/typescript": "1.9.1",
-    "@graphql-codegen/typescript-operations": "1.9.1",
-    "@graphql-codegen/typescript-react-apollo": "^1.6.1",
+    "@graphql-codegen/cli": "^1.13.1",
+    "@graphql-codegen/introspection": "^1.13.1",
+    "@graphql-codegen/typescript": "^1.13.1",
+    "@graphql-codegen/typescript-operations": "^1.13.1",
+    "@graphql-codegen/typescript-react-apollo": "^1.13.1",
     "apollo": "2.21.1",
     "graphql": "^14.4.2"
   }
