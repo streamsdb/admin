@@ -1,16 +1,11 @@
 import React, { useState , FunctionComponent } from 'react';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
+import { Form, } from 'reactstrap';
 import { Redirect  } from 'react-router';
 import gql from "graphql-tag";
-import AceEditor from 'react-ace';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
 import MessageComponent, {StreamMessage} from './components/message';
 import { SpinnerButton} from '../../ActionButton';
 import { AppendSingleComponent } from '../../data/types'

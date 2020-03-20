@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import gql from "graphql-tag";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { StreamsQueryComponent, StreamsPage } from './data/types'
+import { StreamsQueryComponent  } from './data/types'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -71,7 +71,7 @@ export const Streams: FunctionComponent<Props> = ({ database, filter = "", curso
         </Paper>
       } 
 
-      if(data == undefined || data.streams == undefined) {
+      if(data === undefined || data.streams === undefined) {
         throw  new Error('unexpected undefined result from query');
       }
 
